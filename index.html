@@ -575,7 +575,7 @@ ul{list-style:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
 
 /* 화폐 단위 표시 */
-.chip.gold .unit{font-size:10px;color:#ffd54a;font-weight:700;margin-left:2px;letter-spacing:.5px}
+.chip.gold .unit{font-size:13px;color:#ffd54a;font-weight:700;margin-left:3px;font-family:var(--f-fun)}
 
 /* HUD 도움말 버튼 */
 .btn-help{
@@ -774,13 +774,13 @@ ul{list-style:none}
     <div class="m-title" id="welcomeTitle">지유야, 환영해!</div>
     <div class="m-body">
       지금부터 <b>1문제 정답</b>을 맞출 때마다<br>
-      <b>지유원(JY)</b>을 줄게.<br>
-      모은 지유원은 <b>현금과 교환</b>이 가능해! 🥳
+      <b>똔💰</b>을 줄게.<br>
+      모은 똔은 <b>현금과 교환</b>이 가능해! 🥳
     </div>
     <div class="m-points">
-      ✨ <b>지유원 받는 방법</b><br>
-      · 정답 1개 → <b>+5 JY</b><br>
-      · 별 1개 → <b>+15 JY 보너스</b><br>
+      ✨ <b>똔 받는 방법</b><br>
+      · 정답 1개 → <b>+5 똔</b><br>
+      · 별 1개 → <b>+15 똔 보너스</b><br>
       · 단원 클리어 시 한꺼번에 정산!<br><br>
       📤 모은 결과는 <b>아빠한테 카톡으로 자랑</b>할 수 있어.
     </div>
@@ -796,7 +796,7 @@ ul{list-style:none}
     <button class="m-close" id="profileClose" aria-label="닫기" style="display:none">×</button>
     <div class="m-emoji" id="profileEmoji">👋</div>
     <div class="m-title" id="profileTitle">누가 학습할 거야?</div>
-    <div class="m-body" id="profileSubtitle" style="font-size:14px;margin-bottom:8px">프로필을 골라줘. 각자 진도와 지유원이 따로 쌓여!</div>
+    <div class="m-body" id="profileSubtitle" style="font-size:14px;margin-bottom:8px">프로필을 골라줘. 각자 진도와 똔이 따로 쌓여!</div>
     <!-- 프로필 카드 그리드 -->
     <div class="profile-grid" id="profileGrid"></div>
     <!-- 새 프로필 만들기 폼 (숨김) -->
@@ -830,7 +830,7 @@ ul{list-style:none}
       <div class="chip profile" id="profileChip" title="프로필 변경"><span class="pf-emoji" id="hudPfEmoji">🦄</span><span class="pf-name" id="hudPfName">지유</span></div>
       <div class="chip lvl"><span class="ic">🎖️</span> Lv.<span id="lvl">1</span></div>
       <div class="chip xp"><span class="ic">⭐</span><div class="bar"><i id="xpBar"></i></div><span id="xpTxt" style="font-size:11px;color:var(--ink-mute)">0</span></div>
-      <div class="chip gold" title="지유원 — 현금과 교환 가능"><span class="ic">💰</span><span id="gold">0</span><span class="unit">JY</span></div>
+      <div class="chip gold" title="똔 — 현금과 교환 가능"><span class="ic">💰</span><span id="gold">0</span><span class="unit">똔</span></div>
       <div class="chip streak"><span class="ic">🔥</span><span id="streak">0</span></div>
       <button class="btn-help" id="btnHelp" title="안내 보기">?</button>
       <button class="btn-mute" id="btnMute" title="음소거">🔊</button>
@@ -882,7 +882,7 @@ ul{list-style:none}
         <div class="review-banner" id="reviewBanner" style="display:none">
           <div>
             <div class="rb-title">🔁 복습 도전!</div>
-            <div class="rb-sub">자주 틀린 문제 <b><span id="reviewCount">0</span>개</b>를 모아왔어. 한 번에 풀어볼까? <b>+ 보너스 JY!</b></div>
+            <div class="rb-sub">자주 틀린 문제 <b><span id="reviewCount">0</span>개</b>를 모아왔어. 한 번에 풀어볼까? <b>+ 보너스 똔!</b></div>
           </div>
           <button class="btn-primary" id="btnReviewMode">복습 시작 ▶</button>
         </div>
@@ -940,7 +940,7 @@ ul{list-style:none}
         <div class="summary">
           <div class="item"><div class="lbl">정답</div><div class="val good"><span id="resCorrect">0</span>/<span id="resTotal">5</span></div></div>
           <div class="item"><div class="lbl">획득 XP</div><div class="val">+<span id="resXp">0</span></div></div>
-          <div class="item"><div class="lbl">획득 지유원</div><div class="val gold">+<span id="resGold">0</span> JY</div></div>
+          <div class="item"><div class="lbl">획득 똔</div><div class="val gold">+<span id="resGold">0</span> 똔</div></div>
         </div>
         <div id="resBadge"></div>
         <div class="result-actions">
@@ -1401,7 +1401,7 @@ const BADGES = [
   {id:"half_way",ic:"🌗",nm:"하프웨이",ds:"6단원 클리어"},
   {id:"all_clear",ic:"👑",nm:"영문법 마스터",ds:"12단원 모두 클리어"},
   {id:"all_stars",ic:"🌟",nm:"별 채집가",ds:"별 30개 모으기"},
-  {id:"gold_rush",ic:"💰",nm:"부자 지유",ds:"지유원 500 JY 모으기"}
+  {id:"gold_rush",ic:"💰",nm:"부자",ds:"똔 500개 모으기"}
 ];
 
 /* ---------- 상태 / 저장 (프로필별) ----------
@@ -1795,7 +1795,7 @@ function startQuiz(){
   renderQ();
 }
 
-// 복습 모드 — 모든 단원에서 자주 틀린 문항을 모아 출제 (보너스 JY)
+// 복습 모드 — 모든 단원에서 자주 틀린 문항을 모아 출제 (보너스 똔)
 function startReviewQuiz(){
   const items=[];
   Object.keys(S.wrong).forEach(k=>{
@@ -1938,7 +1938,7 @@ function finishQuiz(){
   else if(pct>=0.4)stars=1;
   else stars=0;
 
-  // XP / 지유원 — 복습 모드는 1.5배 보너스
+  // XP / 똔 — 복습 모드는 1.5배 보너스
   const bonus = quizState.isReview ? 1.5 : 1;
   const xp   = Math.round((correct*10 + (stars===3?20:0) + quizState.maxCombo*2) * bonus);
   const gold = Math.round((correct*5 + stars*15) * bonus);
@@ -2088,7 +2088,7 @@ function buildShareMessage(extra){
     `🌟 ${who} 영문법 퀘스트 진행 보고 🌟`,
     "",
     `🎖️ 레벨: Lv.${S.level}`,
-    `💰 지유원: ${S.gold} JY`,
+    `💰 똔: ${S.gold}개`,
     `⭐ 별: ${stars}/36`,
     `🏆 클리어: ${cleared}/12 단원`,
   ];
@@ -2180,7 +2180,7 @@ function renderProfileGrid(){
     card.innerHTML=`
       <div class="pc-emoji">${escHtml(p.emoji)}</div>
       <div class="pc-name">${escHtml(p.name)}</div>
-      <div class="pc-meta">Lv.${lvl} · ${gold} JY</div>
+      <div class="pc-meta">Lv.${lvl} · ${gold} 똔</div>
       <button class="pc-del" title="삭제">×</button>
     `;
     card.onclick=(e)=>{
