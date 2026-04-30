@@ -625,8 +625,11 @@ ul{list-style:none}
   animation:bounce 1.5s ease-in-out infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .modal .m-title{
-  font-family:var(--f-display);font-size:26px;text-align:center;margin-bottom:12px;
-  background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;
+  font-family:var(--f-display);font-size:28px;text-align:center;margin-bottom:12px;
+  background:linear-gradient(135deg,#ffe75e 0%,#ff9c3a 50%,#ff4ecd 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(255,213,74,.25));
+  letter-spacing:.02em;
 }
 .modal .m-body{
   font-family:var(--f-fun);font-size:16px;line-height:1.7;color:var(--ink);
