@@ -696,6 +696,30 @@ ul{list-style:none}
 <div class="flash" id="flash"></div>
 <div class="combo" id="combo"><span class="ic">🔥</span><span id="comboNum">2</span><span style="font-size:14px;font-family:var(--f-fun)">콤보!</span></div>
 
+<!-- ============ 환영 / 안내 모달 ============ -->
+<div class="modal-mask" id="welcomeMask">
+  <div class="modal" role="dialog" aria-labelledby="welcomeTitle">
+    <button class="m-close" id="welcomeClose" aria-label="닫기">×</button>
+    <div class="m-emoji">💰</div>
+    <div class="m-title" id="welcomeTitle">지유야, 환영해!</div>
+    <div class="m-body">
+      지금부터 <b>1문제 정답</b>을 맞출 때마다<br>
+      <b>지유원(JY)</b>을 줄게.<br>
+      모은 지유원은 <b>현금과 교환</b>이 가능해! 🥳
+    </div>
+    <div class="m-points">
+      ✨ <b>지유원 받는 방법</b><br>
+      · 정답 1개 → <b>+5 JY</b><br>
+      · 별 1개 → <b>+15 JY 보너스</b><br>
+      · 단원 클리어 시 한꺼번에 정산!<br><br>
+      📤 모은 결과는 <b>아빠한테 카톡으로 자랑</b>할 수 있어.
+    </div>
+    <div class="m-actions">
+      <button class="btn-primary" id="welcomeStart">▶ 시작할래!</button>
+    </div>
+  </div>
+</div>
+
 <div class="app">
   <header class="hud">
     <div class="hud-brand">
@@ -724,6 +748,7 @@ ul{list-style:none}
           <p>12개의 단원을 깨면서 별을 모으고, 콤보를 터뜨리고, 영문법 마스터가 되어보자 🔥</p>
           <div class="hero-cta">
             <button class="btn-primary pulse" id="btnContinue">▶ 계속하기</button>
+            <button class="btn-kakao" id="btnShareWorld">📤 아빠한테 카톡 자랑하기</button>
             <button class="btn-ghost" id="btnReset">🔄 처음부터</button>
           </div>
           <svg class="mascot" viewBox="0 0 200 200">
@@ -753,6 +778,15 @@ ul{list-style:none}
           </div>
           <div class="pbar"><i id="worldBar"></i></div>
           <div class="ptxt"><span id="worldDone">0</span>/12</div>
+        </div>
+
+        <!-- ============ 복습 배너 (자주 틀리는 문제) ============ -->
+        <div class="review-banner" id="reviewBanner" style="display:none">
+          <div>
+            <div class="rb-title">🔁 복습 도전!</div>
+            <div class="rb-sub">자주 틀린 문제 <b><span id="reviewCount">0</span>개</b>를 모아왔어. 한 번에 풀어볼까? <b>+ 보너스 JY!</b></div>
+          </div>
+          <button class="btn-primary" id="btnReviewMode">복습 시작 ▶</button>
         </div>
 
         <h2 class="section-title"><span class="dot"></span> 스테이지 선택</h2>
@@ -808,11 +842,12 @@ ul{list-style:none}
         <div class="summary">
           <div class="item"><div class="lbl">정답</div><div class="val good"><span id="resCorrect">0</span>/<span id="resTotal">5</span></div></div>
           <div class="item"><div class="lbl">획득 XP</div><div class="val">+<span id="resXp">0</span></div></div>
-          <div class="item"><div class="lbl">획득 골드</div><div class="val gold">+<span id="resGold">0</span></div></div>
+          <div class="item"><div class="lbl">획득 지유원</div><div class="val gold">+<span id="resGold">0</span> JY</div></div>
         </div>
         <div id="resBadge"></div>
         <div class="result-actions">
           <button class="btn-primary" id="btnNextStage">다음 스테이지 ▶</button>
+          <button class="btn-kakao" id="btnShareResult">📤 아빠한테 카톡 자랑하기</button>
           <button class="btn-ghost" id="btnRetry">🔁 한번 더</button>
           <button class="btn-ghost" id="btnHome">🏠 월드맵으로</button>
         </div>
@@ -1268,7 +1303,7 @@ const BADGES = [
   {id:"half_way",ic:"🌗",nm:"하프웨이",ds:"6단원 클리어"},
   {id:"all_clear",ic:"👑",nm:"영문법 마스터",ds:"12단원 모두 클리어"},
   {id:"all_stars",ic:"🌟",nm:"별 채집가",ds:"별 30개 모으기"},
-  {id:"gold_rush",ic:"💰",nm:"골드 러시",ds:"골드 500 모으기"}
+  {id:"gold_rush",ic:"💰",nm:"부자 지유",ds:"지유원 500 JY 모으기"}
 ];
 
 /* ---------- 상태 / 저장 ---------- */
