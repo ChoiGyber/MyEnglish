@@ -787,6 +787,33 @@ ul{list-style:none}
   </div>
 </div>
 
+<!-- ============ 프로필 선택 모달 ============ -->
+<div class="modal-mask" id="profileMask">
+  <div class="modal" role="dialog" aria-labelledby="profileTitle">
+    <button class="m-close" id="profileClose" aria-label="닫기" style="display:none">×</button>
+    <div class="m-emoji" id="profileEmoji">👋</div>
+    <div class="m-title" id="profileTitle">누가 학습할 거야?</div>
+    <div class="m-body" id="profileSubtitle" style="font-size:14px;margin-bottom:8px">프로필을 골라줘. 각자 진도와 지유원이 따로 쌓여!</div>
+    <!-- 프로필 카드 그리드 -->
+    <div class="profile-grid" id="profileGrid"></div>
+    <!-- 새 프로필 만들기 폼 (숨김) -->
+    <div class="profile-form" id="profileForm" style="display:none">
+      <div>
+        <div class="pf-label">이름 (최대 8자)</div>
+        <input type="text" id="profileNameInput" maxlength="8" placeholder="예: 지유" autocomplete="off">
+      </div>
+      <div>
+        <div class="pf-label">아바타 골라줘</div>
+        <div class="emoji-picker" id="profileEmojiPicker"></div>
+      </div>
+      <div class="m-actions">
+        <button class="btn-primary" id="profileCreate">✨ 만들기</button>
+        <button class="btn-ghost" id="profileFormCancel">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="app">
   <header class="hud">
     <div class="hud-brand">
@@ -797,6 +824,7 @@ ul{list-style:none}
       </div>
     </div>
     <div class="hud-stats">
+      <div class="chip profile" id="profileChip" title="프로필 변경"><span class="pf-emoji" id="hudPfEmoji">🦄</span><span class="pf-name" id="hudPfName">지유</span></div>
       <div class="chip lvl"><span class="ic">🎖️</span> Lv.<span id="lvl">1</span></div>
       <div class="chip xp"><span class="ic">⭐</span><div class="bar"><i id="xpBar"></i></div><span id="xpTxt" style="font-size:11px;color:var(--ink-mute)">0</span></div>
       <div class="chip gold" title="지유원 — 현금과 교환 가능"><span class="ic">💰</span><span id="gold">0</span><span class="unit">JY</span></div>
