@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0b0b1f">
+<title>영문법 퀘스트 — 중학영문법 RPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   영문법 퀘스트 — 디자인 시스템
+   ========================================================= */
+:root{
+  --bg-0:#070716;
+  --bg-1:#0e0e2a;
+  --bg-2:#1a1148;
+  --ink:#f5f3ff;
+  --ink-mute:#b6b3d6;
+  --line:rgba(255,255,255,.12);
+
+  --p1:#ff4ecd;   /* 핑크 */
+  --p2:#7c5bff;   /* 퍼플 */
+  --p3:#34d8ff;   /* 시안 */
+  --p4:#ffd54a;   /* 골드 */
+  --p5:#36ff9a;   /* 그린 */
+  --p6:#ff6b6b;   /* 코랄 */
+
+  --good:#36ff9a;
+  --good-dark:#0aa86a;
+  --bad:#ff5d8f;
+  --bad-dark:#b6204c;
+
+  --grad-hero: linear-gradient(135deg,#ff4ecd 0%,#7c5bff 50%,#34d8ff 100%);
+  --grad-good: linear-gradient(135deg,#36ff9a,#06b6d4);
+  --grad-bad : linear-gradient(135deg,#ff6b6b,#ff4ecd);
+  --grad-gold: linear-gradient(135deg,#ffd54a,#ff7e3a);
+
+  --shadow-soft:0 10px 30px rgba(0,0,0,.35);
+  --shadow-glow:0 0 0 4px rgba(124,91,255,.25),0 12px 40px rgba(124,91,255,.45);
+
+  --r-sm:10px;
+  --r-md:16px;
+  --r-lg:24px;
+  --r-xl:32px;
+
+  --f-display:'Black Han Sans','Jua','Noto Sans KR',sans-serif;
+  --f-fun:'Jua','Gowun Dodum','Noto Sans KR',sans-serif;
+  --f-body:'Noto Sans KR',sans-serif;
+  --f-en:'Fredoka','Noto Sans KR',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--f-body);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 800px at 10% -10%,rgba(255,78,205,.18),transparent 60%),
+    radial-gradient(1000px 700px at 110% 10%,rgba(52,216,255,.18),transparent 60%),
+    radial-gradient(900px 600px at 50% 110%,rgba(255,213,74,.15),transparent 60%),
+    linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 60%,var(--bg-2) 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+ul{list-style:none}
+
+/* === 떠다니는 별 배경 === */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.stars span{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:#fff;opacity:.6;
+  animation:twinkle 4s ease-in-out infinite;
+  box-shadow:0 0 6px #fff;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.2;transform:scale(.6)}
+  50%{opacity:1;transform:scale(1.4)}
+}
+
+/* === 공통 컨테이너 === */
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* === 헤더(상단 HUD) === */
+.hud{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px) saturate(160%);
+  background:rgba(10,8,30,.55);
+  border-bottom:1px solid var(--line);
+  padding:10px 14px;
+  display:flex;align-items:center;gap:12px;
+}
+.hud-brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:20px;letter-spacing:.02em}
+.hud-brand .logo{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--grad-hero);
+  display:grid;place-items:center;font-size:20px;
+  box-shadow:0 6px 20px rgba(124,91,255,.6);
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-3px) rotate(2deg)}}
+
+.hud-stats{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:99px;
+  background:rgba(255,255,255,.08);border:1px solid var(--line);
+  font-family:var(--f-fun);font-size:14px;
+}
+.chip .ic{font-size:16px}
+.chip.lvl{background:linear-gradient(135deg,rgba(124,91,255,.4),rgba(255,78,205,.4));border-color:rgba(255,255,255,.2)}
+.chip.xp{min-width:120px}
+.chip .bar{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden;position:relative}
+.chip .bar i{position:absolute;inset:0;width:0%;background:var(--grad-hero);border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.chip.gold{background:linear-gradient(135deg,rgba(255,213,74,.3),rgba(255,126,58,.3));border-color:rgba(255,213,74,.5)}
+.chip.streak{background:linear-gradient(135deg,rgba(255,78,205,.35),rgba(255,107,107,.35));border-color:rgba(255,107,107,.55)}
+
+.btn-mute{
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.08);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:16px;
+}
+.btn-mute:hover{background:rgba(255,255,255,.16)}
+
+/* === 화면 전환 === */
+.screen{display:none;animation:screenIn .45s cubic-bezier(.2,.8,.2,1) both}
+.screen.active{display:block}
+@keyframes screenIn{
+  from{opacity:0;transform:translateY(20px) scale(.98)}
+  to{opacity:1;transform:none}
+}
+
+/* ===== 메인 월드맵 ===== */
+.world{padding:22px 14px 120px;max-width:980px;margin:0 auto}
+.hero{
+  position:relative;
+  margin:8px 0 28px;
+  padding:28px 24px 24px;
+  border-radius:var(--r-xl);
+  background:
+    radial-gradient(600px 200px at 20% 0%,rgba(255,213,74,.25),transparent 60%),
+    radial-gradient(500px 200px at 100% 100%,rgba(52,216,255,.25),transparent 60%),
+    linear-gradient(135deg,rgba(255,78,205,.18),rgba(124,91,255,.18));
+  border:1px solid rgba(255,255,255,.14);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:-2px;border-radius:inherit;padding:2px;
+  background:var(--grad-hero);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:.7;pointer-events:none;
+}
+.hero h1{font-family:var(--f-display);font-size:clamp(28px,7vw,46px);letter-spacing:.02em;line-height:1.05}
+.hero h1 .acc{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(255,213,74,.5)}
+.hero p{margin-top:8px;color:var(--ink-mute);font-family:var(--f-fun);font-size:15px}
+.hero-cta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+
+.btn-primary{
+  padding:14px 22px;border-radius:14px;font-family:var(--f-display);font-size:18px;letter-spacing:.04em;
+  background:var(--grad-hero);color:#fff;
+  box-shadow:var(--shadow-glow);
+  position:relative;overflow:hidden;
+  transition:transform .15s ease;
+}
+.btn-primary:hover{transform:translateY(-2px) scale(1.02)}
+.btn-primary:active{transform:scale(.98)}
+.btn-primary::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);
+  transform:translateX(-100%);
+  animation:shine 3s ease-in-out infinite;
+}
+@keyframes shine{0%{transform:translateX(-100%)}60%{transform:translateX(120%)}100%{transform:translateX(120%)}}
+
+.btn-ghost{
+  padding:12px 18px;border-radius:14px;font-family:var(--f-fun);font-size:15px;
+  background:rgba(255,255,255,.08);border:1px solid var(--line);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.16)}
+
+/* 캐릭터 */
+.mascot{
+  position:absolute;right:20px;bottom:-6px;
+  width:120px;height:120px;
+  filter:drop-shadow(0 12px 24px rgba(0,0,0,.4));
+  animation:mascotIdle 3.5s ease-in-out infinite;
+}
+@keyframes mascotIdle{
+  0%,100%{transform:translateY(0) rotate(-3deg)}
+  50%{transform:translateY(-6px) rotate(3deg)}
+}
+@media (max-width:560px){.mascot{width:90px;height:90px;right:8px}}
+
+/* 진도 큰 띠 */
+.world-progress{
+  display:flex;align-items:center;gap:14px;
+  margin:10px 4px 22px;padding:14px 16px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);
+  border-radius:var(--r-lg);
+}
+.world-progress .pbar{flex:1;height:12px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;position:relative}
+.world-progress .pbar i{position:absolute;inset:0;width:0;background:var(--grad-good);border-radius:99px;transition:width 1s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(54,255,154,.6)}
+.world-progress .ptxt{font-family:var(--f-display);font-size:18px;color:var(--p4)}
+
+/* 스테이지 그리드 */
+.stages{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:14px;
+}
+.stage{
+  position:relative;
+  aspect-ratio:1/1.05;
+  border-radius:var(--r-lg);
+  padding:14px;
+  background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:space-between;
+  text-align:left;
+  transition:transform .2s ease,box-shadow .2s ease;
+  overflow:hidden;
+}
+.stage::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;
+  background:var(--g,linear-gradient(135deg,#7c5bff,#ff4ecd));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:.55;pointer-events:none;
+}
+.stage:hover{transform:translateY(-4px) scale(1.02)}
+.stage:hover::before{opacity:1}
+.stage .num{font-family:var(--f-display);font-size:14px;color:var(--ink-mute);letter-spacing:.05em}
+.stage .emoji{font-size:38px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.stage .title{font-family:var(--f-fun);font-size:16px;line-height:1.25;margin-top:6px}
+.stage .stars{display:flex;gap:2px;margin-top:6px;position:static;height:auto}
+.stage .stars span{
+  position:static;width:14px;height:14px;background:transparent;box-shadow:none;animation:none;opacity:1;
+  -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.2l7.1-.7z"/></svg>') center/contain no-repeat;
+          mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.2l7.1-.7z"/></svg>') center/contain no-repeat;
+  background:rgba(255,255,255,.18);
+}
+.stage .stars span.on{background:linear-gradient(135deg,#ffd54a,#ff7e3a);box-shadow:0 0 8px rgba(255,213,74,.7)}
+
+.stage.locked{filter:grayscale(.7) brightness(.7);cursor:not-allowed}
+.stage.locked:hover{transform:none}
+.stage.locked .lock{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:rgba(0,0,0,.35);border-radius:inherit;font-size:34px;
+}
+.stage.cleared::after{
+  content:"✔";position:absolute;top:8px;right:10px;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--grad-good);color:#031;display:grid;place-items:center;font-weight:900;font-size:14px;
+  box-shadow:0 4px 12px rgba(54,255,154,.5);
+}
+
+/* 단원 컬러 매핑 */
+.s-1 {--g:linear-gradient(135deg,#ff4ecd,#7c5bff)}
+.s-2 {--g:linear-gradient(135deg,#34d8ff,#7c5bff)}
+.s-3 {--g:linear-gradient(135deg,#ffd54a,#ff6b6b)}
+.s-4 {--g:linear-gradient(135deg,#36ff9a,#34d8ff)}
+.s-5 {--g:linear-gradient(135deg,#ff7e3a,#ffd54a)}
+.s-6 {--g:linear-gradient(135deg,#ff4ecd,#ffd54a)}
+.s-7 {--g:linear-gradient(135deg,#7c5bff,#34d8ff)}
+.s-8 {--g:linear-gradient(135deg,#36ff9a,#ffd54a)}
+.s-9 {--g:linear-gradient(135deg,#ff6b6b,#7c5bff)}
+.s-10{--g:linear-gradient(135deg,#34d8ff,#36ff9a)}
+.s-11{--g:linear-gradient(135deg,#ffd54a,#7c5bff)}
+.s-12{--g:linear-gradient(135deg,#ff4ecd,#36ff9a)}
+
+.section-title{
+  font-family:var(--f-display);font-size:22px;letter-spacing:.02em;
+  margin:24px 6px 12px;display:flex;align-items:center;gap:10px;
+}
+.section-title .dot{width:10px;height:10px;border-radius:50%;background:var(--grad-hero);box-shadow:0 0 12px rgba(255,78,205,.7)}
+
+/* 배지 그리드 */
+.badges{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;
+  margin-top:8px;
+}
+.badge{
+  padding:14px 10px;border-radius:18px;
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line);text-align:center;
+  position:relative;overflow:hidden;
+  transition:transform .2s;
+}
+.badge.earned{
+  background:linear-gradient(160deg,rgba(255,213,74,.18),rgba(255,78,205,.18));
+  border-color:rgba(255,213,74,.4);
+  box-shadow:0 0 20px rgba(255,213,74,.2);
+}
+.badge.earned:hover{transform:translateY(-3px) rotate(-2deg)}
+.badge .ic{font-size:34px;display:block;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+.badge.locked .ic{filter:grayscale(1) brightness(.5)}
+.badge .nm{font-family:var(--f-fun);font-size:13px;margin-top:4px;line-height:1.3}
+.badge .ds{font-size:11px;color:var(--ink-mute);margin-top:2px}
+
+/* ===== 학습 화면 ===== */
+.lesson{padding:14px;max-width:760px;margin:0 auto;min-height:calc(100vh - 60px)}
+.lesson-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.btn-back{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.08);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:18px;
+}
+.lesson-title{font-family:var(--f-display);font-size:20px;letter-spacing:.02em}
+.lesson-sub{font-family:var(--f-fun);font-size:13px;color:var(--ink-mute)}
+
+.slide-track{position:relative;min-height:60vh}
+.slide{
+  display:none;
+  padding:22px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  animation:slideIn .4s cubic-bezier(.2,.8,.2,1) both;
+  box-shadow:var(--shadow-soft);
+}
+.slide.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+
+.slide h2{font-family:var(--f-display);font-size:clamp(22px,5.5vw,30px);line-height:1.15;margin-bottom:6px}
+.slide h2 .acc{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slide .subt{color:var(--ink-mute);font-family:var(--f-fun);font-size:14px;margin-bottom:14px}
+.slide .body{font-size:16px}
+.slide .body p{margin:8px 0}
+.slide .key{
+  margin:14px 0;padding:14px 16px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,213,74,.16),rgba(255,126,58,.12));
+  border:1px solid rgba(255,213,74,.3);
+}
+.slide .key b{color:var(--p4)}
+.slide .ex{
+  margin:10px 0;padding:12px 14px;border-radius:12px;
+  background:rgba(52,216,255,.08);border:1px dashed rgba(52,216,255,.4);
+  font-family:var(--f-en);font-size:16px;
+}
+.slide .ex .ko{display:block;font-family:var(--f-body);color:var(--ink-mute);font-size:13px;margin-top:4px}
+.slide .table{
+  margin:12px 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  background:rgba(0,0,0,.18);
+}
+.slide .table .row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.slide .table .row > div{background:rgba(255,255,255,.03);padding:10px 12px;font-size:14px}
+.slide .table .head{font-family:var(--f-fun);color:var(--p4);background:rgba(255,213,74,.08)!important}
+
+.dot-nav{
+  display:flex;justify-content:center;gap:8px;margin:14px 0;
+}
+.dot-nav span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:.2s}
+.dot-nav span.on{background:var(--p1);width:24px;border-radius:99px;box-shadow:0 0 10px rgba(255,78,205,.6)}
+
+.slide-controls{display:flex;gap:10px;justify-content:space-between;margin-top:8px}
+.slide-controls .btn-ghost,.slide-controls .btn-primary{flex:1}
+
+/* ===== 퀴즈 화면 ===== */
+.quiz{padding:14px;max-width:760px;margin:0 auto}
+.quiz-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.quiz-head .qbar{
+  flex:1;margin:0 14px;height:10px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;position:relative;
+}
+.quiz-head .qbar i{position:absolute;inset:0;width:0;background:var(--grad-good);border-radius:99px;transition:width .5s ease;box-shadow:0 0 12px rgba(54,255,154,.6)}
+.quiz-head .qcount{font-family:var(--f-display);font-size:16px;color:var(--p3)}
+
+.combo{
+  position:fixed;top:70px;right:14px;z-index:40;
+  font-family:var(--f-display);font-size:18px;
+  padding:8px 14px;border-radius:99px;
+  background:linear-gradient(135deg,rgba(255,78,205,.7),rgba(255,107,107,.7));
+  box-shadow:0 8px 24px rgba(255,78,205,.5);
+  display:none;align-items:center;gap:8px;
+  animation:comboPop .35s cubic-bezier(.2,.8,.2,1) both;
+}
+.combo.show{display:flex}
+@keyframes comboPop{
+  0%{transform:scale(.5) rotate(-15deg);opacity:0}
+  60%{transform:scale(1.15) rotate(5deg)}
+  100%{transform:scale(1) rotate(0);opacity:1}
+}
+
+.qcard{
+  padding:24px;border-radius:var(--r-xl);
+  background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-soft);
+  position:relative;
+  animation:slideIn .35s cubic-bezier(.2,.8,.2,1) both;
+}
+.qcard.shake{animation:shake .5s}
+@keyframes shake{
+  10%,90%{transform:translateX(-3px) rotate(-.6deg)}
+  20%,80%{transform:translateX(5px) rotate(.6deg)}
+  30%,50%,70%{transform:translateX(-7px) rotate(-1deg)}
+  40%,60%{transform:translateX(7px) rotate(1deg)}
+}
+.qcard .qtype{
+  display:inline-block;font-family:var(--f-fun);font-size:12px;
+  padding:4px 10px;border-radius:99px;background:rgba(124,91,255,.25);border:1px solid rgba(124,91,255,.5);
+  color:#dcd4ff;margin-bottom:10px;
+}
+.qcard .qprompt{font-family:var(--f-fun);font-size:18px;line-height:1.5;margin-bottom:6px}
+.qcard .qsentence{
+  font-family:var(--f-en);font-size:22px;line-height:1.5;
+  background:rgba(0,0,0,.25);padding:14px 16px;border-radius:14px;border:1px dashed rgba(255,255,255,.2);
+  margin:10px 0 14px;text-align:center;
+}
+.qcard .blank{
+  display:inline-block;min-width:80px;padding:0 8px;border-bottom:3px solid var(--p1);
+  text-align:center;color:var(--p1);
+}
+.qcard .qopts{display:grid;gap:10px;grid-template-columns:1fr;margin-top:10px}
+@media (min-width:520px){.qcard .qopts{grid-template-columns:1fr 1fr}}
+.qopt{
+  padding:14px 16px;border-radius:14px;text-align:left;
+  background:rgba(255,255,255,.06);border:1.5px solid var(--line);
+  font-family:var(--f-en);font-size:17px;line-height:1.4;
+  display:flex;align-items:center;gap:10px;
+  transition:all .15s;
+}
+.qopt:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+.qopt .key{
+  width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  background:rgba(124,91,255,.4);font-family:var(--f-display);font-size:14px;flex-shrink:0;
+}
+.qopt.correct{background:linear-gradient(135deg,rgba(54,255,154,.3),rgba(6,182,212,.3));border-color:var(--good);box-shadow:0 0 24px rgba(54,255,154,.4)}
+.qopt.correct .key{background:var(--good);color:#003}
+.qopt.wrong{background:linear-gradient(135deg,rgba(255,93,143,.3),rgba(255,78,205,.2));border-color:var(--bad);box-shadow:0 0 24px rgba(255,93,143,.4)}
+.qopt.wrong .key{background:var(--bad);color:#300}
+.qopt.disabled{pointer-events:none;opacity:.55}
+
+.qfb{
+  margin-top:14px;padding:14px 16px;border-radius:14px;
+  display:none;animation:slideIn .3s ease;
+}
+.qfb.show{display:block}
+.qfb.ok{background:linear-gradient(135deg,rgba(54,255,154,.18),rgba(6,182,212,.12));border:1px solid rgba(54,255,154,.4)}
+.qfb.no{background:linear-gradient(135deg,rgba(255,93,143,.18),rgba(255,78,205,.12));border:1px solid rgba(255,93,143,.4)}
+.qfb .h{font-family:var(--f-display);font-size:18px;display:flex;align-items:center;gap:8px}
+.qfb .ans{font-family:var(--f-en);margin-top:6px;color:var(--p4);font-size:16px}
+.qfb .why{margin-top:4px;font-size:14px;color:var(--ink-mute);line-height:1.55}
+
+.q-actions{display:flex;gap:10px;margin-top:14px}
+.q-actions .btn-primary,.q-actions .btn-ghost{flex:1}
+
+/* ===== 결과 화면 ===== */
+.result{padding:24px 14px 80px;max-width:560px;margin:0 auto;text-align:center}
+.result .big{
+  font-family:var(--f-display);font-size:clamp(36px,9vw,56px);line-height:1;
+  background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 40px rgba(255,213,74,.4);
+  animation:bigPop .6s cubic-bezier(.2,1.5,.2,1) both;
+}
+@keyframes bigPop{
+  0%{transform:scale(.4) rotate(-20deg);opacity:0}
+  60%{transform:scale(1.1) rotate(4deg)}
+  100%{transform:scale(1);opacity:1}
+}
+.result .stars-big{display:flex;justify-content:center;gap:10px;margin:14px 0}
+.result .stars-big span{
+  width:54px;height:54px;
+  -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.2l7.1-.7z"/></svg>') center/contain no-repeat;
+          mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.4 4.8 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.2l7.1-.7z"/></svg>') center/contain no-repeat;
+  background:rgba(255,255,255,.18);
+  transform:scale(0);
+}
+.result .stars-big span.on{
+  background:linear-gradient(135deg,#ffd54a,#ff7e3a);
+  filter:drop-shadow(0 6px 14px rgba(255,213,74,.7));
+  animation:starPop .6s cubic-bezier(.2,1.6,.3,1) both;
+}
+.result .stars-big span.on:nth-child(1){animation-delay:.2s}
+.result .stars-big span.on:nth-child(2){animation-delay:.5s}
+.result .stars-big span.on:nth-child(3){animation-delay:.8s}
+@keyframes starPop{0%{transform:scale(0) rotate(-180deg)}60%{transform:scale(1.3) rotate(20deg)}100%{transform:scale(1) rotate(0)}}
+
+.result .summary{
+  margin:18px 0;padding:18px;border-radius:var(--r-lg);
+  background:rgba(255,255,255,.06);border:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.result .summary .item{padding:8px}
+.result .summary .lbl{font-size:12px;color:var(--ink-mute);font-family:var(--f-fun)}
+.result .summary .val{font-family:var(--f-display);font-size:24px;margin-top:2px}
+.result .summary .val.good{color:var(--good)}
+.result .summary .val.gold{color:var(--p4)}
+
+.result .new-badge{
+  margin:14px auto;padding:14px 18px;border-radius:18px;display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,rgba(255,213,74,.25),rgba(255,78,205,.25));
+  border:1px solid rgba(255,213,74,.5);
+  animation:badgeWobble 1.2s ease-in-out infinite;
+}
+@keyframes badgeWobble{0%,100%{transform:rotate(-2deg) scale(1)}50%{transform:rotate(2deg) scale(1.04)}}
+.result .new-badge .ic{font-size:34px}
+.result .new-badge .nm{font-family:var(--f-display);font-size:16px}
+.result .new-badge .ds{font-size:12px;color:var(--ink-mute);margin-top:2px}
+
+.result-actions{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.result-actions .btn-primary,.result-actions .btn-ghost{padding:14px 20px}
+
+/* ===== 떠오르는 +XP, 콤보 ===== */
+.float-text{
+  position:fixed;z-index:100;pointer-events:none;
+  font-family:var(--f-display);font-size:28px;
+  text-shadow:0 4px 12px rgba(0,0,0,.5);
+  animation:floatUp 1.3s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes floatUp{
+  0%{transform:translate(-50%,0) scale(.6);opacity:0}
+  20%{transform:translate(-50%,-30px) scale(1.2);opacity:1}
+  100%{transform:translate(-50%,-100px) scale(1);opacity:0}
+}
+.float-text.gold{color:var(--p4)}
+.float-text.green{color:var(--good)}
+.float-text.pink{color:var(--p1)}
+
+/* 풀스크린 깜빡 */
+.flash{
+  position:fixed;inset:0;z-index:90;pointer-events:none;
+  opacity:0;transition:opacity .15s;
+}
+.flash.ok{background:radial-gradient(circle,rgba(54,255,154,.4),transparent 70%);animation:flashAni .6s ease-out}
+.flash.no{background:radial-gradient(circle,rgba(255,93,143,.4),transparent 70%);animation:flashAni .6s ease-out}
+@keyframes flashAni{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+
+/* canvas 폭죽 */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:80}
+
+/* 시작 버튼 강조 펄스 */
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,78,205,.6),0 12px 40px rgba(124,91,255,.45)}
+  50%{box-shadow:0 0 0 18px rgba(255,78,205,0),0 12px 40px rgba(124,91,255,.45)}
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:rgba(0,0,0,.2)}
+::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#7c5bff,#ff4ecd);border-radius:99px}
+
+/* 스플래시(처음 시작) */
+.splash{
+  position:fixed;inset:0;z-index:200;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 40%,#1a1148 0%,#070716 70%);
+  transition:opacity .8s ease, visibility .8s;
+}
+.splash.hide{opacity:0;visibility:hidden}
+.splash .logo-big{
+  font-family:var(--f-display);font-size:clamp(40px,11vw,72px);
+  background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:logoIn 1s cubic-bezier(.2,.8,.2,1) both;
+  letter-spacing:.04em;text-align:center;
+}
+@keyframes logoIn{from{transform:scale(.6);opacity:0;letter-spacing:.2em}to{transform:scale(1);opacity:1;letter-spacing:.04em}}
+
+/* 토스트 */
+.toast{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+  padding:12px 20px;border-radius:99px;background:rgba(20,16,40,.92);border:1px solid var(--line);
+  font-family:var(--f-fun);font-size:14px;z-index:150;
+  opacity:0;transition:opacity .3s,transform .3s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+
+/* 반응형 */
+@media (max-width:560px){
+  .hud{padding:8px 10px}
+  .hud-brand{font-size:16px}
+  .hud-brand .logo{width:30px;height:30px;font-size:16px}
+  .chip{padding:5px 10px;font-size:12px}
+  .stages{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+  .stage{padding:12px;aspect-ratio:1/1.1}
+  .stage .emoji{font-size:30px}
+  .qcard{padding:18px}
+  .qcard .qsentence{font-size:18px}
+  .qopt{padding:12px 14px;font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="splash" id="splash">
+  <div class="logo-big">⚔️ 영문법<br>퀘스트 ⚔️</div>
+</div>
+
+<div class="stars" id="starsBg"></div>
+<canvas id="confetti"></canvas>
+<div class="flash" id="flash"></div>
+<div class="combo" id="combo"><span class="ic">🔥</span><span id="comboNum">2</span><span style="font-size:14px;font-family:var(--f-fun)">콤보!</span></div>
+
+<div class="app">
+  <header class="hud">
+    <div class="hud-brand">
+      <div class="logo">⚔️</div>
+      <div>
+        <div>영문법퀘스트</div>
+        <div style="font-size:11px;color:var(--ink-mute);font-family:var(--f-fun);font-weight:400">중학영문법 RPG</div>
+      </div>
+    </div>
+    <div class="hud-stats">
+      <div class="chip lvl"><span class="ic">🎖️</span> Lv.<span id="lvl">1</span></div>
+      <div class="chip xp"><span class="ic">⭐</span><div class="bar"><i id="xpBar"></i></div><span id="xpTxt" style="font-size:11px;color:var(--ink-mute)">0</span></div>
+      <div class="chip gold"><span class="ic">🪙</span><span id="gold">0</span></div>
+      <div class="chip streak"><span class="ic">🔥</span><span id="streak">0</span></div>
+      <button class="btn-mute" id="btnMute" title="음소거">🔊</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ 메인 월드맵 ============ -->
+    <section class="screen active" id="screenWorld">
+      <div class="world">
+        <div class="hero">
+          <h1>안녕, <span class="acc">모험가</span>!<br>오늘도 <span class="acc">영문법 퀘스트</span> 시작하자!</h1>
+          <p>12개의 단원을 깨면서 별을 모으고, 콤보를 터뜨리고, 영문법 마스터가 되어보자 🔥</p>
+          <div class="hero-cta">
+            <button class="btn-primary pulse" id="btnContinue">▶ 계속하기</button>
+            <button class="btn-ghost" id="btnReset">🔄 처음부터</button>
+          </div>
+          <svg class="mascot" viewBox="0 0 200 200">
+            <defs>
+              <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#ffd54a"/>
+                <stop offset="100%" stop-color="#ff7e3a"/>
+              </radialGradient>
+            </defs>
+            <circle cx="100" cy="100" r="78" fill="url(#bg)" stroke="#fff" stroke-width="4"/>
+            <circle cx="74" cy="92" r="10" fill="#1a1148"/>
+            <circle cx="126" cy="92" r="10" fill="#1a1148"/>
+            <circle cx="78" cy="88" r="3" fill="#fff"/>
+            <circle cx="130" cy="88" r="3" fill="#fff"/>
+            <path d="M70 130 Q100 158 130 130" stroke="#1a1148" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <circle cx="55" cy="118" r="8" fill="#ff4ecd" opacity=".55"/>
+            <circle cx="145" cy="118" r="8" fill="#ff4ecd" opacity=".55"/>
+            <path d="M30 60 L60 30 L70 50 Z" fill="#7c5bff"/>
+            <path d="M170 60 L140 30 L130 50 Z" fill="#7c5bff"/>
+          </svg>
+        </div>
+
+        <div class="world-progress">
+          <div>
+            <div style="font-family:var(--f-display);font-size:18px">🌟 모험 진도</div>
+            <div style="font-size:12px;color:var(--ink-mute);font-family:var(--f-fun)">단원을 모두 깨면 영문법 마스터!</div>
+          </div>
+          <div class="pbar"><i id="worldBar"></i></div>
+          <div class="ptxt"><span id="worldDone">0</span>/12</div>
+        </div>
+
+        <h2 class="section-title"><span class="dot"></span> 스테이지 선택</h2>
+        <div class="stages" id="stagesGrid"></div>
+
+        <h2 class="section-title"><span class="dot"></span> 배지 컬렉션</h2>
+        <div class="badges" id="badgesGrid"></div>
+
+        <div style="margin-top:32px;text-align:center;color:var(--ink-mute);font-size:12px;font-family:var(--f-fun)">
+          🎯 한 번 더 풀고 싶다면 다시 도전 가능해요. 별을 더 받을 수 있어!
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 학습 슬라이드 ============ -->
+    <section class="screen" id="screenLesson">
+      <div class="lesson">
+        <div class="lesson-head">
+          <button class="btn-back" id="btnBackLesson">←</button>
+          <div>
+            <div class="lesson-title" id="lessonTitle">단원</div>
+            <div class="lesson-sub">개념을 보고 → 퀴즈로 마스터!</div>
+          </div>
+        </div>
+        <div class="dot-nav" id="dotNav"></div>
+        <div class="slide-track" id="slideTrack"></div>
+        <div class="slide-controls">
+          <button class="btn-ghost" id="btnPrev">◀ 이전</button>
+          <button class="btn-primary" id="btnNext">다음 ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 퀴즈 ============ -->
+    <section class="screen" id="screenQuiz">
+      <div class="quiz">
+        <div class="quiz-head">
+          <button class="btn-back" id="btnBackQuiz">←</button>
+          <div class="qbar"><i id="qBar"></i></div>
+          <div class="qcount"><span id="qNum">1</span>/<span id="qTotal">5</span></div>
+        </div>
+        <div id="qHolder"></div>
+      </div>
+    </section>
+
+    <!-- ============ 결과 ============ -->
+    <section class="screen" id="screenResult">
+      <div class="result">
+        <div class="big" id="resTitle">완벽해!</div>
+        <div class="stars-big" id="resStars">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="summary">
+          <div class="item"><div class="lbl">정답</div><div class="val good"><span id="resCorrect">0</span>/<span id="resTotal">5</span></div></div>
+          <div class="item"><div class="lbl">획득 XP</div><div class="val">+<span id="resXp">0</span></div></div>
+          <div class="item"><div class="lbl">획득 골드</div><div class="val gold">+<span id="resGold">0</span></div></div>
+        </div>
+        <div id="resBadge"></div>
+        <div class="result-actions">
+          <button class="btn-primary" id="btnNextStage">다음 스테이지 ▶</button>
+          <button class="btn-ghost" id="btnRetry">🔁 한번 더</button>
+          <button class="btn-ghost" id="btnHome">🏠 월드맵으로</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ============================================================
+   영문법 퀘스트 — 데이터 + 엔진
+   ============================================================ */
+
+/* ---------- 데이터: 12 단원 ---------- */
+const CHAPTERS = [
+{
+  id:1,emoji:"🦄",color:"#ff4ecd",title:"be동사 (am / are / is)",
+  slides:[
+    {h:'be동사가 뭐야?',
+     body:`<p>be동사는 "<b>~이다 / ~있다</b>"라는 뜻이야. 주어가 누구냐에 따라 모양이 바뀌어!</p>
+     <div class="key">🔑 <b>I → am</b>, <b>You/We/They → are</b>, <b>He/She/It → is</b></div>
+     <div class="ex">I <b>am</b> a student.<span class="ko">나는 학생이다.</span></div>
+     <div class="ex">She <b>is</b> kind.<span class="ko">그녀는 친절하다.</span></div>`},
+    {h:'주어별 짝꿍 정리',
+     body:`<p>아래 표만 외우면 끝!</p>
+     <div class="table">
+       <div class="row head"><div>주어</div><div>be동사</div></div>
+       <div class="row"><div>I</div><div>am</div></div>
+       <div class="row"><div>You / We / They</div><div>are</div></div>
+       <div class="row"><div>He / She / It</div><div>is</div></div>
+     </div>
+     <div class="ex">We <b>are</b> friends.<span class="ko">우리는 친구다.</span></div>`},
+    {h:'줄임말 — 더 자연스럽게',
+     body:`<p>회화에선 줄여쓰는 게 훨씬 자연스러워.</p>
+     <div class="key">I am → <b>I'm</b> · You are → <b>You're</b> · He is → <b>He's</b> · We are → <b>We're</b></div>
+     <div class="ex">I'm twelve years old.<span class="ko">나는 12살이야.</span></div>`},
+    {h:'부정 / 의문',
+     body:`<p>부정문은 <b>be + not</b>, 의문문은 <b>be를 앞으로!</b></p>
+     <div class="ex">She <b>is not</b> (isn't) tired.<span class="ko">그녀는 피곤하지 않다.</span></div>
+     <div class="ex"><b>Are</b> you ready?<span class="ko">너 준비됐니?</span></div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸에 알맞은 be동사는?",s:'I ___ a soccer fan.',opts:["am","are","is","be"],a:0,why:'주어가 I면 항상 am! "I am ~"이 짝꿍이야.'},
+    {type:"choice",p:"빈칸에 알맞은 be동사는?",s:'They ___ very kind.',opts:["am","is","are","be"],a:2,why:'They(복수)면 are. We/You/They → are 잊지 말기!'},
+    {type:"choice",p:"빈칸에 알맞은 be동사는?",s:'My dog ___ cute.',opts:["am","is","are","be"],a:1,why:'My dog = It(단수, 3인칭). 그러니까 is.'},
+    {type:"choice",p:"올바른 줄임말을 고르세요.",s:"He is my friend. → ___ my friend.",opts:["He's","Hes","He're","He'is"],a:0,why:"He is의 줄임은 He's (apostrophe 위치 주의)."},
+    {type:"choice",p:"부정문으로 알맞은 것은?",s:"She is happy. → She ___ happy.",opts:["am not","is not","are not","not is"],a:1,why:"is의 부정은 is not (또는 isn't). 주어에 맞춰서 not을 붙여."}
+  ]
+},
+{
+  id:2,emoji:"⚡",color:"#34d8ff",title:"일반동사 (현재형)",
+  slides:[
+    {h:'일반동사란?',
+     body:`<p>be동사 빼고 모~든 동작 동사. play, eat, like, go 같은 것들!</p>
+     <div class="key">🔑 주어가 <b>3인칭 단수(He/She/It)</b>일 때만 동사 끝에 <b>-s</b>를 붙여!</div>
+     <div class="ex">I <b>play</b> soccer.<span class="ko">나는 축구를 한다.</span></div>
+     <div class="ex">He <b>plays</b> soccer.<span class="ko">그는 축구를 한다.</span></div>`},
+    {h:'-s / -es / -ies 규칙',
+     body:`<div class="table">
+       <div class="row head"><div>끝나는 모양</div><div>붙이는 것</div></div>
+       <div class="row"><div>대부분</div><div>+ s (plays, runs)</div></div>
+       <div class="row"><div>-o, -s, -x, -ch, -sh</div><div>+ es (goes, washes)</div></div>
+       <div class="row"><div>자음 + y</div><div>y → ies (study → studies)</div></div>
+       <div class="row"><div>have</div><div><b>has</b> (예외!)</div></div>
+     </div>`},
+    {h:'부정 / 의문은 do, does!',
+     body:`<p>일반동사는 부정/의문에서 <b>do/does</b>를 빌려와. 동사는 원형 그대로.</p>
+     <div class="key">I/You/We/They → <b>do not (don't)</b> · He/She/It → <b>does not (doesn't)</b></div>
+     <div class="ex">She <b>doesn't like</b> coffee.<span class="ko">그녀는 커피를 좋아하지 않는다.</span></div>
+     <div class="ex"><b>Do</b> you play games?<span class="ko">너 게임 하니?</span></div>`},
+    {h:'한 줄 요약',
+     body:`<div class="key">🌟 <b>3인칭 단수 + 동사 + s</b> 만 기억하자! 그게 시험에 제일 많이 나와.</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸을 채우세요.",s:"He ___ basketball every day.",opts:["play","plays","playes","is play"],a:1,why:'He(3인칭 단수)에는 plays. -s 붙이는 거 잊지 말기!'},
+    {type:"choice",p:"빈칸을 채우세요.",s:"She ___ to school by bus.",opts:["go","gos","goes","going"],a:2,why:'go는 -o로 끝나서 -es를 붙여 → goes.'},
+    {type:"choice",p:"빈칸을 채우세요.",s:"My brother ___ a new bike.",opts:["have","haves","has","is have"],a:2,why:"have의 3인칭 단수는 has (예외)."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"She ___ ___ TV in the morning.",opts:["don't watch","doesn't watches","doesn't watch","isn't watch"],a:2,why:"3인칭 단수 부정은 doesn't + 동사원형. watch 그대로!"},
+    {type:"choice",p:"의문문으로 알맞은 것은?",s:"You like pizza. → ___ you like pizza?",opts:["Do","Does","Are","Is"],a:0,why:"You에는 Do. 일반동사 의문문은 Do/Does + 주어 + 동사원형."}
+  ]
+},
+{
+  id:3,emoji:"🍎",color:"#ffd54a",title:"명사와 관사 (a / an / the)",
+  slides:[
+    {h:'a / an — 처음 말할 때',
+     body:`<p>"하나"라는 의미야. <b>처음 등장</b>하거나 <b>아무거나 하나</b>를 말할 때 써.</p>
+     <div class="key">🔑 자음 소리 앞 → <b>a</b> · 모음 소리(a,e,i,o,u) 앞 → <b>an</b></div>
+     <div class="ex"><b>a</b> book / <b>a</b> dog / <b>a</b> university (소리는 "유"라 a!)</div>
+     <div class="ex"><b>an</b> apple / <b>an</b> hour ("아워" 모음 소리 → an!)</div>`},
+    {h:'the — 뭘 말하는지 둘 다 알 때',
+     body:`<p>이미 한 번 말했거나, 세상에 하나뿐이거나, 듣는 사람도 아는 거에는 <b>the</b>!</p>
+     <div class="ex">I have a cat. <b>The</b> cat is white.<span class="ko">아까 말한 그 고양이!</span></div>
+     <div class="ex"><b>The</b> sun is hot.<span class="ko">태양은 하나뿐!</span></div>`},
+    {h:'셀 수 있는 / 없는 명사',
+     body:`<p>셀 수 있으면 <b>a/an + 단수</b>, 또는 <b>-s 붙여서 복수</b>. 셀 수 없으면 그냥!</p>
+     <div class="key">🔑 셀 수 없는 명사: water, milk, money, time, music…</div>
+     <div class="ex">two <b>books</b> / three <b>apples</b></div>
+     <div class="ex">some <b>water</b> (a water X)</div>`},
+    {h:'복수 만드는 규칙',
+     body:`<div class="table">
+       <div class="row head"><div>형태</div><div>예</div></div>
+       <div class="row"><div>대부분 + s</div><div>book → books</div></div>
+       <div class="row"><div>-s, -x, -ch, -sh + es</div><div>bus → buses</div></div>
+       <div class="row"><div>자음 + y → ies</div><div>baby → babies</div></div>
+       <div class="row"><div>불규칙</div><div>man→men, child→children, foot→feet</div></div>
+     </div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"I want ___ apple.",opts:["a","an","the","x"],a:1,why:'apple은 모음 소리(a)로 시작 → an apple.'},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"He is ___ honest boy.",opts:["a","an","the","x"],a:1,why:'honest의 h는 묵음! 모음 소리 "어너스트"라 an.'},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"Look at ___ moon. It's beautiful.",opts:["a","an","the","x"],a:2,why:'달은 세상에 하나뿐! 그래서 the moon.'},
+    {type:"choice",p:"복수형이 잘못된 것은?",s:"보기에서 틀린 것을 고르세요.",opts:["babies","buses","childs","feet"],a:2,why:"child의 복수는 children! 불규칙이야."},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"I drink ___ every morning.",opts:["a milk","an milk","the milk","milk"],a:3,why:"milk는 셀 수 없는 명사라 a/an을 안 써. 그냥 milk."}
+  ]
+},
+{
+  id:4,emoji:"👥",color:"#36ff9a",title:"대명사 (인칭 / 지시 / 소유)",
+  slides:[
+    {h:'인칭대명사 한 방 정리',
+     body:`<div class="table">
+       <div class="row head"><div>주격 (~은/는)</div><div>목적격 (~을/를)</div></div>
+       <div class="row"><div>I (나)</div><div>me</div></div>
+       <div class="row"><div>You (너)</div><div>you</div></div>
+       <div class="row"><div>He (그)</div><div>him</div></div>
+       <div class="row"><div>She (그녀)</div><div>her</div></div>
+       <div class="row"><div>It (그것)</div><div>it</div></div>
+       <div class="row"><div>We (우리)</div><div>us</div></div>
+       <div class="row"><div>They (그들)</div><div>them</div></div>
+     </div>`},
+    {h:'소유격 / 소유대명사',
+     body:`<div class="table">
+       <div class="row head"><div>소유격 (~의)</div><div>소유대명사 (~의 것)</div></div>
+       <div class="row"><div>my</div><div>mine</div></div>
+       <div class="row"><div>your</div><div>yours</div></div>
+       <div class="row"><div>his</div><div>his</div></div>
+       <div class="row"><div>her</div><div>hers</div></div>
+       <div class="row"><div>our</div><div>ours</div></div>
+       <div class="row"><div>their</div><div>theirs</div></div>
+     </div>
+     <div class="ex">This is <b>my</b> book. = This book is <b>mine</b>.</div>`},
+    {h:'지시대명사 — 가까이/멀리, 하나/여러 개',
+     body:`<div class="table">
+       <div class="row head"><div>가까이 (이)</div><div>멀리 (저)</div></div>
+       <div class="row"><div>this (이것/이 사람)</div><div>that (저것/저 사람)</div></div>
+       <div class="row"><div>these (이것들)</div><div>those (저것들)</div></div>
+     </div>
+     <div class="ex"><b>This</b> is my brother.<span class="ko">이 사람은 내 동생이야.</span></div>
+     <div class="ex"><b>Those</b> are her shoes.<span class="ko">저것들은 그녀의 신발이야.</span></div>`},
+    {h:'헷갈리는 it / its / it\'s',
+     body:`<div class="key">⚠️ <b>its</b>(소유격, 그것의) ↔ <b>it's</b>(it is의 줄임) — 시험에 자주 나옴!</div>
+     <div class="ex"><b>It's</b> a cat. <b>Its</b> tail is long.<span class="ko">고양이야. 꼬리가 길어.</span></div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"I love ___. (그를)",opts:["he","his","him","himself"],a:2,why:"\"~를\"은 목적격. He의 목적격은 him."},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"This bag is ___. (내 것)",opts:["my","mine","me","I"],a:1,why:"\"~의 것\"은 소유대명사. my의 짝꿍은 mine."},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"___ are my new shoes. (이것들은)",opts:["This","That","These","Those"],a:2,why:"\"이것들\"(가까이+복수) → these. 복수동사 are와 짝!"},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"The dog wags ___ tail.",opts:["it","it's","its","his"],a:2,why:"\"그것의\"는 its (apostrophe 없음). it's = it is."},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"Mom called ___ this morning. (우리를)",opts:["we","our","us","ours"],a:2,why:"We의 목적격은 us. \"~을/를\"은 목적격!"}
+  ]
+},
+{
+  id:5,emoji:"🌈",color:"#ff7e3a",title:"형용사와 부사",
+  slides:[
+    {h:'형용사 — 명사를 꾸며요',
+     body:`<p>형용사는 <b>명사</b>를 꾸며줘. "어떤 명사인지" 알려줘.</p>
+     <div class="ex">a <b>red</b> car / a <b>tall</b> boy / a <b>happy</b> day</div>
+     <div class="key">🔑 위치: <b>형용사 + 명사</b> 또는 <b>be동사 + 형용사</b></div>
+     <div class="ex">She is <b>kind</b>.<span class="ko">그녀는 친절하다.</span></div>`},
+    {h:'부사 — 동사·형용사·문장을 꾸며요',
+     body:`<p>부사는 "<b>어떻게</b>", "<b>얼마나</b>" 같은 정보를 줘.</p>
+     <div class="key">🔑 대부분 <b>형용사 + ly</b> = 부사 (slow → slowly, quick → quickly)</div>
+     <div class="ex">He runs <b>fast</b>.<span class="ko">그는 빨리 달린다.</span></div>
+     <div class="ex">She sings <b>beautifully</b>.<span class="ko">그녀는 아름답게 노래한다.</span></div>`},
+    {h:'-ly 만드는 규칙 + 예외',
+     body:`<div class="table">
+       <div class="row head"><div>형태</div><div>예</div></div>
+       <div class="row"><div>+ ly</div><div>quick → quickly</div></div>
+       <div class="row"><div>자음+y → ily</div><div>happy → happily</div></div>
+       <div class="row"><div>형태가 같음</div><div>fast/fast, hard/hard, late/late</div></div>
+       <div class="row"><div>완전 다름</div><div>good → well (좋은 → 잘)</div></div>
+     </div>`},
+    {h:'빈도부사 — 위치 주의!',
+     body:`<p>always(항상) > usually(보통) > often(자주) > sometimes(가끔) > never(절대 안)</p>
+     <div class="key">🔑 위치: <b>be동사/조동사 뒤</b>, <b>일반동사 앞</b></div>
+     <div class="ex">She <b>is always</b> kind. (be 뒤)</div>
+     <div class="ex">I <b>often play</b> games. (일반동사 앞)</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"부사로 바꾼 것이 옳은 것은?",s:"slow → ?",opts:["slowly","slowely","slowy","slowily"],a:0,why:"slow + ly = slowly."},
+    {type:"choice",p:"부사로 바꾼 것이 옳은 것은?",s:"happy → ?",opts:["happyly","happly","happily","happiely"],a:2,why:"자음+y로 끝나면 y → i + ly. happy → happily."},
+    {type:"choice",p:"빈칸에 알맞은 것은?",s:"He is a ___ boy. (잘생긴)",opts:["handsome","handsomely","handsomes","handsoming"],a:0,why:"명사 boy를 꾸미니까 형용사 자리. handsome 그대로!"},
+    {type:"choice",p:"빈도부사 위치가 옳은 것은?",s:"보기 중 옳은 문장은?",opts:["I always am late.","I am always late.","Always I am late.","I am late always."],a:1,why:"빈도부사는 be동사 뒤! am always 순서."},
+    {type:"choice",p:"good의 부사형은?",s:"good → ?",opts:["goodly","goodly","well","gooder"],a:2,why:"good의 부사는 well (불규칙). \"잘\"이라는 뜻."}
+  ]
+},
+{
+  id:6,emoji:"🎬",color:"#ff4ecd",title:"현재진행형 (be + ~ing)",
+  slides:[
+    {h:'\"지금 ~하고 있는 중\"',
+     body:`<p>현재진행형은 <b>지금 이 순간</b> 일어나는 일을 말해.</p>
+     <div class="key">🔑 공식: <b>am/are/is + 동사ing</b></div>
+     <div class="ex">I <b>am studying</b> English.<span class="ko">나는 영어 공부 중이야.</span></div>
+     <div class="ex">They <b>are playing</b> outside.<span class="ko">그들은 밖에서 노는 중.</span></div>`},
+    {h:'-ing 만드는 규칙',
+     body:`<div class="table">
+       <div class="row head"><div>형태</div><div>예</div></div>
+       <div class="row"><div>대부분 + ing</div><div>play → playing, eat → eating</div></div>
+       <div class="row"><div>-e로 끝나면 e 빼고</div><div>make → making, write → writing</div></div>
+       <div class="row"><div>"단모음+단자음" 자음 두번</div><div>run → running, sit → sitting</div></div>
+       <div class="row"><div>-ie → ying</div><div>lie → lying, die → dying</div></div>
+     </div>`},
+    {h:'부정 / 의문',
+     body:`<p>be동사를 활용해! be + not, be를 앞으로!</p>
+     <div class="ex">She <b>isn't sleeping</b>.<span class="ko">그녀는 자고 있지 않아.</span></div>
+     <div class="ex"><b>Are</b> you eating now?<span class="ko">너 지금 먹는 중이야?</span></div>`},
+    {h:'단순현재 vs 현재진행',
+     body:`<div class="key">📌 단순현재: <b>늘/항상</b> 하는 일 — I play soccer (every day).<br>
+     📌 현재진행: <b>지금 이 순간</b> — I'm playing soccer (now).</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸을 채우세요.",s:"Look! She ___ (run) now.",opts:["runs","is runing","is running","running"],a:2,why:"단모음+단자음(run) → 자음 두 번 + ing → running. 그리고 be동사 is 필수!"},
+    {type:"choice",p:"-ing 형태가 옳은 것은?",s:"make → ?",opts:["makeing","making","makking","makes"],a:1,why:"e로 끝나면 e를 빼고 ing → making."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"They ___ TV at the moment.",opts:["watch","watches","are watching","is watching"],a:2,why:"They는 복수 → are. 그리고 \"지금\"이니까 진행형 → are watching."},
+    {type:"choice",p:"부정문으로 옳은 것은?",s:"He is studying. (부정)",opts:["He not is studying.","He is not studying.","He isn't study.","He doesn't studying."],a:1,why:"진행형 부정은 be + not + ~ing. is not studying."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"___ you ___ (do) your homework now?",opts:["Do / do","Are / doing","Is / doing","Do / doing"],a:1,why:"You + 진행형 의문 → Are you doing ~?"}
+  ]
+},
+{
+  id:7,emoji:"⏰",color:"#7c5bff",title:"과거시제 (was/were · -ed)",
+  slides:[
+    {h:'be동사의 과거 — was / were',
+     body:`<div class="table">
+       <div class="row head"><div>주어</div><div>be 과거</div></div>
+       <div class="row"><div>I / He / She / It</div><div>was</div></div>
+       <div class="row"><div>You / We / They</div><div>were</div></div>
+     </div>
+     <div class="ex">I <b>was</b> tired yesterday.<span class="ko">나는 어제 피곤했다.</span></div>
+     <div class="ex">They <b>were</b> at the park.<span class="ko">그들은 공원에 있었다.</span></div>`},
+    {h:'일반동사 과거 — 규칙형',
+     body:`<div class="table">
+       <div class="row head"><div>형태</div><div>예</div></div>
+       <div class="row"><div>대부분 + ed</div><div>play → played</div></div>
+       <div class="row"><div>-e → +d</div><div>like → liked</div></div>
+       <div class="row"><div>자음+y → ied</div><div>study → studied</div></div>
+       <div class="row"><div>단모음+단자음 자음두번</div><div>stop → stopped</div></div>
+     </div>`},
+    {h:'불규칙 동사 — 외울 수밖에 없어!',
+     body:`<div class="table">
+       <div class="row head"><div>현재</div><div>과거</div></div>
+       <div class="row"><div>go</div><div>went</div></div>
+       <div class="row"><div>eat</div><div>ate</div></div>
+       <div class="row"><div>have</div><div>had</div></div>
+       <div class="row"><div>see</div><div>saw</div></div>
+       <div class="row"><div>do</div><div>did</div></div>
+       <div class="row"><div>buy</div><div>bought</div></div>
+       <div class="row"><div>get</div><div>got</div></div>
+       <div class="row"><div>make</div><div>made</div></div>
+     </div>`},
+    {h:'부정 / 의문 — did를 빌려와!',
+     body:`<p>일반동사 과거의 부정/의문은 모두 <b>did</b>! 그리고 동사는 다시 원형으로!</p>
+     <div class="ex">I <b>didn't go</b> to school. (went 아님!)</div>
+     <div class="ex"><b>Did</b> you <b>see</b> the movie? (saw 아님!)</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸을 채우세요.",s:"She ___ at home last night.",opts:["is","was","were","be"],a:1,why:"She는 단수 → was. 어제일이니까 과거!"},
+    {type:"choice",p:"과거형이 옳은 것은?",s:"study → ?",opts:["studyed","studied","studyied","studed"],a:1,why:"자음+y → y를 i로 바꾸고 ed. studied."},
+    {type:"choice",p:"go의 과거형은?",s:"go → ?",opts:["goed","wented","went","gone"],a:2,why:"go는 불규칙! 과거는 went."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"I ___ ___ to the party. (가지 않았다)",opts:["didn't went","didn't go","wasn't go","don't go"],a:1,why:"과거 부정은 didn't + 동사원형. go 그대로!"},
+    {type:"choice",p:"빈칸을 채우세요.",s:"___ she ___ (eat) breakfast?",opts:["Did / ate","Did / eat","Was / eat","Does / eat"],a:1,why:"의문 → Did + 주어 + 동사원형. Did she eat?"}
+  ]
+},
+{
+  id:8,emoji:"🚀",color:"#36ff9a",title:"미래시제 (will / be going to)",
+  slides:[
+    {h:'will — 즉흥적 결정 / 단순 미래',
+     body:`<p>방금 결정했거나, 그냥 미래에 일어날 일.</p>
+     <div class="key">🔑 <b>will + 동사원형</b> (주어 무관, 모양 안 변함)</div>
+     <div class="ex">I <b>will help</b> you.<span class="ko">내가 도와줄게! (방금 결정)</span></div>
+     <div class="ex">It <b>will rain</b> tomorrow.<span class="ko">내일 비 올 거야.</span></div>`},
+    {h:'be going to — 이미 계획한 일',
+     body:`<p>미리 계획해둔 거나, 곧 일어날 게 보일 때!</p>
+     <div class="key">🔑 <b>am/are/is + going to + 동사원형</b></div>
+     <div class="ex">I <b>am going to</b> visit my grandma. (이미 계획됨)</div>
+     <div class="ex">Look! It's going to rain. (구름 보이니까!)</div>`},
+    {h:'줄임말과 부정',
+     body:`<div class="key">📌 will → <b>'ll</b> (I'll, You'll, He'll…)<br>📌 will not → <b>won't</b><br>📌 be going to 부정 → <b>be + not + going to</b></div>
+     <div class="ex">I <b>won't be</b> late again.</div>
+     <div class="ex">She <b>isn't going to</b> come.</div>`},
+    {h:'의문문',
+     body:`<p>will은 will을 앞으로! be going to는 be를 앞으로!</p>
+     <div class="ex"><b>Will</b> you come to my party?</div>
+     <div class="ex"><b>Are</b> you <b>going to</b> study tonight?</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸을 채우세요.",s:"I think it ___ ___ tomorrow.",opts:["will rains","will rain","wills rain","is rain"],a:1,why:"will + 동사원형. will rain (s 안 붙음)."},
+    {type:"choice",p:"will not의 줄임말은?",s:"will not → ?",opts:["willn't","won't","willnot","wonot"],a:1,why:"will not은 won't로 줄여. 자주 나오는 시험!"},
+    {type:"choice",p:"빈칸을 채우세요.",s:"Look at those clouds! It ___ rain.",opts:["will","is going to","goes to","are going"],a:1,why:"눈으로 보고 예측 → be going to. It is going to rain."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"We ___ ___ ___ visit Busan next week.",opts:["are go to","are going to","is going to","will going to"],a:1,why:"We → are going to. \"이미 계획\" 미래는 be going to."},
+    {type:"choice",p:"의문문으로 옳은 것은?",s:"You will help me. (의문)",opts:["Do you will help me?","Will you help me?","Are you will help me?","You will help me?"],a:1,why:"will 의문문은 Will을 맨 앞으로!"}
+  ]
+},
+{
+  id:9,emoji:"🛡️",color:"#ff6b6b",title:"조동사 (can / must / should / may)",
+  slides:[
+    {h:'조동사가 뭐야?',
+     body:`<p>동사를 도와주는 동사. <b>의미를 추가</b>해줘. 뒤에는 항상 <b>동사원형</b>!</p>
+     <div class="table">
+       <div class="row head"><div>조동사</div><div>의미</div></div>
+       <div class="row"><div>can</div><div>~할 수 있다 / ~해도 된다</div></div>
+       <div class="row"><div>must</div><div>~해야만 한다 / ~임에 틀림없다</div></div>
+       <div class="row"><div>should</div><div>~하는 게 좋겠다 (충고)</div></div>
+       <div class="row"><div>may / might</div><div>~일지도 / ~해도 된다</div></div>
+     </div>`},
+    {h:'규칙 — 단순해서 좋아!',
+     body:`<div class="key">🔑 ① 주어 따라 안 변함 (3인칭 단수에도 -s 안 붙임!)<br>② 뒤엔 무조건 동사원형<br>③ 부정: 조동사 + not<br>④ 의문: 조동사를 앞으로</div>
+     <div class="ex">She <b>can swim</b> very well. (cans X, swims X)</div>
+     <div class="ex">You <b>must not</b> (mustn't) be late.</div>`},
+    {h:'예문으로 익히기',
+     body:`<div class="ex"><b>Can</b> you help me?<span class="ko">도와줄 수 있어?</span></div>
+     <div class="ex">You <b>should</b> drink more water.<span class="ko">물 더 마시는 게 좋아.</span></div>
+     <div class="ex">It <b>may</b> snow tonight.<span class="ko">밤에 눈 올지도.</span></div>
+     <div class="ex">Students <b>must</b> wear uniforms.<span class="ko">학생들은 교복을 입어야 한다.</span></div>`},
+    {h:'must vs have to',
+     body:`<p>must와 have to 둘 다 "~해야 한다"지만 살짝 달라!</p>
+     <div class="key">📌 must — 강한 의무, 규칙<br>📌 have to — 일반적 필요<br>📌 don't have to — "할 필요 없다" (← must not과 의미 완전 다름!)</div>
+     <div class="ex">You <b>don't have to</b> come. (안 와도 돼)</div>
+     <div class="ex">You <b>must not</b> come. (오면 안 돼)</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸을 채우세요.",s:"He ___ play the piano. (피아노를 칠 수 있다)",opts:["cans","can","can to","is can"],a:1,why:"조동사는 주어 따라 안 변함! He에도 그냥 can."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"You ___ ___ tell anyone. (말하면 안 돼)",opts:["must to not","don't must","must not","not must"],a:2,why:"must의 부정은 must not (mustn't). \"하면 안 돼\" 의미."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"You look tired. You ___ rest. (쉬는 게 좋겠어)",opts:["must","may","should","can"],a:2,why:"\"~하는 게 좋겠다\"(충고)는 should!"},
+    {type:"choice",p:"의문문으로 옳은 것은?",s:"She can drive. (의문)",opts:["Does she can drive?","Can she drive?","Can she drives?","Is she can drive?"],a:1,why:"조동사 의문문은 Can을 맨 앞으로! 동사는 원형."},
+    {type:"choice",p:"의미가 다른 하나는?",s:"\"안 와도 돼\" 의미는?",opts:["You don't have to come.","You needn't come.","You mustn't come.","You don't need to come."],a:2,why:"mustn't는 \"오면 안 돼\"(강한 금지). 나머지는 \"안 와도 돼\"."}
+  ]
+},
+{
+  id:10,emoji:"🏆",color:"#34d8ff",title:"비교급과 최상급",
+  slides:[
+    {h:'기본 규칙 — er / est',
+     body:`<div class="table">
+       <div class="row head"><div>원급</div><div>비교급/최상급</div></div>
+       <div class="row"><div>tall (키 큰)</div><div>taller / tallest</div></div>
+       <div class="row"><div>nice</div><div>nicer / nicest (e만 추가)</div></div>
+       <div class="row"><div>big</div><div>bigger / biggest (자음 두 번)</div></div>
+       <div class="row"><div>happy</div><div>happier / happiest (y → i)</div></div>
+     </div>`},
+    {h:'긴 단어 — more / most',
+     body:`<p>3음절 이상 긴 단어는 <b>more / most</b>를 앞에 붙여!</p>
+     <div class="ex">beautiful → <b>more</b> beautiful → <b>most</b> beautiful</div>
+     <div class="ex">interesting → <b>more</b> interesting → <b>most</b> interesting</div>`},
+    {h:'불규칙 — 꼭 외워!',
+     body:`<div class="table">
+       <div class="row head"><div>원급</div><div>비교 / 최상</div></div>
+       <div class="row"><div>good / well</div><div>better / best</div></div>
+       <div class="row"><div>bad</div><div>worse / worst</div></div>
+       <div class="row"><div>many / much</div><div>more / most</div></div>
+       <div class="row"><div>little</div><div>less / least</div></div>
+     </div>`},
+    {h:'문장 만들기 공식',
+     body:`<div class="key">📌 비교: A is <b>비교급 + than</b> B<br>📌 최상: A is <b>the + 최상급 + (in/of ~)</b></div>
+     <div class="ex">Tom is <b>taller than</b> Sam.<span class="ko">톰이 샘보다 키가 크다.</span></div>
+     <div class="ex">Mt. Everest is <b>the highest</b> mountain in the world.</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"비교급이 옳은 것은?",s:"big → ?",opts:["biger","bigger","more big","biggest"],a:1,why:"단모음+단자음 → 자음 두 번 + er. bigger."},
+    {type:"choice",p:"비교급이 옳은 것은?",s:"beautiful → ?",opts:["beautifuler","more beautiful","beautifuller","much beautiful"],a:1,why:"긴 단어(3음절+)는 more를 붙여. more beautiful."},
+    {type:"choice",p:"good의 비교급/최상급은?",s:"good → ? / ?",opts:["gooder / goodest","more good / most good","better / best","worser / worst"],a:2,why:"good은 불규칙! better / best."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"Math is ___ ___ English. (더 어렵다)",opts:["more difficult than","difficulter than","more difficult then","most difficult than"],a:0,why:"긴 단어 비교급은 more + 형용사 + than."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"He is ___ ___ student in our class.",opts:["smarter","the smartest","smartest","more smart"],a:1,why:"최상급은 the + 형용사est. \"가장 ~한\" 의미."}
+  ]
+},
+{
+  id:11,emoji:"✨",color:"#ffd54a",title:"to부정사와 동명사",
+  slides:[
+    {h:'to부정사 = to + 동사원형',
+     body:`<p>"<b>~하는 것 / ~하기 위해</b>" 같은 의미를 만드는 마법!</p>
+     <div class="key">🎯 명사처럼: To learn English is fun.<br>🎯 형용사처럼: I have homework <b>to do</b>.<br>🎯 부사처럼: I went there <b>to see</b> her. (~하기 위해)</div>
+     <div class="ex">I want <b>to be</b> a doctor.<span class="ko">의사가 되고 싶어.</span></div>`},
+    {h:'동명사 = 동사 + ing (명사 역할)',
+     body:`<p>동사에 -ing를 붙여서 <b>"~하는 것"</b>이라는 명사로 만들어!</p>
+     <div class="ex"><b>Swimming</b> is fun.<span class="ko">수영하는 건 재밌다.</span></div>
+     <div class="ex">I enjoy <b>reading</b> books.<span class="ko">책 읽기를 즐긴다.</span></div>`},
+    {h:'to부정사만 / 동명사만 — 구분이 핵심!',
+     body:`<div class="table">
+       <div class="row head"><div>to부정사 (~할 것)</div><div>동명사 (~한 것/하는 것)</div></div>
+       <div class="row"><div>want, hope, plan, decide, promise</div><div>enjoy, finish, mind, give up, avoid</div></div>
+     </div>
+     <div class="ex">I want <b>to go</b>. (going X)</div>
+     <div class="ex">She enjoys <b>singing</b>. (to sing X)</div>`},
+    {h:'둘 다 가능 (의미 같음)',
+     body:`<p>like, love, hate, start, begin, continue → to부정사도 OK, 동명사도 OK!</p>
+     <div class="ex">I like <b>to swim</b> = I like <b>swimming</b>.</div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"빈칸을 채우세요.",s:"I want ___ a teacher.",opts:["being","be","to be","to being"],a:2,why:"want 뒤는 to부정사! to + 동사원형 → to be."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"She enjoys ___ to music.",opts:["to listen","listen","listening","listens"],a:2,why:"enjoy 뒤는 동명사! listening."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"I went to the store ___ milk. (~하러)",opts:["buy","to buy","buying","for buy"],a:1,why:"\"~하러\"(목적)는 to부정사! to buy."},
+    {type:"choice",p:"빈칸을 채우세요.",s:"___ healthy food is important.",opts:["Eat","To eat","Eats","Ate"],a:1,why:"문장 주어 자리. \"~하는 것\"은 to부정사 또는 동명사. 보기엔 To eat만 있음."},
+    {type:"choice",p:"동사 형태가 옳은 것은?",s:"I finished ___ the book.",opts:["to read","read","reading","reads"],a:2,why:"finish 뒤는 동명사! reading."}
+  ]
+},
+{
+  id:12,emoji:"❓",color:"#ff4ecd",title:"의문문과 부정문",
+  slides:[
+    {h:'Yes/No 의문문',
+     body:`<div class="key">🔑 be동사: <b>be + 주어 ~?</b><br>🔑 일반동사: <b>Do/Does/Did + 주어 + 동사원형 ~?</b><br>🔑 조동사: <b>조동사 + 주어 + 동사원형 ~?</b></div>
+     <div class="ex"><b>Is</b> she happy? — Yes, she is.</div>
+     <div class="ex"><b>Do</b> you like pizza? — No, I don't.</div>
+     <div class="ex"><b>Can</b> he swim? — Yes, he can.</div>`},
+    {h:'의문사 6총사',
+     body:`<div class="table">
+       <div class="row head"><div>의문사</div><div>의미</div></div>
+       <div class="row"><div>What</div><div>무엇</div></div>
+       <div class="row"><div>Who</div><div>누구</div></div>
+       <div class="row"><div>When</div><div>언제</div></div>
+       <div class="row"><div>Where</div><div>어디서</div></div>
+       <div class="row"><div>Why</div><div>왜</div></div>
+       <div class="row"><div>How</div><div>어떻게 / 얼마나</div></div>
+     </div>`},
+    {h:'의문사 의문문 어순',
+     body:`<div class="key">🔑 <b>의문사 + 일반의문문 어순</b><br>= 의문사 + (do/does/did/be/조동사) + 주어 + 동사 ~?</div>
+     <div class="ex"><b>What do</b> you want?</div>
+     <div class="ex"><b>Where is</b> my bag?</div>
+     <div class="ex"><b>How can</b> I get there?</div>`},
+    {h:'부정문 총정리',
+     body:`<div class="table">
+       <div class="row head"><div>종류</div><div>부정문 만들기</div></div>
+       <div class="row"><div>be동사</div><div>be + not (isn't, aren't, wasn't…)</div></div>
+       <div class="row"><div>일반동사</div><div>don't / doesn't / didn't + 동사원형</div></div>
+       <div class="row"><div>조동사</div><div>조동사 + not (can't, won't, mustn't…)</div></div>
+       <div class="row"><div>진행형</div><div>be + not + ~ing</div></div>
+     </div>`}
+  ],
+  quiz:[
+    {type:"choice",p:"의문문으로 옳은 것은?",s:"You are a student. (의문)",opts:["Do you are a student?","Are you a student?","Is you a student?","You are a student?"],a:1,why:"be동사 의문문은 be를 맨 앞으로! Are you ~?"},
+    {type:"choice",p:"빈칸을 채우세요.",s:"___ does she live? — In Seoul.",opts:["What","When","Where","Why"],a:2,why:"답이 \"in Seoul\"(장소). 장소는 Where!"},
+    {type:"choice",p:"빈칸을 채우세요.",s:"___ are you so happy? — I won the game!",opts:["What","Why","When","How"],a:1,why:"이유를 묻는 답. 이유 = Why!"},
+    {type:"choice",p:"의문문 어순이 옳은 것은?",s:"보기 중 옳은 것은?",opts:["What you want?","What do you want?","What want you?","Do what you want?"],a:1,why:"의문사 + do + 주어 + 동사원형. What do you want?"},
+    {type:"choice",p:"부정문으로 옳은 것은?",s:"He plays soccer. (부정)",opts:["He don't play soccer.","He doesn't plays soccer.","He doesn't play soccer.","He not plays soccer."],a:2,why:"3인칭 단수 부정 = doesn't + 동사원형. doesn't play."}
+  ]
+}
+];
+
+/* ---------- 배지 ---------- */
+const BADGES = [
+  {id:"first_step",ic:"👟",nm:"첫 걸음",ds:"첫 단원 클리어"},
+  {id:"perfect_5",ic:"💯",nm:"퍼펙트!",ds:"한 단원 5문제 모두 정답"},
+  {id:"combo_5",ic:"🔥",nm:"5콤보",ds:"5연속 정답"},
+  {id:"combo_10",ic:"🚀",nm:"10콤보",ds:"10연속 정답"},
+  {id:"half_way",ic:"🌗",nm:"하프웨이",ds:"6단원 클리어"},
+  {id:"all_clear",ic:"👑",nm:"영문법 마스터",ds:"12단원 모두 클리어"},
+  {id:"all_stars",ic:"🌟",nm:"별 채집가",ds:"별 30개 모으기"},
+  {id:"gold_rush",ic:"💰",nm:"골드 러시",ds:"골드 500 모으기"}
+];
+
+/* ---------- 상태 / 저장 ---------- */
+const STATE_KEY = "grammarQuestStateV1";
+const defaultState = ()=>({
+  level:1, xp:0, gold:0, streak:0, mute:false,
+  stages:Array.from({length:12},()=>({stars:0,best:0,cleared:false})),
+  badges:{}
+});
+let S = load();
+
+function load(){
+  try{
+    const raw=localStorage.getItem(STATE_KEY);
+    if(!raw) return defaultState();
+    const j=JSON.parse(raw);
+    return Object.assign(defaultState(),j);
+  }catch(e){return defaultState()}
+}
+function save(){localStorage.setItem(STATE_KEY,JSON.stringify(S))}
+
+/* ---------- 사운드 (Web Audio) ---------- */
+let actx=null;
+function ac(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}return actx}
+function tone(freq,dur=.18,type="sine",vol=.18,delay=0){
+  if(S.mute) return;
+  const c=ac();if(!c) return;
+  const t0=c.currentTime+delay;
+  const o=c.createOscillator();const g=c.createGain();
+  o.type=type;o.frequency.setValueAtTime(freq,t0);
+  g.gain.setValueAtTime(0,t0);
+  g.gain.linearRampToValueAtTime(vol,t0+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+  o.connect(g);g.connect(c.destination);
+  o.start(t0);o.stop(t0+dur+.02);
+}
+function sndCorrect(){
+  // 3음 상승
+  tone(660,.12,"triangle",.22,0);
+  tone(880,.12,"triangle",.22,.10);
+  tone(1320,.20,"triangle",.22,.20);
+}
+function sndWrong(){
+  tone(220,.18,"sawtooth",.18,0);
+  tone(160,.25,"sawtooth",.16,.12);
+}
+function sndClick(){tone(700,.05,"square",.06,0)}
+function sndCombo(n){
+  // 콤보 횟수 따라 음높이↑
+  const base=520+n*60;
+  tone(base,.10,"triangle",.22,0);
+  tone(base*1.5,.14,"triangle",.22,.07);
+}
+function sndApplause(){
+  if(S.mute) return;
+  const c=ac();if(!c) return;
+  // 화이트 노이즈로 박수 시뮬
+  const dur=1.6;
+  const buf=c.createBuffer(1,c.sampleRate*dur,c.sampleRate);
+  const data=buf.getChannelData(0);
+  for(let i=0;i<data.length;i++){
+    const t=i/c.sampleRate;
+    // 박수 펄스 8개
+    let p=0;
+    for(let k=0;k<10;k++){
+      const tk=k*0.13+Math.random()*.02;
+      const d=(t-tk)/.04;
+      const w=Math.exp(-(d*d));
+      p+=w*(Math.random()*2-1);
+    }
+    // 페이드 아웃
+    data[i]=p*Math.exp(-t*1.4)*0.5;
+  }
+  const src=c.createBufferSource();src.buffer=buf;
+  const g=c.createGain();g.gain.value=.4;
+  // 약간 하이패스 느낌으로 BiquadFilter
+  const f=c.createBiquadFilter();f.type="bandpass";f.frequency.value=2400;f.Q.value=.7;
+  src.connect(f);f.connect(g);g.connect(c.destination);
+  src.start();
+}
+function sndLevelUp(){
+  tone(440,.14,"square",.18,0);
+  tone(660,.14,"square",.18,.13);
+  tone(880,.14,"square",.18,.26);
+  tone(1320,.30,"square",.20,.39);
+}
+function sndUnlock(){
+  tone(880,.10,"sine",.16,0);
+  tone(660,.10,"sine",.16,.10);
+  tone(990,.16,"sine",.18,.20);
+}
+
+/* ---------- 컨페티 (Canvas) ---------- */
+const cfCanvas=document.getElementById("confetti");
+const cfx=cfCanvas.getContext("2d");
+let cfParts=[];let cfRunning=false;
+function fitCanvas(){cfCanvas.width=innerWidth;cfCanvas.height=innerHeight}
+addEventListener("resize",fitCanvas);fitCanvas();
+
+function confetti(power=140,opts={}){
+  const colors=opts.colors||["#ff4ecd","#7c5bff","#34d8ff","#ffd54a","#36ff9a","#ff6b6b"];
+  const cx=opts.x ?? innerWidth/2;
+  const cy=opts.y ?? innerHeight*0.35;
+  for(let i=0;i<power;i++){
+    const a=Math.random()*Math.PI*2;
+    const sp=4+Math.random()*8;
+    cfParts.push({
+      x:cx,y:cy,
+      vx:Math.cos(a)*sp,vy:Math.sin(a)*sp - 4,
+      g:0.18+Math.random()*.1,
+      size:6+Math.random()*8,
+      rot:Math.random()*360,vr:(Math.random()-.5)*16,
+      color:colors[(Math.random()*colors.length)|0],
+      life:1, type:Math.random()<.3?"circle":"rect"
+    });
+  }
+  if(!cfRunning){cfRunning=true;requestAnimationFrame(cfTick)}
+}
+function cfTick(){
+  cfx.clearRect(0,0,cfCanvas.width,cfCanvas.height);
+  cfParts=cfParts.filter(p=>p.life>0);
+  cfParts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.rot+=p.vr;p.life-=.008;
+    cfx.save();cfx.globalAlpha=Math.max(0,p.life);
+    cfx.translate(p.x,p.y);cfx.rotate(p.rot*Math.PI/180);
+    cfx.fillStyle=p.color;
+    if(p.type==="circle"){cfx.beginPath();cfx.arc(0,0,p.size/2,0,Math.PI*2);cfx.fill()}
+    else cfx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+    cfx.restore();
+  });
+  if(cfParts.length>0)requestAnimationFrame(cfTick);else cfRunning=false;
+}
+
+/* ---------- 별 배경 ---------- */
+function spawnStars(){
+  const c=document.getElementById("starsBg");
+  c.innerHTML="";
+  const n=window.innerWidth<600?40:80;
+  for(let i=0;i<n;i++){
+    const s=document.createElement("span");
+    s.style.left=Math.random()*100+"%";
+    s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*4)+"s";
+    s.style.transform=`scale(${.4+Math.random()*1.2})`;
+    c.appendChild(s);
+  }
+}
+spawnStars();
+
+/* ---------- 화면 전환 ---------- */
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- HUD 갱신 ---------- */
+const xpForLevel=lv=>50+lv*40; // 레벨업 임계값
+function refreshHUD(){
+  document.getElementById("lvl").textContent=S.level;
+  const need=xpForLevel(S.level);
+  const pct=Math.min(100,(S.xp/need)*100);
+  document.getElementById("xpBar").style.width=pct+"%";
+  document.getElementById("xpTxt").textContent=`${S.xp}/${need}`;
+  document.getElementById("gold").textContent=S.gold;
+  document.getElementById("streak").textContent=S.streak;
+  document.getElementById("btnMute").textContent=S.mute?"🔇":"🔊";
+}
+function gainXp(n){
+  S.xp+=n;
+  while(S.xp>=xpForLevel(S.level)){
+    S.xp-=xpForLevel(S.level);
+    S.level++;
+    sndLevelUp();
+    confetti(220,{colors:["#ffd54a","#ff7e3a","#ff4ecd"]});
+    floatText(`LEVEL UP!`,innerWidth/2,160,"gold");
+    toast(`레벨 ${S.level} 달성! 🎉`);
+  }
+  refreshHUD();save();
+}
+function gainGold(n){S.gold+=n;refreshHUD();save();checkBadges()}
+function setStreak(n){S.streak=n;refreshHUD();save()}
+
+/* ---------- 토스트 / 떠오르는 텍스트 ---------- */
+let toastTimer=null;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function floatText(txt,x,y,cls=""){
+  const e=document.createElement("div");
+  e.className="float-text "+cls;
+  e.textContent=txt;
+  e.style.left=x+"px";e.style.top=y+"px";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),1400);
+}
+function flash(cls){
+  const f=document.getElementById("flash");
+  f.className="flash";void f.offsetWidth;f.className="flash "+cls;
+  setTimeout(()=>{f.className="flash"},700);
+}
+
+/* ---------- 월드맵 ---------- */
+function renderStages(){
+  const grid=document.getElementById("stagesGrid");
+  grid.innerHTML="";
+  CHAPTERS.forEach((ch,i)=>{
+    const st=S.stages[i];
+    const prevCleared = i===0 ? true : S.stages[i-1].cleared;
+    const locked = !prevCleared && !st.cleared;
+    const el=document.createElement("button");
+    el.className=`stage s-${ch.id}${locked?" locked":""}${st.cleared?" cleared":""}`;
+    el.innerHTML=`
+      <div>
+        <div class="num">UNIT ${String(ch.id).padStart(2,"0")}</div>
+        <div class="emoji">${ch.emoji}</div>
+        <div class="title">${ch.title}</div>
+      </div>
+      <div class="stars">
+        <span class="${st.stars>=1?"on":""}"></span>
+        <span class="${st.stars>=2?"on":""}"></span>
+        <span class="${st.stars>=3?"on":""}"></span>
+      </div>
+      ${locked?'<div class="lock">🔒</div>':''}
+    `;
+    el.onclick=()=>{
+      sndClick();
+      if(locked){toast("앞 단원을 먼저 깨야 해! 🔒");flash("no");return}
+      enterLesson(i);
+    };
+    grid.appendChild(el);
+  });
+  // 진도 띠
+  const done=S.stages.filter(s=>s.cleared).length;
+  document.getElementById("worldDone").textContent=done;
+  document.getElementById("worldBar").style.width=(done/12*100)+"%";
+}
+
+function renderBadges(){
+  const g=document.getElementById("badgesGrid");
+  g.innerHTML="";
+  BADGES.forEach(b=>{
+    const earned=!!S.badges[b.id];
+    const el=document.createElement("div");
+    el.className="badge "+(earned?"earned":"locked");
+    el.innerHTML=`<span class="ic">${b.ic}</span><div class="nm">${b.nm}</div><div class="ds">${b.ds}</div>`;
+    g.appendChild(el);
+  });
+}
+
+function checkBadges(opts={}){
+  const before=Object.assign({},S.badges);
+  // first_step
+  if(S.stages.some(s=>s.cleared))S.badges.first_step=true;
+  // half_way
+  if(S.stages.filter(s=>s.cleared).length>=6)S.badges.half_way=true;
+  // all_clear
+  if(S.stages.every(s=>s.cleared))S.badges.all_clear=true;
+  // all_stars
+  const stars=S.stages.reduce((a,b)=>a+b.stars,0);
+  if(stars>=30)S.badges.all_stars=true;
+  // gold
+  if(S.gold>=500)S.badges.gold_rush=true;
+  // perfect_5
+  if(opts.perfect)S.badges.perfect_5=true;
+  // combo
+  if(opts.combo){
+    if(opts.combo>=5)S.badges.combo_5=true;
+    if(opts.combo>=10)S.badges.combo_10=true;
+  }
+  const newOnes=Object.keys(S.badges).filter(k=>!before[k]);
+  save();renderBadges();
+  return newOnes.map(id=>BADGES.find(b=>b.id===id)).filter(Boolean);
+}
+
+/* ---------- 학습 슬라이드 ---------- */
+let curCh=0, curSlide=0;
+function enterLesson(chIdx){
+  curCh=chIdx;curSlide=0;
+  const ch=CHAPTERS[chIdx];
+  document.getElementById("lessonTitle").textContent=`${ch.emoji} ${ch.title}`;
+  const track=document.getElementById("slideTrack");
+  track.innerHTML="";
+  ch.slides.forEach((sl,i)=>{
+    const d=document.createElement("div");
+    d.className="slide"+(i===0?" active":"");
+    d.innerHTML=`<h2><span class="acc">${sl.h}</span></h2><div class="body">${sl.body}</div>`;
+    track.appendChild(d);
+  });
+  // 닷
+  const dn=document.getElementById("dotNav");
+  dn.innerHTML="";
+  ch.slides.forEach((_,i)=>{
+    const s=document.createElement("span");if(i===0)s.classList.add("on");dn.appendChild(s);
+  });
+  document.getElementById("btnPrev").style.visibility="hidden";
+  document.getElementById("btnNext").textContent="다음 ▶";
+  show("screenLesson");
+  sndClick();
+}
+function gotoSlide(i){
+  const slides=document.querySelectorAll("#slideTrack .slide");
+  if(i<0||i>=slides.length)return;
+  slides[curSlide].classList.remove("active");
+  curSlide=i;
+  slides[i].classList.add("active");
+  document.querySelectorAll("#dotNav span").forEach((s,k)=>s.classList.toggle("on",k===i));
+  document.getElementById("btnPrev").style.visibility=i===0?"hidden":"visible";
+  document.getElementById("btnNext").textContent=(i===slides.length-1)?"퀴즈 시작 ▶":"다음 ▶";
+  sndClick();
+}
+document.getElementById("btnPrev").onclick=()=>gotoSlide(curSlide-1);
+document.getElementById("btnNext").onclick=()=>{
+  const total=document.querySelectorAll("#slideTrack .slide").length;
+  if(curSlide<total-1)gotoSlide(curSlide+1);
+  else startQuiz();
+};
+document.getElementById("btnBackLesson").onclick=()=>{sndClick();show("screenWorld")};
+
+/* ---------- 퀴즈 엔진 ---------- */
+let quizState=null; // {qIdx, correct, combo, answered}
+function startQuiz(){
+  const ch=CHAPTERS[curCh];
+  quizState={qIdx:0,correct:0,combo:0,answered:false,maxCombo:0};
+  document.getElementById("qTotal").textContent=ch.quiz.length;
+  show("screenQuiz");
+  renderQ();
+}
+function renderQ(){
+  const ch=CHAPTERS[curCh];
+  const q=ch.quiz[quizState.qIdx];
+  document.getElementById("qNum").textContent=quizState.qIdx+1;
+  document.getElementById("qBar").style.width=((quizState.qIdx)/ch.quiz.length*100)+"%";
+  const holder=document.getElementById("qHolder");
+  const keys=["A","B","C","D"];
+  holder.innerHTML=`
+    <div class="qcard" id="qcard">
+      <div class="qtype">📝 ${q.type==="choice"?"객관식":"문제"}</div>
+      <div class="qprompt">${q.p}</div>
+      ${q.s?`<div class="qsentence">${q.s}</div>`:""}
+      <div class="qopts">
+        ${q.opts.map((o,i)=>`<button class="qopt" data-i="${i}"><span class="key">${keys[i]}</span><span>${o}</span></button>`).join("")}
+      </div>
+      <div class="qfb" id="qfb"></div>
+      <div class="q-actions" id="qActs" style="display:none">
+        <button class="btn-primary" id="btnQNext">다음 문제 ▶</button>
+      </div>
+    </div>
+  `;
+  quizState.answered=false;
+  document.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>onAns(parseInt(b.dataset.i,10),b));
+  document.getElementById("btnQNext").onclick=nextQ;
+}
+function onAns(i,btn){
+  if(quizState.answered)return;
+  quizState.answered=true;
+  const ch=CHAPTERS[curCh];
+  const q=ch.quiz[quizState.qIdx];
+  const correct=(i===q.a);
+  const opts=document.querySelectorAll(".qopt");
+  opts.forEach(o=>o.classList.add("disabled"));
+  // 정답 옵션 하이라이트
+  opts[q.a].classList.add("correct");
+  if(!correct)btn.classList.add("wrong");
+
+  const fb=document.getElementById("qfb");
+  if(correct){
+    quizState.correct++;
+    quizState.combo++;
+    quizState.maxCombo=Math.max(quizState.maxCombo,quizState.combo);
+    setStreak(S.streak+1);
+    sndCorrect();
+    flash("ok");
+    confetti(60,{x:btn.getBoundingClientRect().left+btn.offsetWidth/2,y:btn.getBoundingClientRect().top});
+    floatText("+10 XP",innerWidth/2,200,"green");
+    if(quizState.combo>=2){
+      const cb=document.getElementById("combo");
+      document.getElementById("comboNum").textContent=quizState.combo;
+      cb.className="combo show";
+      // 재발사
+      void cb.offsetWidth;cb.style.animation="";
+      sndCombo(quizState.combo);
+      if(quizState.combo===5||quizState.combo===10){
+        confetti(150,{colors:["#ff4ecd","#ffd54a"]});
+        sndApplause();
+      }
+    }
+    fb.className="qfb show ok";
+    fb.innerHTML=`<div class="h">🎉 정답이야! ${quizState.combo>=2?` (${quizState.combo}콤보!)`:""}</div><div class="why">${q.why||""}</div>`;
+  }else{
+    document.getElementById("qcard").classList.add("shake");
+    setTimeout(()=>document.getElementById("qcard").classList.remove("shake"),520);
+    setStreak(0);
+    quizState.combo=0;
+    document.getElementById("combo").classList.remove("show");
+    sndWrong();
+    flash("no");
+    fb.className="qfb show no";
+    fb.innerHTML=`<div class="h">❌ 아쉬워! 다시 봐볼까?</div><div class="ans">정답: ${["A","B","C","D"][q.a]}. ${q.opts[q.a]}</div><div class="why">${q.why||""}</div>`;
+  }
+  document.getElementById("qActs").style.display="flex";
+  // last?
+  if(quizState.qIdx===ch.quiz.length-1){
+    document.getElementById("btnQNext").textContent="결과 보기 🏆";
+  }
+}
+function nextQ(){
+  const ch=CHAPTERS[curCh];
+  if(quizState.qIdx<ch.quiz.length-1){
+    quizState.qIdx++;
+    renderQ();
+    sndClick();
+  }else{
+    finishQuiz();
+  }
+}
+document.getElementById("btnBackQuiz").onclick=()=>{
+  if(confirm("퀴즈를 그만둘까? 진도는 저장 안 돼.")){
+    sndClick();show("screenWorld");
+  }
+};
+
+/* ---------- 결과 ---------- */
+function finishQuiz(){
+  const ch=CHAPTERS[curCh];
+  const total=ch.quiz.length;
+  const correct=quizState.correct;
+  const pct=correct/total;
+  // 별 계산
+  let stars=0;
+  if(pct>=1)stars=3;
+  else if(pct>=0.8)stars=3;
+  else if(pct>=0.6)stars=2;
+  else if(pct>=0.4)stars=1;
+  else stars=0;
+
+  // XP / 골드
+  const xp = correct*10 + (stars===3?20:0) + quizState.maxCombo*2;
+  const gold = correct*5 + stars*15;
+
+  // 상태 저장
+  const prev=S.stages[curCh];
+  prev.best=Math.max(prev.best,correct);
+  prev.stars=Math.max(prev.stars,stars);
+  if(stars>=1)prev.cleared=true;
+  save();
+
+  // 화면
+  show("screenResult");
+  const titles=["힘내!","좋아!","멋져!","완벽해!"];
+  const titleIdx=stars>=3?3:(stars>=2?2:(stars>=1?1:0));
+  document.getElementById("resTitle").textContent=titles[titleIdx]+(stars===3?" 🌟":"");
+  // 별 애니메이션
+  document.querySelectorAll("#resStars span").forEach((s,i)=>{
+    s.classList.toggle("on",i<stars);
+  });
+  document.getElementById("resCorrect").textContent=correct;
+  document.getElementById("resTotal").textContent=total;
+  document.getElementById("resXp").textContent=xp;
+  document.getElementById("resGold").textContent=gold;
+
+  // 폭죽
+  if(stars>=2){confetti(200);sndApplause()}
+  else if(stars===1){confetti(80)}
+
+  gainXp(xp);
+  gainGold(gold);
+
+  // 배지 검사
+  const newOnes=checkBadges({perfect:correct===total,combo:quizState.maxCombo});
+  const badgeBox=document.getElementById("resBadge");
+  badgeBox.innerHTML="";
+  if(newOnes.length){
+    newOnes.forEach(b=>{
+      const e=document.createElement("div");
+      e.className="new-badge";
+      e.innerHTML=`<span class="ic">${b.ic}</span><div><div class="nm">새 배지: ${b.nm}</div><div class="ds">${b.ds}</div></div>`;
+      badgeBox.appendChild(e);
+    });
+    sndUnlock();
+    setTimeout(()=>confetti(100,{colors:["#ffd54a","#ff7e3a"]}),300);
+  }
+
+  renderStages();renderBadges();
+}
+document.getElementById("btnNextStage").onclick=()=>{
+  if(curCh<11){
+    enterLesson(curCh+1);
+  }else{
+    show("screenWorld");
+    if(S.stages.every(s=>s.cleared)){
+      setTimeout(()=>{
+        confetti(280,{colors:["#ffd54a","#ff7e3a","#ff4ecd","#7c5bff"]});
+        sndApplause();
+        toast("👑 영문법 마스터 달성! 축하해!");
+      },300);
+    }
+  }
+  sndClick();
+};
+document.getElementById("btnRetry").onclick=()=>{startQuiz();sndClick()};
+document.getElementById("btnHome").onclick=()=>{show("screenWorld");sndClick()};
+
+/* ---------- 메뉴 버튼 ---------- */
+document.getElementById("btnContinue").onclick=()=>{
+  // 가장 가까운 미클리어 단원
+  const idx=S.stages.findIndex(s=>!s.cleared);
+  enterLesson(idx===-1?0:idx);
+};
+document.getElementById("btnReset").onclick=()=>{
+  if(confirm("정말 처음부터 다시 시작할래? 모든 진도가 사라져!")){
+    S=defaultState();save();refreshHUD();renderStages();renderBadges();
+    toast("🔄 처음부터 시작!");
+  }
+};
+document.getElementById("btnMute").onclick=()=>{
+  S.mute=!S.mute;refreshHUD();save();
+  toast(S.mute?"🔇 음소거":"🔊 소리 켜짐");
+};
+
+/* ---------- 키보드 ---------- */
+document.addEventListener("keydown",e=>{
+  const lessonOn=document.getElementById("screenLesson").classList.contains("active");
+  const quizOn=document.getElementById("screenQuiz").classList.contains("active");
+  if(lessonOn){
+    if(e.key==="ArrowRight")document.getElementById("btnNext").click();
+    if(e.key==="ArrowLeft")document.getElementById("btnPrev").click();
+  }
+  if(quizOn){
+    const k=e.key.toUpperCase();
+    if(["A","B","C","D"].includes(k)){
+      const opts=document.querySelectorAll(".qopt");
+      const i={A:0,B:1,C:2,D:3}[k];
+      if(opts[i])opts[i].click();
+    }
+    if(e.key==="Enter"){
+      const btn=document.getElementById("btnQNext");
+      if(btn&&btn.offsetParent!==null)btn.click();
+    }
+  }
+});
+
+/* ---------- 초기화 ---------- */
+refreshHUD();renderStages();renderBadges();
+
+// 스플래시 자동 종료
+setTimeout(()=>document.getElementById("splash").classList.add("hide"),1300);
+// 사용자 첫 클릭 후 audio context 깨우기
+document.body.addEventListener("click",()=>{const c=ac();if(c&&c.state==="suspended")c.resume()},{once:true});
+
+// 첫 방문 안내
+if(!localStorage.getItem("gqVisited")){
+  localStorage.setItem("gqVisited","1");
+  setTimeout(()=>toast("🎮 스테이지 1부터 시작해보자! 화이팅!"),1800);
+}
+</script>
+</body>
+</html>

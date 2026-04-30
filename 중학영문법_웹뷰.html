@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한 권으로 끝내는 중학 영문법 | 중학 1~2학년 영문법</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700;900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #dbeafe;
+    --primary-lighter: #eff6ff;
+    --accent: #f59e0b;
+    --accent-light: #fef3c7;
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --bg: #fafaf9;
+    --bg-card: #ffffff;
+    --text: #18181b;
+    --text-muted: #71717a;
+    --border: #e4e4e7;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+    --radius: 12px;
+    --radius-lg: 20px;
+    --font-display: 'Fraunces', 'Noto Sans KR', serif;
+    --font-body: 'Noto Sans KR', sans-serif;
+    --font-fun: 'Gowun Dodum', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(37, 99, 235, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 100%, rgba(245, 158, 11, 0.04) 0%, transparent 40%);
+  }
+
+  /* === Header === */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .top-bar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .brand-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    max-width: 240px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 99px;
+  }
+
+  .progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  /* === Layout === */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* === Sidebar === */
+  .sidebar {
+    position: sticky;
+    top: 80px;
+    padding: 32px 0;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    padding: 0 12px;
+  }
+
+  .toc-list {
+    list-style: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .toc-list a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .toc-list a:hover {
+    background: var(--primary-lighter);
+    color: var(--primary);
+  }
+
+  .toc-list a.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  .toc-list a.active .toc-num {
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .toc-num {
+    width: 28px;
+    height: 28px;
+    background: var(--primary-lighter);
+    color: var(--primary);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .toc-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .toc-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 4px;
+  }
+
+  /* === Main === */
+  .main {
+    padding: 40px 0 80px;
+    min-width: 0;
+  }
+
+  /* === Hero === */
+  .hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+    color: white;
+    padding: 64px 48px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.3), transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: 'A B C';
+    position: absolute;
+    bottom: -40px; right: 40px;
+    font-family: var(--font-display);
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.06);
+    letter-spacing: 0.1em;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 32px;
+    max-width: 580px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent-light);
+  }
+
+  .hero-stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+  }
+
+  /* === Unit === */
+  .unit, .cheatsheet {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 32px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s;
+  }
+
+  .unit:hover, .cheatsheet:hover {
+    box-shadow: var(--shadow);
+  }
+
+  .unit-header {
+    background: linear-gradient(135deg, var(--primary-lighter), white);
+    padding: 32px 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .unit-header::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+  }
+
+  .unit-tag {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  .unit-title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .unit-goal {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .goal-label {
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .unit-body {
+    padding: 32px 40px;
+  }
+
+  /* === Section === */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-light);
+    letter-spacing: -0.01em;
+  }
+
+  .para {
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.8;
+    font-size: 15.5px;
+  }
+
+  /* === Tables === */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+
+  thead {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  }
+
+  th {
+    color: white;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: var(--primary-lighter);
+  }
+
+  tbody tr:hover td {
+    background: var(--primary-light);
+  }
+
+  /* === Examples === */
+  .example-list {
+    list-style: none;
+    background: linear-gradient(135deg, #fffbeb, #fff);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+
+  .example-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .example-arrow {
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* === Tip Box === */
+  .tip-box {
+    background: linear-gradient(135deg, #fef9c3, #fef3c7);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 32px 0;
+    position: relative;
+  }
+
+  .tip-box::before {
+    content: '💡';
+    position: absolute;
+    top: -16px;
+    left: 24px;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 18px;
+    border: 2px solid var(--accent);
+  }
+
+  .tip-heading {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 14px;
+    padding-left: 8px;
+  }
+
+  .tip-list {
+    list-style: none;
+  }
+
+  .tip-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: 15px;
+    color: #78350f;
+    font-weight: 500;
+  }
+
+  .check {
+    color: var(--success);
+    font-weight: 900;
+    flex-shrink: 0;
+    background: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+  }
+
+  /* === Exercises === */
+  .exercises-block {
+    margin-top: 40px;
+    padding: 28px;
+    background: var(--success-light);
+    border-radius: var(--radius);
+    border: 1px solid var(--success);
+  }
+
+  .exercises-heading {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: #047857;
+    margin-bottom: 6px;
+  }
+
+  .exercises-hint {
+    font-size: 13px;
+    color: #065f46;
+    margin-bottom: 20px;
+  }
+
+  .exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .exercise {
+    background: white;
+    padding: 16px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .exercise.correct {
+    border-color: var(--success);
+    background: #f0fdf4;
+  }
+
+  .exercise.wrong {
+    border-color: var(--danger);
+    background: #fef2f2;
+  }
+
+  .exercise-q {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .exercise-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14.5px;
+    font-family: var(--font-body);
+    background: var(--bg);
+    transition: all 0.2s;
+  }
+
+  .exercise-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px var(--primary-lighter);
+  }
+
+  .exercise-feedback {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 0;
+    transition: all 0.2s;
+  }
+
+  .exercise.correct .exercise-feedback {
+    color: var(--success);
+  }
+
+  .exercise.wrong .exercise-feedback {
+    color: var(--danger);
+  }
+
+  .check-all-btn {
+    margin-top: 20px;
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .check-all-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+
+  .check-all-btn:active {
+    transform: translateY(0);
+  }
+
+  /* === Answers === */
+  .answers-block {
+    margin-top: 24px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .answers-block summary {
+    padding: 14px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--primary);
+    list-style: none;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .answers-block summary::-webkit-details-marker { display: none; }
+
+  .answers-block summary::after {
+    content: '▼';
+    float: right;
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .answers-block[open] summary::after {
+    transform: rotate(180deg);
+  }
+
+  .answers-block summary:hover {
+    background: var(--primary-lighter);
+  }
+
+  .answers-list {
+    list-style: none;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .answers-list li {
+    padding: 6px 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    display: flex;
+    gap: 8px;
+  }
+
+  .ans-num {
+    color: var(--success);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+  }
+
+  /* === Cheatsheet === */
+  .cheatsheet-header {
+    background: linear-gradient(135deg, var(--accent-light), white);
+  }
+
+  .cheatsheet-header::before {
+    background: linear-gradient(180deg, var(--accent), var(--primary));
+  }
+
+  .cheatsheet-header .unit-tag {
+    background: var(--accent);
+  }
+
+  .cheatsheet-grid {
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .cheat-card {
+    background: linear-gradient(135deg, white, var(--primary-lighter));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .cheat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary);
+  }
+
+  .cheat-card-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .cheat-card-list {
+    list-style: none;
+  }
+
+  .cheat-card-list li {
+    padding: 4px 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* === Footer === */
+  .footer {
+    text-align: center;
+    padding: 64px 24px 40px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .footer-quote {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  /* === Floating Action Button === */
+  .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.2s;
+    z-index: 99;
+    font-size: 22px;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+  }
+
+  .fab.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .fab:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  /* === Responsive === */
+  @media (max-width: 960px) {
+    .container {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .menu-toggle { display: block; }
+
+    .sidebar {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      padding: 24px;
+      max-height: 100vh;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+      z-index: 99;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .hero { padding: 40px 28px; }
+    .hero-stats { gap: 20px; }
+    .hero-stat-num { font-size: 28px; }
+
+    .unit-header { padding: 24px 24px; }
+    .unit-body { padding: 24px; }
+    .cheatsheet-grid { padding: 24px; }
+
+    table { font-size: 13.5px; }
+    th, td { padding: 10px 12px; }
+
+    .progress-wrap { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .top-bar-inner { padding: 12px 16px; }
+    .container { padding: 0 16px; }
+    .hero { padding: 32px 20px; }
+    .unit-header, .unit-body { padding: 20px; }
+    .cheatsheet-grid { grid-template-columns: 1fr; padding: 20px; }
+    .brand-sub { display: none; }
+  }
+
+  /* === Print === */
+  @media print {
+    .top-bar, .sidebar, .fab, .check-all-btn { display: none; }
+    .container { display: block; padding: 0; }
+    .unit, .cheatsheet { break-inside: avoid; box-shadow: none; }
+    .answers-block[open] { display: block; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<header class="top-bar">
+  <div class="top-bar-inner">
+    <div class="brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-text">중학 영문법</div>
+        <div class="brand-sub">1~2학년 친절한 가이드</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+      <div class="progress-text" id="progressText">0%</div>
+    </div>
+    <button class="menu-toggle" id="menuToggle">📑 목차</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">목차</div>
+    
+    <ul class="toc-list">
+      <li><a href="#unit-1" data-target="unit-1">
+      <span class="toc-num">01</span>
+      <span class="toc-title">be동사 (am / are / is)</span>
+    </a></li><li><a href="#unit-2" data-target="unit-2">
+      <span class="toc-num">02</span>
+      <span class="toc-title">일반동사 (현재형)</span>
+    </a></li><li><a href="#unit-3" data-target="unit-3">
+      <span class="toc-num">03</span>
+      <span class="toc-title">명사와 관사 (a / an / the)</span>
+    </a></li><li><a href="#unit-4" data-target="unit-4">
+      <span class="toc-num">04</span>
+      <span class="toc-title">대명사 (인칭 / 지시 / 소유)</span>
+    </a></li><li><a href="#unit-5" data-target="unit-5">
+      <span class="toc-num">05</span>
+      <span class="toc-title">형용사와 부사</span>
+    </a></li><li><a href="#unit-6" data-target="unit-6">
+      <span class="toc-num">06</span>
+      <span class="toc-title">현재진행형 (be동사 + 동사ing)</span>
+    </a></li><li><a href="#unit-7" data-target="unit-7">
+      <span class="toc-num">07</span>
+      <span class="toc-title">과거시제 (be동사 / 일반동사)</span>
+    </a></li><li><a href="#unit-8" data-target="unit-8">
+      <span class="toc-num">08</span>
+      <span class="toc-title">미래시제 (will / be going to)</span>
+    </a></li><li><a href="#unit-9" data-target="unit-9">
+      <span class="toc-num">09</span>
+      <span class="toc-title">조동사 (can / must / should / may)</span>
+    </a></li><li><a href="#unit-10" data-target="unit-10">
+      <span class="toc-num">10</span>
+      <span class="toc-title">비교급과 최상급</span>
+    </a></li><li><a href="#unit-11" data-target="unit-11">
+      <span class="toc-num">11</span>
+      <span class="toc-title">to부정사와 동명사</span>
+    </a></li><li><a href="#unit-12" data-target="unit-12">
+      <span class="toc-num">12</span>
+      <span class="toc-title">의문문과 부정문</span>
+    </a></li>
+      <li class="toc-divider"></li>
+      <li><a href="#cheatsheet" data-target="cheatsheet">
+        <span class="toc-num">★</span>
+        <span class="toc-title">치트시트</span>
+      </a></li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <span class="hero-tag">MIDDLE SCHOOL ENGLISH GRAMMAR</span>
+      <h1 class="hero-title">한 권으로 끝내는 중학 영문법</h1>
+      <p class="hero-sub">중학교 1~2학년을 위한 친절한 영어 문법 교재<br>be동사부터 to부정사까지, 12개 단원으로 문법의 기초를 탄탄하게.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">12</div>
+          <div class="hero-stat-label">단원</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">120+</div>
+          <div class="hero-stat-label">연습문제</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">200+</div>
+          <div class="hero-stat-label">예문</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">1</div>
+          <div class="hero-stat-label">치트시트</div>
+        </div>
+      </div>
+    </section>
+
+    
+    <article class="unit" id="unit-1">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 01</div>
+        <h2 class="unit-title">be동사 (am / are / is)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>영어 문장의 가장 기본인 be동사의 쓰임을 이해하고, 주어에 따라 알맞게 사용할 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. be동사란 무엇일까?</h3><p class="para">be동사는 우리말로 '∼이다, ∼있다'라는 뜻을 가진 동사예요. 영어에서 가장 많이 쓰이는 동사 중 하나로, 주어가 무엇인지 설명하거나 주어가 어디에 있는지를 나타낼 때 사용해요.</p><p class="para">예를 들어 'I am a student.(나는 학생이다.)'에서 'am'이 바로 be동사예요. 주어가 어떤 사람/사물인지 설명하고 있죠. 또 'She is in the classroom.(그녀는 교실에 있다.)'처럼 위치를 나타낼 때도 be동사를 써요.</p></section><section class="section"><h3 class="section-heading">2. 주어에 따라 모양이 달라져요</h3><p class="para">be동사는 주어가 누구냐에 따라 am, are, is 세 가지 모양으로 변해요. 이걸 외우는 게 영문법의 첫걸음이에요!</p><div class="table-wrap"><table><thead><tr><th>주어</th><th>be동사</th><th>예문</th></tr></thead><tbody><tr><td>I (나)</td><td>am</td><td>I am happy. (나는 행복하다.)</td></tr><tr><td>You (너, 너희)</td><td>are</td><td>You are kind. (너는 친절하다.)</td></tr><tr><td>He / She / It (3인칭 단수)</td><td>is</td><td>She is a teacher. (그녀는 선생님이다.)</td></tr><tr><td>We / You / They (복수)</td><td>are</td><td>They are friends. (그들은 친구이다.)</td></tr><tr><td>단수명사 (Tom, my dog)</td><td>is</td><td>Tom is tall. (Tom은 키가 크다.)</td></tr><tr><td>복수명사 (the books)</td><td>are</td><td>The books are new. (그 책들은 새것이다.)</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 부정문 만들기 (∼이 아니다)</h3><p class="para">be동사 뒤에 not만 붙이면 '∼이 아니다'라는 부정의 뜻이 돼요. 아주 간단하죠?</p><p class="para">축약형도 자주 쓰니까 함께 외워두세요. is not = isn't, are not = aren't (단, am not은 amn't로 줄이지 않아요!)</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I am not hungry. = I'm not hungry. (나는 배고프지 않다.)</span></li><li><span class="example-arrow">▸</span><span>He is not a doctor. = He isn't a doctor. (그는 의사가 아니다.)</span></li><li><span class="example-arrow">▸</span><span>We are not late. = We aren't late. (우리는 늦지 않았다.)</span></li></ul></section><section class="section"><h3 class="section-heading">4. 의문문 만들기 (∼이니?)</h3><p class="para">be동사를 주어 앞으로 옮기기만 하면 의문문이 완성돼요. 문장 끝에 물음표(?)를 꼭 붙여주세요.</p><p class="para">대답할 때는 Yes, 주어 + be동사 / No, 주어 + be동사 + not 형태로 해요.</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>Are you a student? - Yes, I am. / No, I'm not. (너는 학생이니?)</span></li><li><span class="example-arrow">▸</span><span>Is she your sister? - Yes, she is. / No, she isn't. (그녀는 너의 여동생이니?)</span></li><li><span class="example-arrow">▸</span><span>Are they hungry? - Yes, they are. / No, they aren't. (그들은 배고프니?)</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>I → am / You, We, They → are / He, She, It → is</span></li><li><span class="check">✓</span><span>부정문: be동사 + not</span></li><li><span class="check">✓</span><span>의문문: be동사를 문장 맨 앞으로!</span></li><li><span class="check">✓</span><span>축약형: I'm, You're, He's, She's, It's, We're, They're</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. I ___ a middle school student.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="am" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. She ___ very kind to everyone.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="is" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. They ___ my best friends.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="are" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. My dog ___ cute and small.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="is" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. We ___ in the same class.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="are" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 다음 문장을 부정문으로 바꾸세요: He is busy.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="He is not busy. (= He isn't busy.)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 다음 문장을 의문문으로 바꾸세요: You are tired.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Are you tired?" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 빈칸에 알맞은 말은? Is your father a doctor? - Yes, ___.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="he is" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분을 고치세요: I are happy today.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I am happy today." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 빈칸을 채우세요: My books ___ on the desk.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="are" />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="1">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>am</span></li><li><span class="ans-num">2.</span> <span>is</span></li><li><span class="ans-num">3.</span> <span>are</span></li><li><span class="ans-num">4.</span> <span>is</span></li><li><span class="ans-num">5.</span> <span>are</span></li><li><span class="ans-num">6.</span> <span>He is not busy. (= He isn't busy.)</span></li><li><span class="ans-num">7.</span> <span>Are you tired?</span></li><li><span class="ans-num">8.</span> <span>he is</span></li><li><span class="ans-num">9.</span> <span>I am happy today.</span></li><li><span class="ans-num">10.</span> <span>are</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-2">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 02</div>
+        <h2 class="unit-title">일반동사 (현재형)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>be동사가 아닌 일반동사의 쓰임을 알고, 3인칭 단수 주어일 때 동사 모양이 변하는 규칙을 익힌다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 일반동사란?</h3><p class="para">일반동사는 be동사(am/are/is)를 제외한 모든 동사를 말해요. play(놀다), study(공부하다), eat(먹다), like(좋아하다), go(가다)처럼 주어의 동작이나 상태를 나타내는 단어들이죠.</p><p class="para">현재형은 '평소에 늘 하는 일'이나 '습관', '일반적인 사실'을 말할 때 써요. 예: I play soccer every day. (나는 매일 축구를 한다.)</p></section><section class="section"><h3 class="section-heading">2. 3인칭 단수 주어일 때는 -s를 붙여요!</h3><p class="para">일반동사에서 가장 헷갈리는 부분이 바로 이거예요. 주어가 He, She, It, Tom, my mom처럼 3인칭 단수일 때는 동사 끝에 -s나 -es를 꼭 붙여야 해요!</p><div class="table-wrap"><table><thead><tr><th>규칙</th><th>예시</th><th>설명</th></tr></thead><tbody><tr><td>대부분의 동사 + s</td><td>play → plays, like → likes</td><td>기본 규칙</td></tr><tr><td>o, s, x, ch, sh로 끝나면 + es</td><td>go → goes, watch → watches, wash → washes</td><td>발음을 위해 es</td></tr><tr><td>자음 + y로 끝나면 y → ies</td><td>study → studies, cry → cries</td><td>단, play → plays (모음+y는 그대로)</td></tr><tr><td>have는 has로 변형</td><td>have → has</td><td>불규칙 변화</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 부정문 만들기 (do not / does not)</h3><p class="para">일반동사의 부정문은 be동사처럼 not만 붙이면 안 돼요! 동사 앞에 do not(don't) 또는 does not(doesn't)을 써야 해요.</p><p class="para">주어가 3인칭 단수면 doesn't, 그 외에는 don't를 써요. 그리고 doesn't 뒤에 오는 동사는 원래 모양(원형)으로 돌아가요!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I don't like coffee. (나는 커피를 좋아하지 않는다.)</span></li><li><span class="example-arrow">▸</span><span>She doesn't play tennis. (그녀는 테니스를 치지 않는다.) ※ plays가 아닌 play!</span></li><li><span class="example-arrow">▸</span><span>They don't live in Seoul. (그들은 서울에 살지 않는다.)</span></li></ul></section><section class="section"><h3 class="section-heading">4. 의문문 만들기 (Do / Does)</h3><p class="para">일반동사 의문문은 문장 맨 앞에 Do 또는 Does를 붙이고, 동사는 원형으로 써요.</p><p class="para">주어가 3인칭 단수면 Does, 그 외에는 Do를 사용해요.</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>Do you like pizza? - Yes, I do. / No, I don't.</span></li><li><span class="example-arrow">▸</span><span>Does he play the guitar? - Yes, he does. / No, he doesn't. ※ plays가 아닌 play!</span></li><li><span class="example-arrow">▸</span><span>Do they speak Korean? - Yes, they do. / No, they don't.</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>3인칭 단수 + 동사 + s/es (가장 중요!)</span></li><li><span class="check">✓</span><span>부정문: don't / doesn't + 동사원형</span></li><li><span class="check">✓</span><span>의문문: Do / Does + 주어 + 동사원형 ∼?</span></li><li><span class="check">✓</span><span>doesn't, Does 뒤에는 동사원형! (s 붙이지 않기)</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. He ___ (play) basketball every Sunday.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="plays" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. My sister ___ (study) very hard.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="studies" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. The bus ___ (go) to school at 8.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="goes" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. Tom ___ (have) two dogs.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="has" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. They ___ (not / like) carrots.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="don't like" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. She ___ (not / watch) TV at night.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="doesn't watch" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. ___ you ___ (know) his name?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Do, know" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. ___ your brother ___ (eat) breakfast?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Does, eat" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분 고치기: She don't like math.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She doesn't like math." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 잘못된 부분 고치기: Does he plays soccer?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Does he play soccer?" />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="2">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>plays</span></li><li><span class="ans-num">2.</span> <span>studies</span></li><li><span class="ans-num">3.</span> <span>goes</span></li><li><span class="ans-num">4.</span> <span>has</span></li><li><span class="ans-num">5.</span> <span>don't like</span></li><li><span class="ans-num">6.</span> <span>doesn't watch</span></li><li><span class="ans-num">7.</span> <span>Do, know</span></li><li><span class="ans-num">8.</span> <span>Does, eat</span></li><li><span class="ans-num">9.</span> <span>She doesn't like math.</span></li><li><span class="ans-num">10.</span> <span>Does he play soccer?</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-3">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 03</div>
+        <h2 class="unit-title">명사와 관사 (a / an / the)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>셀 수 있는 명사와 셀 수 없는 명사를 구분하고, a/an/the를 알맞게 사용할 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 명사란?</h3><p class="para">명사는 사람, 동물, 사물, 장소, 개념 등의 '이름'을 나타내는 말이에요. student(학생), dog(개), pencil(연필), Seoul(서울), love(사랑) 같은 단어들이 모두 명사죠.</p></section><section class="section"><h3 class="section-heading">2. 셀 수 있는 명사 vs 셀 수 없는 명사</h3><p class="para">영어에서는 명사를 두 종류로 나눠요. 셀 수 있는지 없는지가 매우 중요해요!</p><div class="table-wrap"><table><thead><tr><th>구분</th><th>예시</th><th>특징</th></tr></thead><tbody><tr><td>셀 수 있는 명사 (단수)</td><td>a book, an apple, a student</td><td>앞에 a/an을 붙임</td></tr><tr><td>셀 수 있는 명사 (복수)</td><td>books, apples, students</td><td>끝에 -s/-es를 붙임</td></tr><tr><td>셀 수 없는 명사</td><td>water, milk, love, money, air</td><td>a/an을 붙이지 않음, 복수형 없음</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 복수형 만드는 규칙</h3><div class="table-wrap"><table><thead><tr><th>규칙</th><th>예시</th></tr></thead><tbody><tr><td>대부분 + s</td><td>book → books, pen → pens</td></tr><tr><td>s, x, ch, sh, o로 끝나면 + es</td><td>bus → buses, box → boxes, watch → watches</td></tr><tr><td>자음 + y → ies</td><td>city → cities, baby → babies</td></tr><tr><td>f / fe → ves</td><td>leaf → leaves, knife → knives</td></tr><tr><td>불규칙 변화</td><td>man → men, woman → women, child → children, foot → feet, tooth → teeth, mouse → mice, fish → fish (그대로)</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">4. a / an의 차이</h3><p class="para">a와 an은 둘 다 '하나의'라는 뜻이에요. 차이는 단어의 첫 발음! (철자가 아니라 '발음'이 중요해요!)</p><p class="para">자음 발음으로 시작 → a / 모음 발음(a, e, i, o, u)으로 시작 → an</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>a book, a student, a university (※ university는 '유'로 시작, 자음 발음!)</span></li><li><span class="example-arrow">▸</span><span>an apple, an egg, an hour (※ hour는 'h'가 묵음, 모음 '아워' 발음!)</span></li></ul></section><section class="section"><h3 class="section-heading">5. the는 언제 쓸까?</h3><p class="para">the는 '특정한 그것'을 가리킬 때 써요. 듣는 사람도 무엇을 말하는지 알 수 있을 때 사용해요.</p><p class="para">1) 앞에서 이미 말한 것을 다시 말할 때 → I have a dog. The dog is cute.</p><p class="para">2) 세상에 하나뿐인 것 → the sun, the moon, the earth</p><p class="para">3) 악기 이름 앞 → play the piano, play the guitar</p><p class="para">4) 서로 알고 있는 것 → Open the window, please. (어떤 창문인지 서로 앎)</p></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>셀 수 있는 단수 명사 앞엔 반드시 a / an / the 중 하나!</span></li><li><span class="check">✓</span><span>발음이 자음이면 a, 모음이면 an</span></li><li><span class="check">✓</span><span>셀 수 없는 명사 앞엔 a/an을 쓰지 않음 (a water X)</span></li><li><span class="check">✓</span><span>특정한 것을 가리킬 때 the</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 빈칸에 a 또는 an을 쓰세요: ___ orange</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="an" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. ___ honest boy</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="an (h가 묵음)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. ___ university student</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="a (유 발음)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. 복수형: child →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="children" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. 복수형: leaf →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="leaves" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 복수형: city →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="cities" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 빈칸에 a/an/the 중 알맞은 것: ___ sun is very bright today.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="The" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. I bought ___ apple. ___ apple was very sweet.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="an / The" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분 고치기: I drink a water every day.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I drink water every day. (water는 셀 수 없음)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 빈칸 채우기: She can play ___ piano very well.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="the" />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="3">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>an</span></li><li><span class="ans-num">2.</span> <span>an (h가 묵음)</span></li><li><span class="ans-num">3.</span> <span>a (유 발음)</span></li><li><span class="ans-num">4.</span> <span>children</span></li><li><span class="ans-num">5.</span> <span>leaves</span></li><li><span class="ans-num">6.</span> <span>cities</span></li><li><span class="ans-num">7.</span> <span>The</span></li><li><span class="ans-num">8.</span> <span>an / The</span></li><li><span class="ans-num">9.</span> <span>I drink water every day. (water는 셀 수 없음)</span></li><li><span class="ans-num">10.</span> <span>the</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-4">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 04</div>
+        <h2 class="unit-title">대명사 (인칭 / 지시 / 소유)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>주격, 목적격, 소유격, 소유대명사를 구분하고 상황에 맞게 사용할 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 대명사란?</h3><p class="para">대명사는 '명사를 대신하는 말'이에요. 같은 명사를 반복해서 쓰면 어색하니까, 대명사로 바꿔서 자연스럽게 만드는 거죠.</p><p class="para">예: Tom is my friend. Tom is kind. → Tom is my friend. He is kind.</p></section><section class="section"><h3 class="section-heading">2. 인칭대명사 표 (꼭 외워야 해요!)</h3><div class="table-wrap"><table><thead><tr><th>주격 (∼은/는)</th><th>소유격 (∼의)</th><th>목적격 (∼을/를)</th><th>소유대명사 (∼의 것)</th></tr></thead><tbody><tr><td>I (나는)</td><td>my (나의)</td><td>me (나를)</td><td>mine (내 것)</td></tr><tr><td>You (너는)</td><td>your (너의)</td><td>you (너를)</td><td>yours (너의 것)</td></tr><tr><td>He (그는)</td><td>his (그의)</td><td>him (그를)</td><td>his (그의 것)</td></tr><tr><td>She (그녀는)</td><td>her (그녀의)</td><td>her (그녀를)</td><td>hers (그녀의 것)</td></tr><tr><td>It (그것은)</td><td>its (그것의)</td><td>it (그것을)</td><td>— (없음)</td></tr><tr><td>We (우리는)</td><td>our (우리의)</td><td>us (우리를)</td><td>ours (우리의 것)</td></tr><tr><td>You (너희는)</td><td>your (너희의)</td><td>you (너희를)</td><td>yours (너희의 것)</td></tr><tr><td>They (그들은)</td><td>their (그들의)</td><td>them (그들을)</td><td>theirs (그들의 것)</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 어디에 쓰는지 헷갈리지 마세요!</h3><p class="para">주격은 문장의 주어 자리에! → He is my friend.</p><p class="para">소유격은 명사 앞에 붙어서 '누구의'를 표현! → This is his book.</p><p class="para">목적격은 동사나 전치사 뒤에! → I love her. / Look at me.</p><p class="para">소유대명사는 '∼의 것' 하나로 명사 역할! → This book is mine.</p></section><section class="section"><h3 class="section-heading">4. 지시대명사 this / that / these / those</h3><p class="para">지시대명사는 '이것/저것'처럼 무언가를 가리키는 말이에요.</p><div class="table-wrap"><table><thead><tr><th></th><th>단수 (하나)</th><th>복수 (둘 이상)</th></tr></thead><tbody><tr><td>가까운 것 (이∼)</td><td>this (이것, 이 사람)</td><td>these (이것들, 이 사람들)</td></tr><tr><td>먼 것 (저∼)</td><td>that (저것, 저 사람)</td><td>those (저것들, 저 사람들)</td></tr></tbody></table></div><ul class="example-list"><li><span class="example-arrow">▸</span><span>This is my book. (이것은 내 책이다.)</span></li><li><span class="example-arrow">▸</span><span>These are my friends. (이들은 내 친구들이다.)</span></li><li><span class="example-arrow">▸</span><span>That is your seat. (저것은 너의 자리이다.)</span></li><li><span class="example-arrow">▸</span><span>Those are beautiful flowers. (저것들은 아름다운 꽃들이다.)</span></li></ul></section><section class="section"><h3 class="section-heading">5. it의 특별한 쓰임 - 비인칭 주어</h3><p class="para">it은 '그것'이라는 뜻 외에도, 날씨, 시간, 날짜, 요일, 거리, 명암을 말할 때 주어로 써요. 이때는 해석하지 않아요!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>It is sunny today. (오늘 날씨가 화창하다.) - 날씨</span></li><li><span class="example-arrow">▸</span><span>It is 3 o'clock. (3시이다.) - 시간</span></li><li><span class="example-arrow">▸</span><span>It is Monday. (월요일이다.) - 요일</span></li><li><span class="example-arrow">▸</span><span>It is dark outside. (밖이 어둡다.) - 명암</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>주격 = 주어 자리 / 소유격 = 명사 앞 / 목적격 = 동사·전치사 뒤</span></li><li><span class="check">✓</span><span>소유대명사 = 소유격 + 명사 (한 단어로!)</span></li><li><span class="check">✓</span><span>this/that 단수, these/those 복수</span></li><li><span class="check">✓</span><span>it은 날씨·시간·거리의 비인칭 주어로도 쓰임</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 빈칸에 알맞은 대명사: ___ am a student. (나는)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. This is ___ pencil. (그녀의)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="her" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. I like ___ very much. (그를)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="him" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. This bag is ___. (내 것)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="mine" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. ___ are my new shoes. (이것들)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="These" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. ___ is very hot today. (날씨)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="It" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. We met ___ at the park. (그들을)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="them" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. ___ name is Jisoo. (그의)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="His" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. Are these books ___? (너의 것)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="yours" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 잘못된 부분 고치기: This is she book.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="This is her book." />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="4">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>I</span></li><li><span class="ans-num">2.</span> <span>her</span></li><li><span class="ans-num">3.</span> <span>him</span></li><li><span class="ans-num">4.</span> <span>mine</span></li><li><span class="ans-num">5.</span> <span>These</span></li><li><span class="ans-num">6.</span> <span>It</span></li><li><span class="ans-num">7.</span> <span>them</span></li><li><span class="ans-num">8.</span> <span>His</span></li><li><span class="ans-num">9.</span> <span>yours</span></li><li><span class="ans-num">10.</span> <span>This is her book.</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-5">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 05</div>
+        <h2 class="unit-title">형용사와 부사</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>형용사와 부사의 역할을 구별하고, 부사 만드는 방법을 익힌다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 형용사란?</h3><p class="para">형용사는 명사를 꾸며주거나 명사의 상태를 설명하는 말이에요. '예쁜, 큰, 똑똑한, 행복한' 같은 단어들이죠.</p><p class="para">역할은 두 가지! ① 명사 앞에서 명사를 꾸밈 (a beautiful flower) ② be동사 뒤에서 주어를 설명 (She is beautiful.)</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I have a new bag. (나는 새 가방이 있다.) - new가 bag을 꾸밈</span></li><li><span class="example-arrow">▸</span><span>The movie is interesting. (그 영화는 재미있다.) - interesting이 주어 설명</span></li><li><span class="example-arrow">▸</span><span>She is a smart girl. (그녀는 똑똑한 소녀이다.) - 명사 앞 + be동사 뒤 모두 가능</span></li></ul></section><section class="section"><h3 class="section-heading">2. 부사란?</h3><p class="para">부사는 동사, 형용사, 다른 부사, 그리고 문장 전체를 꾸며주는 말이에요. '빨리, 천천히, 매우, 잘'처럼 '어떻게/얼마나'를 나타내요.</p><p class="para">형용사가 명사를 꾸민다면, 부사는 명사를 제외한 거의 모든 것을 꾸민다고 기억하세요!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>He runs fast. (그는 빨리 달린다.) - 동사 runs를 꾸밈</span></li><li><span class="example-arrow">▸</span><span>She is very kind. (그녀는 매우 친절하다.) - 형용사 kind를 꾸밈</span></li><li><span class="example-arrow">▸</span><span>He speaks English very well. (그는 영어를 매우 잘한다.) - 부사 well 꾸밈</span></li></ul></section><section class="section"><h3 class="section-heading">3. 형용사를 부사로 만드는 방법</h3><div class="table-wrap"><table><thead><tr><th>규칙</th><th>예시</th></tr></thead><tbody><tr><td>대부분 형용사 + ly</td><td>slow → slowly, quick → quickly, kind → kindly</td></tr><tr><td>자음 + y로 끝나면 y → ily</td><td>happy → happily, easy → easily, lucky → luckily</td></tr><tr><td>le로 끝나면 e → y</td><td>simple → simply, gentle → gently</td></tr><tr><td>형용사와 부사가 같은 모양</td><td>fast → fast, hard → hard, early → early, late → late, high → high</td></tr><tr><td>불규칙</td><td>good → well (좋은 → 잘)</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">4. 빈도부사 - 얼마나 자주?</h3><p class="para">빈도부사는 어떤 일이 얼마나 자주 일어나는지를 나타내요. 위치가 중요해요!</p><p class="para">위치 규칙: be동사 뒤 / 일반동사 앞 / 조동사 뒤</p><div class="table-wrap"><table><thead><tr><th>부사</th><th>뜻</th><th>빈도</th></tr></thead><tbody><tr><td>always</td><td>항상</td><td>100%</td></tr><tr><td>usually</td><td>보통, 대개</td><td>약 90%</td></tr><tr><td>often</td><td>자주</td><td>약 70%</td></tr><tr><td>sometimes</td><td>가끔</td><td>약 50%</td></tr><tr><td>seldom / rarely</td><td>거의 ∼않다</td><td>약 10%</td></tr><tr><td>never</td><td>결코 ∼않다</td><td>0%</td></tr></tbody></table></div><ul class="example-list"><li><span class="example-arrow">▸</span><span>She is always happy. (be동사 뒤)</span></li><li><span class="example-arrow">▸</span><span>I often play soccer. (일반동사 앞)</span></li><li><span class="example-arrow">▸</span><span>He can never swim. (조동사 뒤)</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>형용사 = 명사를 꾸밈 / 부사 = 동사·형용사·부사를 꾸밈</span></li><li><span class="check">✓</span><span>형용사 + ly = 부사 (대부분)</span></li><li><span class="check">✓</span><span>good의 부사형은 well (불규칙!)</span></li><li><span class="check">✓</span><span>빈도부사 위치: be동사 뒤 / 일반동사 앞 / 조동사 뒤</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 형용사? 부사? 'beautiful'</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="형용사" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. 'slowly'의 형용사형은?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="slow" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. happy를 부사로: </p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="happily" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. good의 부사형은?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="well" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. He runs ___ (fast).</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="fast (형용사·부사 동일)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 빈도부사를 알맞은 자리에: She / is / late. (sometimes)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She is sometimes late." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. I / play / the piano. (often)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I often play the piano." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 빈칸: She sings ___. (아름답게)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="beautifully" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분 고치기: He speaks English good.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="He speaks English well." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 빈칸: My brother ___ watches TV. (절대 ∼않다)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="never" />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="5">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>형용사</span></li><li><span class="ans-num">2.</span> <span>slow</span></li><li><span class="ans-num">3.</span> <span>happily</span></li><li><span class="ans-num">4.</span> <span>well</span></li><li><span class="ans-num">5.</span> <span>fast (형용사·부사 동일)</span></li><li><span class="ans-num">6.</span> <span>She is sometimes late.</span></li><li><span class="ans-num">7.</span> <span>I often play the piano.</span></li><li><span class="ans-num">8.</span> <span>beautifully</span></li><li><span class="ans-num">9.</span> <span>He speaks English well.</span></li><li><span class="ans-num">10.</span> <span>never</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-6">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 06</div>
+        <h2 class="unit-title">현재진행형 (be동사 + 동사ing)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>지금 현재 일어나고 있는 일을 표현하는 현재진행형을 만들 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 현재진행형이란?</h3><p class="para">현재진행형은 '지금 ∼하고 있는 중이다'라는 뜻이에요. 말하는 바로 이 순간에 일어나고 있는 동작을 나타내요.</p><p class="para">기본 형태: 주어 + be동사(am/are/is) + 동사ing</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I am studying English now. (나는 지금 영어를 공부하고 있다.)</span></li><li><span class="example-arrow">▸</span><span>She is reading a book. (그녀는 책을 읽고 있다.)</span></li><li><span class="example-arrow">▸</span><span>They are playing soccer. (그들은 축구를 하고 있다.)</span></li></ul></section><section class="section"><h3 class="section-heading">2. 동사ing 만드는 규칙</h3><div class="table-wrap"><table><thead><tr><th>규칙</th><th>예시</th></tr></thead><tbody><tr><td>대부분 동사 + ing</td><td>play → playing, eat → eating, read → reading</td></tr><tr><td>e로 끝나는 동사: e 빼고 + ing</td><td>make → making, write → writing, come → coming</td></tr><tr><td>[단모음 + 단자음]은 자음 한 번 더 + ing</td><td>run → running, swim → swimming, sit → sitting, stop → stopping</td></tr><tr><td>ie로 끝나는 동사: ie → y + ing</td><td>lie → lying, die → dying, tie → tying</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 부정문과 의문문</h3><p class="para">부정문은 be동사 뒤에 not만 붙이면 돼요. (be동사 부정문과 똑같아요!)</p><p class="para">의문문도 마찬가지로 be동사를 주어 앞으로 옮기면 끝!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>부정문: She is not sleeping. (그녀는 자고 있지 않다.)</span></li><li><span class="example-arrow">▸</span><span>부정문: They aren't watching TV. (그들은 TV를 보고 있지 않다.)</span></li><li><span class="example-arrow">▸</span><span>의문문: Are you eating lunch? - Yes, I am. / No, I'm not.</span></li><li><span class="example-arrow">▸</span><span>의문문: Is he running? - Yes, he is. / No, he isn't.</span></li></ul></section><section class="section"><h3 class="section-heading">4. 현재형 vs 현재진행형</h3><p class="para">두 시제는 다르게 쓰여요!</p><p class="para">현재형 → 평소·습관·일반적 사실 (I play soccer every day. 나는 매일 축구한다.)</p><p class="para">현재진행형 → 지금 이 순간 일어나는 일 (I am playing soccer now. 나는 지금 축구하고 있다.)</p></section><section class="section"><h3 class="section-heading">5. 진행형으로 쓸 수 없는 동사</h3><p class="para">감정, 상태, 소유, 인식을 나타내는 동사는 진행형으로 잘 쓰지 않아요.</p><p class="para">예: like(좋아하다), love(사랑하다), know(알다), have(가지다, ※ '먹다' 의미일 때는 진행형 가능), want(원하다), believe(믿다)</p><p class="para">❌ I am liking you. → ⭕ I like you.</p></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>현재진행형 = be동사(am/are/is) + 동사ing</span></li><li><span class="check">✓</span><span>ing 만들 때: e 빼기, 자음 한 번 더, ie → ying 규칙 주의!</span></li><li><span class="check">✓</span><span>부정문·의문문은 be동사 규칙과 동일</span></li><li><span class="check">✓</span><span>감정·상태 동사(like, know, love)는 진행형 X</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. ing형: run →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="running" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. ing형: write →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="writing" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. ing형: lie →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="lying" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. ing형: study →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="studying" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. 빈칸: She ___ ___ (read) a book now.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="is reading" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 빈칸: They ___ ___ (play) basketball.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="are playing" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 부정문으로: He is sleeping.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="He is not (isn't) sleeping." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 의문문으로: You are listening to music.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Are you listening to music?" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분: I am liking pizza.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I like pizza. (감정 동사는 진행형 X)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 우리말로 영작: 그는 지금 영어를 공부하고 있다.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="He is studying English now." />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="6">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>running</span></li><li><span class="ans-num">2.</span> <span>writing</span></li><li><span class="ans-num">3.</span> <span>lying</span></li><li><span class="ans-num">4.</span> <span>studying</span></li><li><span class="ans-num">5.</span> <span>is reading</span></li><li><span class="ans-num">6.</span> <span>are playing</span></li><li><span class="ans-num">7.</span> <span>He is not (isn't) sleeping.</span></li><li><span class="ans-num">8.</span> <span>Are you listening to music?</span></li><li><span class="ans-num">9.</span> <span>I like pizza. (감정 동사는 진행형 X)</span></li><li><span class="ans-num">10.</span> <span>He is studying English now.</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-7">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 07</div>
+        <h2 class="unit-title">과거시제 (be동사 / 일반동사)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>과거에 일어난 일을 표현하는 be동사 과거형(was/were)과 일반동사 과거형을 익힌다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 과거시제란?</h3><p class="para">과거시제는 '∼였다, ∼했다'처럼 이미 지난 일을 나타낼 때 써요. 어제, 지난주, 작년 같은 표현과 잘 어울려요.</p><p class="para">자주 함께 쓰는 표현: yesterday(어제), last night/week/year(지난밤/주/해), ago(∼전), then(그때)</p></section><section class="section"><h3 class="section-heading">2. be동사의 과거형: was / were</h3><p class="para">be동사의 과거형은 was와 were 두 가지뿐이에요. 외우기 쉽죠!</p><div class="table-wrap"><table><thead><tr><th>주어</th><th>현재형</th><th>과거형</th></tr></thead><tbody><tr><td>I</td><td>am</td><td>was</td></tr><tr><td>He / She / It / 단수명사</td><td>is</td><td>was</td></tr><tr><td>You / We / They / 복수명사</td><td>are</td><td>were</td></tr></tbody></table></div><ul class="example-list"><li><span class="example-arrow">▸</span><span>I was tired yesterday. (나는 어제 피곤했다.)</span></li><li><span class="example-arrow">▸</span><span>She was a doctor. (그녀는 의사였다.)</span></li><li><span class="example-arrow">▸</span><span>They were in Busan last week. (그들은 지난주에 부산에 있었다.)</span></li><li><span class="example-arrow">▸</span><span>부정문: He was not (wasn't) at home.</span></li><li><span class="example-arrow">▸</span><span>의문문: Were you busy yesterday? - Yes, I was. / No, I wasn't.</span></li></ul></section><section class="section"><h3 class="section-heading">3. 일반동사의 과거형 - 규칙 변화</h3><div class="table-wrap"><table><thead><tr><th>규칙</th><th>예시</th></tr></thead><tbody><tr><td>대부분 동사 + ed</td><td>play → played, walk → walked, want → wanted</td></tr><tr><td>e로 끝나면 + d</td><td>like → liked, live → lived, love → loved</td></tr><tr><td>자음 + y로 끝나면 y → ied</td><td>study → studied, cry → cried, try → tried</td></tr><tr><td>[단모음 + 단자음]은 자음 한 번 더 + ed</td><td>stop → stopped, plan → planned</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">4. 일반동사의 과거형 - 불규칙 변화 (꼭 외우기!)</h3><div class="table-wrap"><table><thead><tr><th>원형</th><th>과거형</th><th>뜻</th></tr></thead><tbody><tr><td>go</td><td>went</td><td>가다</td></tr><tr><td>come</td><td>came</td><td>오다</td></tr><tr><td>eat</td><td>ate</td><td>먹다</td></tr><tr><td>have</td><td>had</td><td>가지다</td></tr><tr><td>see</td><td>saw</td><td>보다</td></tr><tr><td>do</td><td>did</td><td>하다</td></tr><tr><td>get</td><td>got</td><td>얻다</td></tr><tr><td>take</td><td>took</td><td>가져가다</td></tr><tr><td>make</td><td>made</td><td>만들다</td></tr><tr><td>read</td><td>read [red]</td><td>읽다 (모양 같음, 발음만 변함)</td></tr><tr><td>write</td><td>wrote</td><td>쓰다</td></tr><tr><td>buy</td><td>bought</td><td>사다</td></tr><tr><td>bring</td><td>brought</td><td>가져오다</td></tr><tr><td>think</td><td>thought</td><td>생각하다</td></tr><tr><td>know</td><td>knew</td><td>알다</td></tr><tr><td>say</td><td>said</td><td>말하다</td></tr><tr><td>tell</td><td>told</td><td>말해주다</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">5. 일반동사 과거형의 부정문/의문문</h3><p class="para">과거시제의 부정문과 의문문에는 did를 써요. did를 쓰면 본동사는 무조건 원형!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>부정문: I didn't go to school. (가지 않았다) ※ went가 아닌 go!</span></li><li><span class="example-arrow">▸</span><span>부정문: She didn't eat dinner. ※ ate가 아닌 eat!</span></li><li><span class="example-arrow">▸</span><span>의문문: Did you watch the movie? - Yes, I did. / No, I didn't.</span></li><li><span class="example-arrow">▸</span><span>의문문: Did he study English? ※ studied가 아닌 study!</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>be동사 과거: am/is → was, are → were</span></li><li><span class="check">✓</span><span>일반동사 규칙: + ed (단, y → ied, 자음 중복 주의)</span></li><li><span class="check">✓</span><span>불규칙 동사는 외워야 해요! (go-went, eat-ate, see-saw)</span></li><li><span class="check">✓</span><span>didn't / Did 뒤에는 동사원형!</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 과거형: play →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="played" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. 과거형: study →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="studied" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. 과거형: stop →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="stopped" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. 과거형: go →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="went" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. 과거형: eat →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="ate" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 과거형: have →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="had" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 빈칸: She ___ tired yesterday. (be동사)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="was" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 부정문: I went to school. → I ___ ___ ___ school.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="didn't go to" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 의문문으로: He saw the movie.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Did he see the movie?" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 잘못된 부분 고치기: She didn't went home.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She didn't go home." />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="7">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>played</span></li><li><span class="ans-num">2.</span> <span>studied</span></li><li><span class="ans-num">3.</span> <span>stopped</span></li><li><span class="ans-num">4.</span> <span>went</span></li><li><span class="ans-num">5.</span> <span>ate</span></li><li><span class="ans-num">6.</span> <span>had</span></li><li><span class="ans-num">7.</span> <span>was</span></li><li><span class="ans-num">8.</span> <span>didn't go to</span></li><li><span class="ans-num">9.</span> <span>Did he see the movie?</span></li><li><span class="ans-num">10.</span> <span>She didn't go home.</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-8">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 08</div>
+        <h2 class="unit-title">미래시제 (will / be going to)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>미래의 일을 나타내는 will과 be going to를 상황에 맞게 사용할 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 미래시제란?</h3><p class="para">미래시제는 '∼할 것이다'라는 뜻으로, 아직 일어나지 않은 일을 표현할 때 써요. 두 가지 방법이 있어요: will과 be going to.</p></section><section class="section"><h3 class="section-heading">2. will - 단순 미래, 즉흥적 결정</h3><p class="para">will은 가장 기본적인 미래 표현이에요. 형태는 '주어 + will + 동사원형'이에요.</p><p class="para">주어가 무엇이든 will은 모양이 변하지 않아요! 그리고 will 뒤에는 항상 동사원형!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I will go to Seoul tomorrow. (나는 내일 서울에 갈 것이다.)</span></li><li><span class="example-arrow">▸</span><span>She will be 14 next year. (그녀는 내년에 14살이 될 것이다.)</span></li><li><span class="example-arrow">▸</span><span>축약형: I will = I'll, You will = You'll, He will = He'll, We will = We'll</span></li><li><span class="example-arrow">▸</span><span>부정형: will not = won't (※ wo로 시작!)</span></li></ul></section><section class="section"><h3 class="section-heading">3. will의 부정문과 의문문</h3><ul class="example-list"><li><span class="example-arrow">▸</span><span>부정문: I will not go. = I won't go. (가지 않을 것이다.)</span></li><li><span class="example-arrow">▸</span><span>의문문: Will you help me? - Yes, I will. / No, I won't.</span></li><li><span class="example-arrow">▸</span><span>의문문: Will it rain tomorrow? - Yes, it will. / No, it won't.</span></li></ul></section><section class="section"><h3 class="section-heading">4. be going to - 미리 정해둔 계획</h3><p class="para">be going to는 '이미 마음 먹은 일, 미리 계획한 일'을 말할 때 써요.</p><p class="para">형태: 주어 + be동사(am/are/is) + going to + 동사원형</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I am going to visit my grandma this weekend. (이번 주말에 할머니 댁에 갈 거야.) - 미리 계획</span></li><li><span class="example-arrow">▸</span><span>She is going to study abroad. (그녀는 유학을 갈 것이다.) - 계획</span></li><li><span class="example-arrow">▸</span><span>We are going to have a party. (우리는 파티를 열 거야.) - 계획</span></li><li><span class="example-arrow">▸</span><span>부정문: He isn't going to come.</span></li><li><span class="example-arrow">▸</span><span>의문문: Are you going to play tennis?</span></li></ul></section><section class="section"><h3 class="section-heading">5. will과 be going to의 차이</h3><div class="table-wrap"><table><thead><tr><th>구분</th><th>will</th><th>be going to</th></tr></thead><tbody><tr><td>주된 의미</td><td>단순 미래, 그 자리에서 결정</td><td>이미 계획된 일</td></tr><tr><td>예시 상황</td><td>전화벨이 울리는 순간 'I'll get it!'</td><td>어제부터 결심한 일 'I'm going to learn Spanish.'</td></tr><tr><td>뉘앙스</td><td>즉흥적, 의지</td><td>준비된 계획</td></tr></tbody></table></div></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>will + 동사원형 (주어와 상관없이 모양 그대로)</span></li><li><span class="check">✓</span><span>be going to + 동사원형 (be동사는 주어에 맞춰서)</span></li><li><span class="check">✓</span><span>won't = will not (축약형 주의!)</span></li><li><span class="check">✓</span><span>will: 즉흥적 / be going to: 계획된</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 빈칸: I ___ call you later. (will)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="will" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. She ___ study tonight. (will)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="will study" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. They ___ ___ ___ play soccer tomorrow. (be going to)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="are going to" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. He ___ ___ ___ visit Jeju this summer.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="is going to" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. 부정문으로: I will eat lunch. → I ___ eat lunch.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="won't" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 의문문으로: It will rain. → ___ ___ rain?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Will it" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 잘못된 부분: She will plays the piano.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She will play the piano." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 잘못된 부분: We are going to played soccer.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="We are going to play soccer." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 영작: 나는 내일 공부할 거야. (will)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I will study tomorrow." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 영작: 우리는 영화를 볼 계획이다. (be going to)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="We are going to watch a movie." />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="8">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>will</span></li><li><span class="ans-num">2.</span> <span>will study</span></li><li><span class="ans-num">3.</span> <span>are going to</span></li><li><span class="ans-num">4.</span> <span>is going to</span></li><li><span class="ans-num">5.</span> <span>won't</span></li><li><span class="ans-num">6.</span> <span>Will it</span></li><li><span class="ans-num">7.</span> <span>She will play the piano.</span></li><li><span class="ans-num">8.</span> <span>We are going to play soccer.</span></li><li><span class="ans-num">9.</span> <span>I will study tomorrow.</span></li><li><span class="ans-num">10.</span> <span>We are going to watch a movie.</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-9">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 09</div>
+        <h2 class="unit-title">조동사 (can / must / should / may)</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>능력, 허락, 의무, 추측 등을 표현하는 조동사를 상황에 맞게 사용할 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 조동사란?</h3><p class="para">조동사는 동사를 도와주는 동사예요. 동사에 '능력, 허가, 의무, 가능성' 같은 뜻을 더해주죠.</p><p class="para">조동사의 공통 규칙: ① 조동사 뒤에는 무조건 동사원형 ② 주어가 3인칭 단수여도 -s를 붙이지 않음 ③ 조동사 두 개를 같이 쓸 수 없음</p></section><section class="section"><h3 class="section-heading">2. can - 할 수 있다 / 해도 된다</h3><p class="para">can은 '능력(∼할 수 있다)'과 '허가(∼해도 된다)' 두 가지 뜻이 있어요.</p><p class="para">부정형: cannot = can't</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I can swim. (나는 수영할 수 있다.) - 능력</span></li><li><span class="example-arrow">▸</span><span>She can speak three languages. (그녀는 3개 언어를 할 수 있다.) - 능력</span></li><li><span class="example-arrow">▸</span><span>Can I open the window? (창문 열어도 돼요?) - 허가</span></li><li><span class="example-arrow">▸</span><span>You can sit here. (여기 앉아도 됩니다.) - 허가</span></li></ul></section><section class="section"><h3 class="section-heading">3. must / have to - 반드시 ∼해야 한다</h3><p class="para">must와 have to는 '의무'를 나타내요. 둘 다 '∼해야 한다'로 해석되지만 미세한 차이가 있어요.</p><p class="para">must: 강한 의무, 명령에 가까움 / have to: 일반적인 의무 (3인칭 단수면 has to)</p><p class="para">부정형 주의! must not(절대 ∼하면 안 된다, 금지)과 don't have to(∼할 필요 없다)는 뜻이 완전히 달라요!</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>You must wear a helmet. (헬멧을 반드시 써야 한다.)</span></li><li><span class="example-arrow">▸</span><span>She has to study hard. (그녀는 열심히 공부해야 한다.)</span></li><li><span class="example-arrow">▸</span><span>You must not run here. (여기서 뛰면 절대 안 된다.) - 금지</span></li><li><span class="example-arrow">▸</span><span>You don't have to come. (올 필요 없다.) - 불필요</span></li></ul></section><section class="section"><h3 class="section-heading">4. should - ∼하는 게 좋겠다 (충고)</h3><p class="para">should는 '∼하는 게 좋겠다, ∼해야 한다'는 뜻으로, 상대방에게 충고하거나 권유할 때 써요. must보다 약한 의무예요.</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>You should drink more water. (물을 더 마시는 게 좋겠어.)</span></li><li><span class="example-arrow">▸</span><span>You should not stay up late. = You shouldn't stay up late. (늦게까지 깨어 있지 않는 게 좋아.)</span></li><li><span class="example-arrow">▸</span><span>Should I call him? (그에게 전화해야 할까?)</span></li></ul></section><section class="section"><h3 class="section-heading">5. may - ∼해도 된다 / ∼일지도 모른다</h3><p class="para">may는 '허가(∼해도 된다, can보다 정중함)'와 '약한 추측(∼일지도 모른다)'을 나타내요.</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>May I come in? (들어가도 될까요?) - 정중한 허가 요청</span></li><li><span class="example-arrow">▸</span><span>You may use my pen. (제 펜 쓰셔도 돼요.) - 허가</span></li><li><span class="example-arrow">▸</span><span>It may rain tomorrow. (내일 비가 올지도 몰라.) - 추측</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>조동사 + 동사원형 (절대 -s 붙이지 않기!)</span></li><li><span class="check">✓</span><span>can = 할 수 있다 / 해도 된다</span></li><li><span class="check">✓</span><span>must = 반드시 해야 한다 (강한 의무)</span></li><li><span class="check">✓</span><span>should = 하는 게 좋겠다 (충고)</span></li><li><span class="check">✓</span><span>may = 해도 된다 (정중) / 일지도 모른다 (추측)</span></li><li><span class="check">✓</span><span>must not (금지) ≠ don't have to (불필요)</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 빈칸: I ___ play the piano. (할 수 있다)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="can" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. You ___ wear a seatbelt. (반드시)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="must (또는 have to)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. You ___ exercise every day. (∼하는 게 좋다)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="should" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. ___ I borrow your book? (정중히 허가)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="May" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. She ___ speak Chinese. (3인칭 단수, 능력)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="can" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 잘못된 부분: He cans swim well.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="He can swim well." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 잘못된 부분: You must to study hard.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="You must study hard." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 부정형: I should sleep late. → I ___ sleep late.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="shouldn't" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 의미 차이: You must not eat. / You don't have to eat.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="must not = 먹으면 안 된다 (금지) / don't have to = 먹을 필요 없다 (불필요)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 영작: 비가 올지도 몰라. (may)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="It may rain." />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="9">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>can</span></li><li><span class="ans-num">2.</span> <span>must (또는 have to)</span></li><li><span class="ans-num">3.</span> <span>should</span></li><li><span class="ans-num">4.</span> <span>May</span></li><li><span class="ans-num">5.</span> <span>can</span></li><li><span class="ans-num">6.</span> <span>He can swim well.</span></li><li><span class="ans-num">7.</span> <span>You must study hard.</span></li><li><span class="ans-num">8.</span> <span>shouldn't</span></li><li><span class="ans-num">9.</span> <span>must not = 먹으면 안 된다 (금지) / don't have to = 먹을 필요 없다 (불필요)</span></li><li><span class="ans-num">10.</span> <span>It may rain.</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-10">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 10</div>
+        <h2 class="unit-title">비교급과 최상급</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>둘을 비교하는 비교급과 셋 이상에서 최고를 나타내는 최상급을 만들 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 비교급이란?</h3><p class="para">비교급은 두 대상을 비교할 때 써요. '∼보다 더 ∼한'이라는 뜻이에요.</p><p class="para">기본 형태: 비교급 + than (∼보다 더 ∼한)</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>I am taller than my brother. (나는 내 동생보다 키가 더 크다.)</span></li><li><span class="example-arrow">▸</span><span>This book is more interesting than that one. (이 책이 저 책보다 더 재미있다.)</span></li></ul></section><section class="section"><h3 class="section-heading">2. 최상급이란?</h3><p class="para">최상급은 세 개 이상 중에서 '가장 ∼한'을 나타내요.</p><p class="para">기본 형태: the + 최상급 (가장 ∼한)</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>She is the tallest in our class. (그녀가 우리 반에서 가장 키가 크다.)</span></li><li><span class="example-arrow">▸</span><span>Mt. Everest is the highest mountain in the world. (에베레스트는 세계에서 가장 높은 산이다.)</span></li></ul></section><section class="section"><h3 class="section-heading">3. 비교급/최상급 만드는 규칙</h3><div class="table-wrap"><table><thead><tr><th>규칙</th><th>원급</th><th>비교급</th><th>최상급</th></tr></thead><tbody><tr><td>대부분 + er / + est</td><td>tall (키 큰)</td><td>taller</td><td>tallest</td></tr><tr><td></td><td>fast (빠른)</td><td>faster</td><td>fastest</td></tr><tr><td>e로 끝나면 + r / + st</td><td>large (큰)</td><td>larger</td><td>largest</td></tr><tr><td></td><td>nice (좋은)</td><td>nicer</td><td>nicest</td></tr><tr><td>자음 + y → i + er/est</td><td>happy (행복한)</td><td>happier</td><td>happiest</td></tr><tr><td></td><td>easy (쉬운)</td><td>easier</td><td>easiest</td></tr><tr><td>[단모음+단자음] 자음 중복</td><td>big (큰)</td><td>bigger</td><td>biggest</td></tr><tr><td></td><td>hot (뜨거운)</td><td>hotter</td><td>hottest</td></tr><tr><td>3음절 이상이거나 ly로 끝나면 more / most</td><td>beautiful</td><td>more beautiful</td><td>most beautiful</td></tr><tr><td></td><td>important</td><td>more important</td><td>most important</td></tr><tr><td></td><td>slowly</td><td>more slowly</td><td>most slowly</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">4. 불규칙 변화 (꼭 외우기!)</h3><div class="table-wrap"><table><thead><tr><th>원급</th><th>비교급</th><th>최상급</th><th>뜻</th></tr></thead><tbody><tr><td>good / well</td><td>better</td><td>best</td><td>좋은 / 잘</td></tr><tr><td>bad / ill</td><td>worse</td><td>worst</td><td>나쁜 / 아픈</td></tr><tr><td>many / much</td><td>more</td><td>most</td><td>많은</td></tr><tr><td>little</td><td>less</td><td>least</td><td>적은</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">5. 비교급을 강조하는 표현</h3><p class="para">'훨씬 더 ∼한'이라고 강조하고 싶을 때는 비교급 앞에 much, far, a lot, even을 붙여요.</p><p class="para">주의: very는 비교급을 강조할 수 없어요! (very taller X)</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>He is much taller than me. (그는 나보다 훨씬 더 키가 크다.)</span></li><li><span class="example-arrow">▸</span><span>This is far better. (이게 훨씬 더 낫다.)</span></li></ul></section><section class="section"><h3 class="section-heading">6. 동등 비교 (as ∼ as)</h3><p class="para">두 대상이 똑같을 때는 'as + 원급 + as'를 써요. '∼만큼 ∼한'이라는 뜻이에요.</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>She is as tall as her sister. (그녀는 언니만큼 키가 크다.)</span></li><li><span class="example-arrow">▸</span><span>This book is as interesting as that one. (이 책은 저 책만큼 재미있다.)</span></li><li><span class="example-arrow">▸</span><span>부정: Today is not as cold as yesterday. (오늘은 어제만큼 춥지 않다.)</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>짧은 형용사: + er / + est</span></li><li><span class="check">✓</span><span>긴 형용사 (3음절↑): more / most</span></li><li><span class="check">✓</span><span>불규칙: good-better-best, bad-worse-worst</span></li><li><span class="check">✓</span><span>비교급 강조는 much/far (very 사용 X)</span></li><li><span class="check">✓</span><span>as + 원급 + as = ∼만큼 ∼한</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 비교급: tall →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="taller" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. 최상급: big →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="biggest" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. 비교급: happy →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="happier" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. 비교급: beautiful →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="more beautiful" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. 비교급: good →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="better" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 최상급: bad →</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="worst" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 빈칸: My bag is ___ ___ yours. (more heavy / heavier)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="heavier than" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 빈칸: He is the ___ student in class. (smart, 최상급)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="smartest" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분: She is more taller than me.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She is taller than me. (more와 -er 같이 X)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 영작: 그녀는 나만큼 빠르다. (as ∼ as 사용)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She is as fast as me. (또는 as I am)" />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="10">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>taller</span></li><li><span class="ans-num">2.</span> <span>biggest</span></li><li><span class="ans-num">3.</span> <span>happier</span></li><li><span class="ans-num">4.</span> <span>more beautiful</span></li><li><span class="ans-num">5.</span> <span>better</span></li><li><span class="ans-num">6.</span> <span>worst</span></li><li><span class="ans-num">7.</span> <span>heavier than</span></li><li><span class="ans-num">8.</span> <span>smartest</span></li><li><span class="ans-num">9.</span> <span>She is taller than me. (more와 -er 같이 X)</span></li><li><span class="ans-num">10.</span> <span>She is as fast as me. (또는 as I am)</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-11">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 11</div>
+        <h2 class="unit-title">to부정사와 동명사</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>to부정사와 동명사의 형태와 쓰임을 이해하고, 적절히 사용할 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. to부정사란?</h3><p class="para">to부정사는 'to + 동사원형' 형태로, 동사인데 동사가 아닌 다른 역할(명사, 형용사, 부사)을 해요.</p><p class="para">예: to play, to study, to eat, to go</p></section><section class="section"><h3 class="section-heading">2. to부정사의 3가지 쓰임</h3><p class="para">① 명사 역할 - '∼하는 것, ∼하기' (주어, 목적어, 보어)</p><p class="para">② 형용사 역할 - '∼할' (앞의 명사를 꾸밈)</p><p class="para">③ 부사 역할 - '∼하기 위해'(목적), '∼해서'(감정의 원인) 등</p><div class="table-wrap"><table><thead><tr><th>역할</th><th>예문</th><th>해석</th></tr></thead><tbody><tr><td>명사 (주어)</td><td>To learn English is fun.</td><td>영어를 배우는 것은 재미있다.</td></tr><tr><td>명사 (목적어)</td><td>I want to go home.</td><td>나는 집에 가기를 원한다.</td></tr><tr><td>형용사</td><td>I have a lot of homework to do.</td><td>할 숙제가 많다.</td></tr><tr><td>부사 (목적)</td><td>I went to the store to buy milk.</td><td>우유를 사기 위해 가게에 갔다.</td></tr><tr><td>부사 (감정 원인)</td><td>I am happy to see you.</td><td>널 만나서 기쁘다.</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 동명사란?</h3><p class="para">동명사는 '동사ing' 형태가 명사 역할을 하는 거예요. '∼하는 것, ∼하기'로 해석돼요.</p><p class="para">현재진행형(be + ing)과 모양은 같지만, 역할이 명사라는 점이 달라요.</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>Swimming is fun. (수영하는 것은 재미있다.) - 주어</span></li><li><span class="example-arrow">▸</span><span>I like reading books. (나는 독서를 좋아한다.) - 목적어</span></li><li><span class="example-arrow">▸</span><span>My hobby is playing the guitar. (내 취미는 기타 치기이다.) - 보어</span></li></ul></section><section class="section"><h3 class="section-heading">4. to부정사만 쓰는 동사 / 동명사만 쓰는 동사</h3><p class="para">어떤 동사 뒤에는 to부정사만 오고, 어떤 동사 뒤에는 동명사만 와요. 외워야 해요!</p><div class="table-wrap"><table><thead><tr><th>to부정사만 (∼할 것을)</th><th>동명사만 (∼한 것을, 진행 중)</th><th>둘 다 가능</th></tr></thead><tbody><tr><td>want, hope, plan, decide, promise, agree, expect, would like</td><td>enjoy, finish, mind, give up, avoid, keep, practice</td><td>like, love, hate, start, begin, prefer</td></tr></tbody></table></div><ul class="example-list"><li><span class="example-arrow">▸</span><span>I want to play soccer. ⭕ (want + to부정사)</span></li><li><span class="example-arrow">▸</span><span>I want playing soccer. ❌</span></li><li><span class="example-arrow">▸</span><span>I enjoy playing soccer. ⭕ (enjoy + 동명사)</span></li><li><span class="example-arrow">▸</span><span>I enjoy to play soccer. ❌</span></li><li><span class="example-arrow">▸</span><span>I like to swim. = I like swimming. ⭕ (like는 둘 다 가능)</span></li></ul></section><section class="section"><h3 class="section-heading">5. 자주 쓰는 표현 (꼭 외우기!)</h3><p class="para">want to + 동사원형: ∼하고 싶다</p><p class="para">would like to + 동사원형: ∼하고 싶다 (정중)</p><p class="para">be good at + ing: ∼을 잘하다</p><p class="para">be interested in + ing: ∼에 관심 있다</p><p class="para">How about + ing?: ∼하는 게 어때?</p><p class="para">Thank you for + ing: ∼해주셔서 감사합니다</p><p class="para">go + ing: ∼하러 가다 (go shopping, go fishing, go swimming)</p></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>to부정사 = to + 동사원형 (명사·형용사·부사 역할)</span></li><li><span class="check">✓</span><span>동명사 = 동사ing (명사 역할만)</span></li><li><span class="check">✓</span><span>want, plan, decide → to부정사만</span></li><li><span class="check">✓</span><span>enjoy, finish, mind → 동명사만</span></li><li><span class="check">✓</span><span>전치사(at, in, for, of) 뒤에는 동명사!</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. I want ___ (go) to the park.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="to go" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. She enjoys ___ (read) novels.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="reading" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. ___ (Learn) a new language is hard.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Learning (또는 To learn)" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. He decided ___ (study) abroad.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="to study" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. We finished ___ (do) our homework.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="doing" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. I'm good at ___ (sing).</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="singing" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. Thank you for ___ (help) me.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="helping" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. How about ___ (eat) pizza tonight?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="eating" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 잘못된 부분: I enjoy to play games.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I enjoy playing games." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 영작: 나는 영어 공부하러 도서관에 갔다. (to부정사 부사용법)</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="I went to the library to study English." />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="11">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>to go</span></li><li><span class="ans-num">2.</span> <span>reading</span></li><li><span class="ans-num">3.</span> <span>Learning (또는 To learn)</span></li><li><span class="ans-num">4.</span> <span>to study</span></li><li><span class="ans-num">5.</span> <span>doing</span></li><li><span class="ans-num">6.</span> <span>singing</span></li><li><span class="ans-num">7.</span> <span>helping</span></li><li><span class="ans-num">8.</span> <span>eating</span></li><li><span class="ans-num">9.</span> <span>I enjoy playing games.</span></li><li><span class="ans-num">10.</span> <span>I went to the library to study English.</span></li></ol>
+        </details>
+      </div>
+    </article>
+    <article class="unit" id="unit-12">
+      <header class="unit-header">
+        <div class="unit-tag">Unit 12</div>
+        <h2 class="unit-title">의문문과 부정문</h2>
+        <div class="unit-goal">
+          <span class="goal-label">🎯 학습 목표</span>
+          <span>be동사·일반동사·조동사 의문문과 부정문, 그리고 의문사를 활용한 의문문을 자유롭게 만들 수 있다.</span>
+        </div>
+      </header>
+
+      <div class="unit-body">
+        <section class="section"><h3 class="section-heading">1. 부정문 만드는 법 정리</h3><p class="para">지금까지 배운 부정문을 한 번에 정리해 볼까요?</p><div class="table-wrap"><table><thead><tr><th>종류</th><th>공식</th><th>예시</th></tr></thead><tbody><tr><td>be동사</td><td>be동사 + not</td><td>She is not (isn't) hungry.</td></tr><tr><td>일반동사 현재</td><td>do/does + not + 동사원형</td><td>He doesn't like coffee.</td></tr><tr><td>일반동사 과거</td><td>did + not + 동사원형</td><td>I didn't go there.</td></tr><tr><td>조동사</td><td>조동사 + not + 동사원형</td><td>You should not (shouldn't) run.</td></tr><tr><td>미래</td><td>will + not + 동사원형</td><td>I will not (won't) be late.</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">2. 의문문 만드는 법 정리</h3><div class="table-wrap"><table><thead><tr><th>종류</th><th>공식</th><th>예시</th></tr></thead><tbody><tr><td>be동사</td><td>be동사 + 주어 ∼?</td><td>Are you tired?</td></tr><tr><td>일반동사 현재</td><td>Do/Does + 주어 + 동사원형 ∼?</td><td>Does he play tennis?</td></tr><tr><td>일반동사 과거</td><td>Did + 주어 + 동사원형 ∼?</td><td>Did you eat lunch?</td></tr><tr><td>조동사</td><td>조동사 + 주어 + 동사원형 ∼?</td><td>Can you swim?</td></tr><tr><td>미래</td><td>Will + 주어 + 동사원형 ∼?</td><td>Will it rain?</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">3. 의문사 의문문 (5W1H)</h3><p class="para">Yes/No로 답할 수 없는 질문을 할 때는 의문사를 써요. 의문사는 항상 문장 맨 앞!</p><p class="para">공식: 의문사 + 의문문 어순</p><div class="table-wrap"><table><thead><tr><th>의문사</th><th>뜻</th><th>예문</th></tr></thead><tbody><tr><td>What</td><td>무엇</td><td>What is your name? / What do you want?</td></tr><tr><td>Who</td><td>누구</td><td>Who is she? / Who broke the window?</td></tr><tr><td>When</td><td>언제</td><td>When is your birthday? / When did you come?</td></tr><tr><td>Where</td><td>어디</td><td>Where do you live? / Where is the bag?</td></tr><tr><td>Why</td><td>왜</td><td>Why are you late? / Why did he cry?</td></tr><tr><td>How</td><td>어떻게</td><td>How are you? / How do you go to school?</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">4. How의 친구들 (How + 형용사/부사)</h3><p class="para">How는 다른 단어와 짝을 이뤄서 다양한 질문을 만들어요.</p><div class="table-wrap"><table><thead><tr><th>표현</th><th>뜻</th><th>예문</th></tr></thead><tbody><tr><td>How old</td><td>몇 살</td><td>How old are you? - I'm 14.</td></tr><tr><td>How tall</td><td>얼마나 키가 큰</td><td>How tall is he? - He's 170cm.</td></tr><tr><td>How many + 셀 수 있는 명사</td><td>몇 개의</td><td>How many books do you have?</td></tr><tr><td>How much + 셀 수 없는 명사</td><td>얼마의 / 얼마</td><td>How much water? / How much is it?</td></tr><tr><td>How long</td><td>얼마나 오래/긴</td><td>How long is the bridge?</td></tr><tr><td>How often</td><td>얼마나 자주</td><td>How often do you exercise?</td></tr></tbody></table></div></section><section class="section"><h3 class="section-heading">5. 부가의문문 - 그렇지?</h3><p class="para">문장 끝에 '그렇지?, 안 그래?'라고 확인할 때 쓰는 짧은 의문문이에요.</p><p class="para">규칙: 앞이 긍정이면 부가의문문은 부정 / 앞이 부정이면 부가의문문은 긍정</p><p class="para">동사도 앞 문장에 맞춰서: be동사 → be동사로 / 일반동사 → do/does/did로 / 조동사 → 조동사로</p><ul class="example-list"><li><span class="example-arrow">▸</span><span>You are tired, aren't you? (피곤하지, 그렇지?)</span></li><li><span class="example-arrow">▸</span><span>She isn't busy, is she? (바쁘지 않지, 그렇지?)</span></li><li><span class="example-arrow">▸</span><span>He plays soccer, doesn't he? (축구하지, 그렇지?)</span></li><li><span class="example-arrow">▸</span><span>You will come, won't you? (올 거지, 그렇지?)</span></li></ul></section>
+      <div class="tip-box">
+        <h3 class="tip-heading">💡 핵심 정리</h3>
+        <ul class="tip-list"><li><span class="check">✓</span><span>부정문은 동사에 따라 not 위치가 달라짐</span></li><li><span class="check">✓</span><span>의문문은 동사를 주어 앞으로!</span></li><li><span class="check">✓</span><span>의문사 + 의문문 어순 (의문사가 항상 맨 앞)</span></li><li><span class="check">✓</span><span>How many + 셀 수 있음 / How much + 셀 수 없음</span></li><li><span class="check">✓</span><span>부가의문문: 긍정↔부정 반대로!</span></li></ul>
+      </div>
+
+        <div class="exercises-block">
+          <h3 class="exercises-heading">✏️ 연습문제</h3>
+          <p class="exercises-hint">힌트: 답을 입력하고 Enter 또는 아래 버튼을 눌러 확인해보세요</p>
+          <div class="exercises-list">
+      <div class="exercise" data-idx="1">
+        <p class="exercise-q">1. 부정문으로: She is happy.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="She is not (isn't) happy." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="2">
+        <p class="exercise-q">2. 부정문으로: He plays the piano.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="He doesn't play the piano." />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="3">
+        <p class="exercise-q">3. 의문문으로: They went to school.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Did they go to school?" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="4">
+        <p class="exercise-q">4. 빈칸 (의문사): ___ is your favorite color?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="What" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="5">
+        <p class="exercise-q">5. 빈칸: ___ books do you have? - I have five.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="How many" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="6">
+        <p class="exercise-q">6. 빈칸: ___ water do you drink a day?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="How much" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="7">
+        <p class="exercise-q">7. 빈칸: ___ are you late? - Because I missed the bus.</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Why" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="8">
+        <p class="exercise-q">8. 부가의문문: You are a student, ___?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="aren't you" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="9">
+        <p class="exercise-q">9. 부가의문문: He doesn't like fish, ___?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="does he" />
+        <div class="exercise-feedback"></div>
+      </div>
+      <div class="exercise" data-idx="10">
+        <p class="exercise-q">10. 잘못된 부분: Where you live?</p>
+        <input type="text" class="exercise-input" placeholder="여기에 답을 입력하세요" data-answer="Where do you live?" />
+        <div class="exercise-feedback"></div>
+      </div></div>
+          <button class="check-all-btn" data-unit="12">전체 정답 확인하기</button>
+        </div>
+
+        <details class="answers-block">
+          <summary>📝 정답 보기</summary>
+          <ol class="answers-list"><li><span class="ans-num">1.</span> <span>She is not (isn't) happy.</span></li><li><span class="ans-num">2.</span> <span>He doesn't play the piano.</span></li><li><span class="ans-num">3.</span> <span>Did they go to school?</span></li><li><span class="ans-num">4.</span> <span>What</span></li><li><span class="ans-num">5.</span> <span>How many</span></li><li><span class="ans-num">6.</span> <span>How much</span></li><li><span class="ans-num">7.</span> <span>Why</span></li><li><span class="ans-num">8.</span> <span>aren't you</span></li><li><span class="ans-num">9.</span> <span>does he</span></li><li><span class="ans-num">10.</span> <span>Where do you live?</span></li></ol>
+        </details>
+      </div>
+    </article>
+
+    
+    <article class="cheatsheet" id="cheatsheet">
+      <header class="unit-header cheatsheet-header">
+        <div class="unit-tag">Bonus</div>
+        <h2 class="unit-title">📌 한눈에 보는 문법 치트시트</h2>
+        <div class="unit-goal">
+          <span class="goal-label">📌 활용</span>
+          <span>시험 직전 5분 만에 핵심을 훑어보세요</span>
+        </div>
+      </header>
+      <div class="cheatsheet-grid">
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 be동사 한 방 정리</h3>
+        <ul class="cheat-card-list"><li>I am / You·We·They are / He·She·It is</li><li>과거: am·is → was, are → were</li><li>부정문: be동사 + not</li><li>의문문: be동사를 주어 앞으로</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 일반동사 한 방 정리</h3>
+        <ul class="cheat-card-list"><li>현재형: 3인칭 단수 주어 + 동사 + s/es</li><li>과거형: 동사 + ed (불규칙은 외우기!)</li><li>부정문: don't / doesn't / didn't + 동사원형</li><li>의문문: Do / Does / Did + 주어 + 동사원형</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 시제 비교</h3>
+        <ul class="cheat-card-list"><li>현재: I play / He plays</li><li>현재진행: I am playing</li><li>과거: I played / He went</li><li>미래: I will play / I am going to play</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 조동사 정리</h3>
+        <ul class="cheat-card-list"><li>can: ∼할 수 있다 / ∼해도 된다</li><li>must: 반드시 ∼해야 한다</li><li>should: ∼하는 게 좋겠다</li><li>may: ∼해도 된다 / ∼일지도 모른다</li><li>※ 조동사 + 동사원형!</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 비교급·최상급 정리</h3>
+        <ul class="cheat-card-list"><li>짧은 형용사: -er / -est</li><li>긴 형용사 (3음절↑): more / most</li><li>불규칙: good-better-best, bad-worse-worst, many-more-most</li><li>동등비교: as + 원급 + as</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 to부정사 vs 동명사</h3>
+        <ul class="cheat-card-list"><li>want, hope, plan, decide → to + 동사원형</li><li>enjoy, finish, mind, avoid → 동사ing</li><li>like, love, start, begin → 둘 다 OK</li><li>전치사 뒤 → 동명사!</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 의문사 6총사</h3>
+        <ul class="cheat-card-list"><li>What (무엇) / Who (누구) / When (언제) / Where (어디) / Why (왜) / How (어떻게)</li><li>How many + 셀 수 있는 / How much + 셀 수 없는</li></ul>
+      </div>
+      <div class="cheat-card">
+        <h3 class="cheat-card-title">🔹 꼭 외워야 할 불규칙 동사 Top 15</h3>
+        <ul class="cheat-card-list"><li>go-went, come-came, eat-ate, have-had, see-saw, do-did, get-got, take-took, make-made, write-wrote, buy-bought, think-thought, know-knew, say-said, tell-told</li></ul>
+      </div></div>
+    </article>
+
+    <footer class="footer">
+      <p class="footer-quote">"꾸준히 공부하면 영어 실력은 반드시 늘어요."</p>
+      <p>중학교 1~2학년 영어 문법 교재 · 모든 단원 학습 완료를 응원합니다 🎉</p>
+    </footer>
+  </main>
+</div>
+
+<!-- Scroll to top button -->
+<button class="fab" id="fab" aria-label="맨 위로">↑</button>
+
+<script>
+  // === 정답 정규화 ===
+  const normalize = (s) => s.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,!?;:]/g, '');
+
+  const checkAnswer = (input) => {
+    const userAns = normalize(input.value);
+    const correctRaw = input.dataset.answer;
+    if (!userAns) return null;
+
+    // 정답에서 핵심 단어 추출 (괄호 안 설명 제외)
+    const cleanCorrect = correctRaw.split('(')[0].trim();
+    const correctParts = cleanCorrect.split(/[\/]|\s+또는\s+|=/).map(s => normalize(s));
+
+    return correctParts.some(part => part && (
+      userAns === part ||
+      userAns.includes(part) && part.length > 2 ||
+      part.includes(userAns) && userAns.length > 2
+    ));
+  };
+
+  document.querySelectorAll('.exercise-input').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const exercise = input.closest('.exercise');
+        const feedback = exercise.querySelector('.exercise-feedback');
+        const result = checkAnswer(input);
+        exercise.classList.remove('correct', 'wrong');
+        if (result === true) {
+          exercise.classList.add('correct');
+          feedback.textContent = '✅ 정답이에요!';
+        } else if (result === false) {
+          exercise.classList.add('wrong');
+          feedback.textContent = '❌ 다시 한번 생각해보세요. 정답은: ' + input.dataset.answer;
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll('.check-all-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const unit = btn.closest('.unit');
+      const inputs = unit.querySelectorAll('.exercise-input');
+      let correct = 0;
+      let total = 0;
+      inputs.forEach(input => {
+        const exercise = input.closest('.exercise');
+        const feedback = exercise.querySelector('.exercise-feedback');
+        if (input.value.trim()) {
+          total++;
+          const result = checkAnswer(input);
+          exercise.classList.remove('correct', 'wrong');
+          if (result === true) {
+            exercise.classList.add('correct');
+            feedback.textContent = '✅ 정답!';
+            correct++;
+          } else {
+            exercise.classList.add('wrong');
+            feedback.textContent = '❌ 정답: ' + input.dataset.answer;
+          }
+        }
+      });
+      if (total === 0) {
+        alert('답을 먼저 입력해 주세요! 📝');
+      } else {
+        alert(`${total}문제 중 ${correct}개 맞췄어요! (${Math.round(correct/total*100)}%)`);
+      }
+    });
+  });
+
+  // === 진행도 ===
+  const progressFill = document.getElementById('progress');
+  const progressText = document.getElementById('progressText');
+  const fab = document.getElementById('fab');
+
+  const updateProgress = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.min(100, Math.max(0, (scrollTop / docHeight) * 100));
+    progressFill.style.width = pct + '%';
+    progressText.textContent = Math.round(pct) + '%';
+
+    if (scrollTop > 400) fab.classList.add('visible');
+    else fab.classList.remove('visible');
+  };
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  fab.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // === 사이드바 active 표시 ===
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const sections = Array.from(document.querySelectorAll('.unit, .cheatsheet'));
+
+  const updateActive = () => {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 120) current = sec.id;
+    });
+    tocLinks.forEach(link => {
+      link.classList.toggle('active', link.dataset.target === current);
+    });
+  };
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // === 모바일 메뉴 ===
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+  document.querySelectorAll('.toc-list a').forEach(a => {
+    a.addEventListener('click', () => sidebar.classList.remove('open'));
+  });
+</script>
+
+</body>
+</html>
