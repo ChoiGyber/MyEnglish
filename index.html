@@ -1311,7 +1311,10 @@ const STATE_KEY = "grammarQuestStateV1";
 const defaultState = ()=>({
   level:1, xp:0, gold:0, streak:0, mute:false,
   stages:Array.from({length:12},()=>({stars:0,best:0,cleared:false})),
-  badges:{}
+  badges:{},
+  // 자주 틀리는 문제 기록 — key: "chapterId:qIdx", value: 누적 오답 횟수
+  // 정답을 맞히면 -1, 틀리면 +1 (음수가 되면 0). 1 이상인 항목은 복습 대상.
+  wrong:{}
 });
 let S = load();
 
@@ -1627,24 +1630,61 @@ document.getElementById("btnNext").onclick=()=>{
 document.getElementById("btnBackLesson").onclick=()=>{sndClick();show("screenWorld")};
 
 /* ---------- 퀴즈 엔진 ---------- */
-let quizState=null; // {qIdx, correct, combo, answered}
+// quizState: {qIdx, correct, combo, answered, maxCombo, items, isReview}
+// items: [{chId, qIdx, q}] — 어떤 단원의 어떤 문항인지 식별 (오답 기록·정답 기록용)
+let quizState=null;
+
+function wrongKey(chId,qIdx){return chId+":"+qIdx}
+function wrongCount(chId,qIdx){return S.wrong[wrongKey(chId,qIdx)]||0}
+
+// 단원 퀴즈 시작 — 자주 틀린 문항을 앞쪽으로 정렬
 function startQuiz(){
   const ch=CHAPTERS[curCh];
-  quizState={qIdx:0,correct:0,combo:0,answered:false,maxCombo:0};
-  document.getElementById("qTotal").textContent=ch.quiz.length;
+  const items=ch.quiz.map((q,qIdx)=>({chId:ch.id,qIdx,q}));
+  // 오답 횟수 내림차순 정렬 (안정 정렬 위해 원래 인덱스 보조)
+  items.sort((a,b)=>wrongCount(b.chId,b.qIdx)-wrongCount(a.chId,a.qIdx));
+  quizState={qIdx:0,correct:0,combo:0,answered:false,maxCombo:0,items,isReview:false};
+  document.getElementById("qTotal").textContent=items.length;
   show("screenQuiz");
   renderQ();
 }
+
+// 복습 모드 — 모든 단원에서 자주 틀린 문항을 모아 출제 (보너스 JY)
+function startReviewQuiz(){
+  const items=[];
+  Object.keys(S.wrong).forEach(k=>{
+    if(S.wrong[k]<=0)return;
+    const [chId,qIdx]=k.split(":").map(Number);
+    const ch=CHAPTERS.find(c=>c.id===chId);
+    if(!ch)return;
+    const q=ch.quiz[qIdx];
+    if(!q)return;
+    items.push({chId,qIdx,q,wcount:S.wrong[k]});
+  });
+  if(items.length===0){toast("자주 틀린 문제가 아직 없어!");return}
+  // 자주 틀린 순으로
+  items.sort((a,b)=>b.wcount-a.wcount);
+  quizState={qIdx:0,correct:0,combo:0,answered:false,maxCombo:0,items,isReview:true};
+  document.getElementById("qTotal").textContent=items.length;
+  show("screenQuiz");
+  renderQ();
+}
+
 function renderQ(){
-  const ch=CHAPTERS[curCh];
-  const q=ch.quiz[quizState.qIdx];
+  const it=quizState.items[quizState.qIdx];
+  const q=it.q;
+  const isReviewItem = wrongCount(it.chId,it.qIdx)>=1;
   document.getElementById("qNum").textContent=quizState.qIdx+1;
-  document.getElementById("qBar").style.width=((quizState.qIdx)/ch.quiz.length*100)+"%";
+  document.getElementById("qBar").style.width=((quizState.qIdx)/quizState.items.length*100)+"%";
   const holder=document.getElementById("qHolder");
   const keys=["A","B","C","D"];
+  const reviewClass = isReviewItem?" review":"";
+  const typeLbl = isReviewItem
+    ? `⚠️ 복습 문제 — 지난번 ${wrongCount(it.chId,it.qIdx)}번 틀렸어!`
+    : `📝 ${q.type==="choice"?"객관식":"문제"}`;
   holder.innerHTML=`
-    <div class="qcard" id="qcard">
-      <div class="qtype">📝 ${q.type==="choice"?"객관식":"문제"}</div>
+    <div class="qcard${reviewClass}" id="qcard">
+      <div class="qtype${isReviewItem?" review":""}">${typeLbl}</div>
       <div class="qprompt">${q.p}</div>
       ${q.s?`<div class="qsentence">${q.s}</div>`:""}
       <div class="qopts">
@@ -1660,17 +1700,28 @@ function renderQ(){
   document.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>onAns(parseInt(b.dataset.i,10),b));
   document.getElementById("btnQNext").onclick=nextQ;
 }
+
 function onAns(i,btn){
   if(quizState.answered)return;
   quizState.answered=true;
-  const ch=CHAPTERS[curCh];
-  const q=ch.quiz[quizState.qIdx];
+  const it=quizState.items[quizState.qIdx];
+  const q=it.q;
   const correct=(i===q.a);
   const opts=document.querySelectorAll(".qopt");
   opts.forEach(o=>o.classList.add("disabled"));
-  // 정답 옵션 하이라이트
   opts[q.a].classList.add("correct");
   if(!correct)btn.classList.add("wrong");
+
+  // 오답 기록 갱신: 틀리면 +1, 맞히면 -1 (0 미만은 0)
+  const k=wrongKey(it.chId,it.qIdx);
+  const cur=S.wrong[k]||0;
+  if(correct){
+    const next=Math.max(0,cur-1);
+    if(next===0)delete S.wrong[k]; else S.wrong[k]=next;
+  }else{
+    S.wrong[k]=cur+1;
+  }
+  save();
 
   const fb=document.getElementById("qfb");
   if(correct){
@@ -1686,7 +1737,6 @@ function onAns(i,btn){
       const cb=document.getElementById("combo");
       document.getElementById("comboNum").textContent=quizState.combo;
       cb.className="combo show";
-      // 재발사
       void cb.offsetWidth;cb.style.animation="";
       sndCombo(quizState.combo);
       if(quizState.combo===5||quizState.combo===10){
@@ -1695,7 +1745,9 @@ function onAns(i,btn){
       }
     }
     fb.className="qfb show ok";
-    fb.innerHTML=`<div class="h">🎉 정답이야! ${quizState.combo>=2?` (${quizState.combo}콤보!)`:""}</div><div class="why">${q.why||""}</div>`;
+    const wasWrong=cur>=1;
+    const extra=wasWrong?" <span style=\"color:#36ff9a\">(복습 완료! 👏)</span>":"";
+    fb.innerHTML=`<div class="h">🎉 정답이야!${extra} ${quizState.combo>=2?` (${quizState.combo}콤보!)`:""}</div><div class="why">${q.why||""}</div>`;
   }else{
     document.getElementById("qcard").classList.add("shake");
     setTimeout(()=>document.getElementById("qcard").classList.remove("shake"),520);
@@ -1708,14 +1760,12 @@ function onAns(i,btn){
     fb.innerHTML=`<div class="h">❌ 아쉬워! 다시 봐볼까?</div><div class="ans">정답: ${["A","B","C","D"][q.a]}. ${q.opts[q.a]}</div><div class="why">${q.why||""}</div>`;
   }
   document.getElementById("qActs").style.display="flex";
-  // last?
-  if(quizState.qIdx===ch.quiz.length-1){
+  if(quizState.qIdx===quizState.items.length-1){
     document.getElementById("btnQNext").textContent="결과 보기 🏆";
   }
 }
 function nextQ(){
-  const ch=CHAPTERS[curCh];
-  if(quizState.qIdx<ch.quiz.length-1){
+  if(quizState.qIdx<quizState.items.length-1){
     quizState.qIdx++;
     renderQ();
     sndClick();
@@ -1731,8 +1781,7 @@ document.getElementById("btnBackQuiz").onclick=()=>{
 
 /* ---------- 결과 ---------- */
 function finishQuiz(){
-  const ch=CHAPTERS[curCh];
-  const total=ch.quiz.length;
+  const total=quizState.items.length;
   const correct=quizState.correct;
   const pct=correct/total;
   // 별 계산
@@ -1743,22 +1792,26 @@ function finishQuiz(){
   else if(pct>=0.4)stars=1;
   else stars=0;
 
-  // XP / 골드
-  const xp = correct*10 + (stars===3?20:0) + quizState.maxCombo*2;
-  const gold = correct*5 + stars*15;
+  // XP / 지유원 — 복습 모드는 1.5배 보너스
+  const bonus = quizState.isReview ? 1.5 : 1;
+  const xp   = Math.round((correct*10 + (stars===3?20:0) + quizState.maxCombo*2) * bonus);
+  const gold = Math.round((correct*5 + stars*15) * bonus);
 
-  // 상태 저장
-  const prev=S.stages[curCh];
-  prev.best=Math.max(prev.best,correct);
-  prev.stars=Math.max(prev.stars,stars);
-  if(stars>=1)prev.cleared=true;
-  save();
+  // 상태 저장 — 단원 퀴즈일 때만 단원 진도 갱신
+  if(!quizState.isReview){
+    const prev=S.stages[curCh];
+    prev.best=Math.max(prev.best,correct);
+    prev.stars=Math.max(prev.stars,stars);
+    if(stars>=1)prev.cleared=true;
+    save();
+  }
 
   // 화면
   show("screenResult");
   const titles=["힘내!","좋아!","멋져!","완벽해!"];
   const titleIdx=stars>=3?3:(stars>=2?2:(stars>=1?1:0));
-  document.getElementById("resTitle").textContent=titles[titleIdx]+(stars===3?" 🌟":"");
+  const reviewTag = quizState.isReview ? " (복습 +50%)" : "";
+  document.getElementById("resTitle").textContent=titles[titleIdx]+(stars===3?" 🌟":"")+reviewTag;
   // 별 애니메이션
   document.querySelectorAll("#resStars span").forEach((s,i)=>{
     s.classList.toggle("on",i<stars);
@@ -1790,9 +1843,13 @@ function finishQuiz(){
     setTimeout(()=>confetti(100,{colors:["#ffd54a","#ff7e3a"]}),300);
   }
 
-  renderStages();renderBadges();
+  renderStages();renderBadges();updateReviewBanner();
 }
 document.getElementById("btnNextStage").onclick=()=>{
+  // 복습 모드면 다음 스테이지 개념이 없으니 월드맵으로
+  if(quizState && quizState.isReview){
+    show("screenWorld");sndClick();return;
+  }
   if(curCh<11){
     enterLesson(curCh+1);
   }else{
@@ -1807,7 +1864,11 @@ document.getElementById("btnNextStage").onclick=()=>{
   }
   sndClick();
 };
-document.getElementById("btnRetry").onclick=()=>{startQuiz();sndClick()};
+document.getElementById("btnRetry").onclick=()=>{
+  // 복습 모드 다시 풀기는 복습 모드로
+  if(quizState && quizState.isReview){startReviewQuiz();}else{startQuiz();}
+  sndClick();
+};
 document.getElementById("btnHome").onclick=()=>{show("screenWorld");sndClick()};
 
 /* ---------- 메뉴 버튼 ---------- */
@@ -1849,18 +1910,92 @@ document.addEventListener("keydown",e=>{
   }
 });
 
+/* ---------- 환영 / 안내 모달 ---------- */
+function openWelcome(){document.getElementById("welcomeMask").classList.add("show")}
+function closeWelcome(){document.getElementById("welcomeMask").classList.remove("show")}
+document.getElementById("btnHelp").onclick=()=>{sndClick();openWelcome()};
+document.getElementById("welcomeClose").onclick=()=>{sndClick();closeWelcome()};
+document.getElementById("welcomeStart").onclick=()=>{sndClick();closeWelcome()};
+document.getElementById("welcomeMask").addEventListener("click",e=>{
+  if(e.target.id==="welcomeMask")closeWelcome();
+});
+
+/* ---------- 복습 배너 ---------- */
+function reviewItemsCount(){
+  return Object.values(S.wrong).filter(n=>n>=1).length;
+}
+function updateReviewBanner(){
+  const n=reviewItemsCount();
+  const b=document.getElementById("reviewBanner");
+  document.getElementById("reviewCount").textContent=n;
+  b.style.display = n>0 ? "flex" : "none";
+}
+document.getElementById("btnReviewMode").onclick=()=>{sndClick();startReviewQuiz()};
+
+/* ---------- 카톡 공유 ---------- */
+function buildShareMessage(extra){
+  const stars = S.stages.reduce((a,s)=>a+s.stars,0);
+  const cleared = S.stages.filter(s=>s.cleared).length;
+  const lines = [
+    "🌟 지유 영문법 퀘스트 진행 보고 🌟",
+    "",
+    `🎖️ 레벨: Lv.${S.level}`,
+    `💰 지유원: ${S.gold} JY`,
+    `⭐ 별: ${stars}/36`,
+    `🏆 클리어: ${cleared}/12 단원`,
+  ];
+  if(extra)lines.push("",extra);
+  lines.push("","아빠~ 용돈으로 바꿔주세요! 🥺💸");
+  lines.push(location.href);
+  return lines.join("\n");
+}
+async function shareToKakao(extra){
+  const msg = buildShareMessage(extra);
+  // 1) Web Share API (모바일에서 카톡 선택 가능)
+  if(navigator.share){
+    try{
+      await navigator.share({title:"지유 영문법 퀘스트", text:msg});
+      toast("📤 공유 완료!");
+      return;
+    }catch(e){/* 사용자 취소 등 — 클립보드로 폴백 */}
+  }
+  // 2) 클립보드 폴백
+  try{
+    await navigator.clipboard.writeText(msg);
+    toast("📋 메시지 복사됨! 카톡에 붙여넣기 해줘");
+  }catch(e){
+    // 3) 마지막 폴백: prompt
+    prompt("아래 내용을 복사해서 아빠한테 카톡으로 보내줘!", msg);
+  }
+}
+document.getElementById("btnShareWorld").onclick=()=>{sndClick();shareToKakao()};
+document.getElementById("btnShareResult").onclick=()=>{
+  sndClick();
+  // 결과 화면이면 방금 푼 단원 정보를 추가
+  let extra="";
+  if(quizState){
+    if(quizState.isReview){
+      extra=`📚 방금 복습 모드 끝! ${quizState.correct}/${quizState.items.length} 맞췄어요!`;
+    }else{
+      const ch=CHAPTERS[curCh];
+      extra=`📚 방금 "${ch.title}" 단원에서 ${quizState.correct}/${quizState.items.length} 맞췄어요!`;
+    }
+  }
+  shareToKakao(extra);
+};
+
 /* ---------- 초기화 ---------- */
-refreshHUD();renderStages();renderBadges();
+refreshHUD();renderStages();renderBadges();updateReviewBanner();
 
 // 스플래시 자동 종료
 setTimeout(()=>document.getElementById("splash").classList.add("hide"),1300);
 // 사용자 첫 클릭 후 audio context 깨우기
 document.body.addEventListener("click",()=>{const c=ac();if(c&&c.state==="suspended")c.resume()},{once:true});
 
-// 첫 방문 안내
+// 첫 방문 안내 — 환영 모달
 if(!localStorage.getItem("gqVisited")){
   localStorage.setItem("gqVisited","1");
-  setTimeout(()=>toast("🎮 스테이지 1부터 시작해보자! 화이팅!"),1800);
+  setTimeout(openWelcome,1500);
 }
 </script>
 </body>
