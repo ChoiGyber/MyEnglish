@@ -1401,8 +1401,17 @@ const BADGES = [
   {id:"gold_rush",ic:"💰",nm:"부자 지유",ds:"지유원 500 JY 모으기"}
 ];
 
-/* ---------- 상태 / 저장 ---------- */
-const STATE_KEY = "grammarQuestStateV1";
+/* ---------- 상태 / 저장 (프로필별) ----------
+   storage 구조:
+     gqProfiles          → [{id,name,emoji}]
+     gqCurrentProfile    → 현재 프로필 id
+     gqState_<id>        → 해당 프로필의 학습 상태 JSON
+     gqVisited_<id>      → 환영 모달 1회 표시용 플래그
+*/
+const PROFILES_KEY = "gqProfiles";
+const CURRENT_KEY  = "gqCurrentProfile";
+const STATE_PREFIX = "gqState_";
+
 const defaultState = ()=>({
   level:1, xp:0, gold:0, streak:0, mute:false,
   stages:Array.from({length:12},()=>({stars:0,best:0,cleared:false})),
@@ -1411,17 +1420,56 @@ const defaultState = ()=>({
   // 정답을 맞히면 -1, 틀리면 +1 (음수가 되면 0). 1 이상인 항목은 복습 대상.
   wrong:{}
 });
-let S = load();
+
+let profiles = loadProfiles();   // [{id,name,emoji}]
+let currentProfileId = null;
+let S = defaultState();
+
+function loadProfiles(){
+  try{
+    const raw=localStorage.getItem(PROFILES_KEY);
+    if(raw)return JSON.parse(raw);
+  }catch(e){}
+  return [];
+}
+function saveProfiles(){localStorage.setItem(PROFILES_KEY,JSON.stringify(profiles))}
+function currentProfile(){return profiles.find(p=>p.id===currentProfileId)||null}
+function stateKey(){return STATE_PREFIX+currentProfileId}
+function visitedKey(){return "gqVisited_"+currentProfileId}
 
 function load(){
+  if(!currentProfileId)return defaultState();
   try{
-    const raw=localStorage.getItem(STATE_KEY);
-    if(!raw) return defaultState();
+    const raw=localStorage.getItem(stateKey());
+    if(!raw)return defaultState();
     const j=JSON.parse(raw);
     return Object.assign(defaultState(),j);
   }catch(e){return defaultState()}
 }
-function save(){localStorage.setItem(STATE_KEY,JSON.stringify(S))}
+function save(){
+  if(!currentProfileId)return;
+  localStorage.setItem(stateKey(),JSON.stringify(S));
+}
+
+// 구버전 단일 저장소(grammarQuestStateV1)가 있고 프로필이 없으면 '지유' 프로필로 자동 마이그레이션
+function migrateLegacyIfNeeded(){
+  if(profiles.length>0)return;
+  const legacy=localStorage.getItem("grammarQuestStateV1");
+  if(!legacy)return;
+  const id="p_"+Date.now().toString(36);
+  profiles.push({id,name:"지유",emoji:"🦄"});
+  saveProfiles();
+  localStorage.setItem(STATE_PREFIX+id,legacy);
+  if(localStorage.getItem("gqVisited"))localStorage.setItem("gqVisited_"+id,"1");
+  currentProfileId=id;
+  localStorage.setItem(CURRENT_KEY,id);
+}
+migrateLegacyIfNeeded();
+// 저장된 currentProfile 복원 (마이그레이션이 이미 세팅했을 수도 있음)
+if(!currentProfileId)currentProfileId=localStorage.getItem(CURRENT_KEY);
+// 잘못된 id 복원 방지
+if(currentProfileId && !currentProfile())currentProfileId=null;
+S=load();
 
 /* ---------- 사운드 (Web Audio) ---------- */
 let actx=null;
@@ -2031,8 +2079,10 @@ document.getElementById("btnReviewMode").onclick=()=>{sndClick();startReviewQuiz
 function buildShareMessage(extra){
   const stars = S.stages.reduce((a,s)=>a+s.stars,0);
   const cleared = S.stages.filter(s=>s.cleared).length;
+  const p = currentProfile();
+  const who = p ? `${p.emoji} ${p.name}` : "지유";
   const lines = [
-    "🌟 지유 영문법 퀘스트 진행 보고 🌟",
+    `🌟 ${who} 영문법 퀘스트 진행 보고 🌟`,
     "",
     `🎖️ 레벨: Lv.${S.level}`,
     `💰 지유원: ${S.gold} JY`,
@@ -2046,10 +2096,12 @@ function buildShareMessage(extra){
 }
 async function shareToKakao(extra){
   const msg = buildShareMessage(extra);
+  const p = currentProfile();
+  const title = p ? `${p.name} 영문법 퀘스트` : "영문법 퀘스트";
   // 1) Web Share API (모바일에서 카톡 선택 가능)
   if(navigator.share){
     try{
-      await navigator.share({title:"지유 영문법 퀘스트", text:msg});
+      await navigator.share({title, text:msg});
       toast("📤 공유 완료!");
       return;
     }catch(e){/* 사용자 취소 등 — 클립보드로 폴백 */}
@@ -2079,17 +2131,175 @@ document.getElementById("btnShareResult").onclick=()=>{
   shareToKakao(extra);
 };
 
+/* ---------- 프로필 관리 ---------- */
+const PROFILE_EMOJIS = ["🦄","🐯","🐱","🐶","🐰","🐼","🦊","🐸","🐵","🐲"];
+let pickedEmoji = "🦄";
+
+function escHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function refreshProfileChip(){
+  const p=currentProfile();
+  const chip=document.getElementById("profileChip");
+  if(!p){chip.style.display="none";return}
+  chip.style.display="flex";
+  document.getElementById("hudPfEmoji").textContent=p.emoji;
+  document.getElementById("hudPfName").textContent=p.name;
+}
+
+function personalizeWelcome(){
+  const p=currentProfile();
+  const t=document.getElementById("welcomeTitle");
+  if(p)t.textContent=`${p.name}야, 환영해!`;
+}
+
+function openProfilePicker(closable=true){
+  renderProfileGrid();
+  document.getElementById("profileForm").style.display="none";
+  document.getElementById("profileGrid").style.display="grid";
+  document.getElementById("profileClose").style.display = closable ? "block" : "none";
+  document.getElementById("profileMask").classList.add("show");
+}
+function closeProfilePicker(){document.getElementById("profileMask").classList.remove("show")}
+
+function renderProfileGrid(){
+  const grid=document.getElementById("profileGrid");
+  grid.innerHTML="";
+  profiles.forEach(p=>{
+    let st=null;
+    try{
+      const raw=localStorage.getItem(STATE_PREFIX+p.id);
+      if(raw)st=JSON.parse(raw);
+    }catch(e){}
+    const lvl=st?.level??1;
+    const gold=st?.gold??0;
+    const card=document.createElement("div");
+    card.className="profile-card";
+    card.innerHTML=`
+      <div class="pc-emoji">${escHtml(p.emoji)}</div>
+      <div class="pc-name">${escHtml(p.name)}</div>
+      <div class="pc-meta">Lv.${lvl} · ${gold} JY</div>
+      <button class="pc-del" title="삭제">×</button>
+    `;
+    card.onclick=(e)=>{
+      if(e.target.classList.contains("pc-del"))return;
+      sndClick();setCurrentProfile(p.id);
+    };
+    card.querySelector(".pc-del").onclick=(e)=>{
+      e.stopPropagation();
+      if(!confirm(`"${p.name}" 프로필을 삭제할까? 진도가 모두 사라져!`))return;
+      deleteProfile(p.id);
+    };
+    grid.appendChild(card);
+  });
+  const add=document.createElement("div");
+  add.className="profile-card add";
+  add.innerHTML=`<div class="pc-emoji">➕</div><div class="pc-name">새 프로필</div>`;
+  add.onclick=()=>{sndClick();showProfileForm()};
+  grid.appendChild(add);
+}
+
+function showProfileForm(){
+  document.getElementById("profileGrid").style.display="none";
+  document.getElementById("profileForm").style.display="flex";
+  pickedEmoji=PROFILE_EMOJIS[0];
+  const ep=document.getElementById("profileEmojiPicker");
+  ep.innerHTML="";
+  PROFILE_EMOJIS.forEach((e,i)=>{
+    const b=document.createElement("button");
+    b.type="button";b.textContent=e;
+    if(i===0)b.classList.add("on");
+    b.onclick=()=>{
+      pickedEmoji=e;
+      [...ep.children].forEach(c=>c.classList.remove("on"));
+      b.classList.add("on");
+    };
+    ep.appendChild(b);
+  });
+  const inp=document.getElementById("profileNameInput");
+  inp.value="";setTimeout(()=>inp.focus(),50);
+}
+
+function setCurrentProfile(id){
+  currentProfileId=id;
+  localStorage.setItem(CURRENT_KEY,id);
+  S=load();
+  refreshHUD();renderStages();renderBadges();updateReviewBanner();
+  refreshProfileChip();personalizeWelcome();
+  closeProfilePicker();
+  // 이 프로필 첫 방문이면 환영 모달
+  if(!localStorage.getItem(visitedKey())){
+    localStorage.setItem(visitedKey(),"1");
+    setTimeout(openWelcome,500);
+  }
+}
+
+function deleteProfile(id){
+  profiles=profiles.filter(p=>p.id!==id);
+  saveProfiles();
+  localStorage.removeItem(STATE_PREFIX+id);
+  localStorage.removeItem("gqVisited_"+id);
+  if(currentProfileId===id){
+    currentProfileId=null;
+    localStorage.removeItem(CURRENT_KEY);
+    if(profiles.length>0){
+      setCurrentProfile(profiles[0].id);
+      return;
+    }
+    S=defaultState();
+    refreshHUD();renderStages();renderBadges();updateReviewBanner();
+    refreshProfileChip();
+    openProfilePicker(false);
+    return;
+  }
+  renderProfileGrid();
+}
+
+document.getElementById("profileChip").onclick=()=>{sndClick();openProfilePicker(true)};
+document.getElementById("profileClose").onclick=()=>{sndClick();closeProfilePicker()};
+document.getElementById("profileMask").addEventListener("click",e=>{
+  if(e.target.id==="profileMask" && document.getElementById("profileClose").style.display!=="none"){
+    closeProfilePicker();
+  }
+});
+document.getElementById("profileFormCancel").onclick=()=>{
+  sndClick();
+  document.getElementById("profileForm").style.display="none";
+  document.getElementById("profileGrid").style.display="grid";
+};
+document.getElementById("profileCreate").onclick=()=>{
+  const name=document.getElementById("profileNameInput").value.trim();
+  if(!name){toast("이름을 입력해줘!");return}
+  if(name.length>8){toast("이름은 8자 이내로!");return}
+  if(profiles.some(p=>p.name===name)){toast("이미 같은 이름이 있어!");return}
+  const id="p_"+Date.now().toString(36);
+  profiles.push({id,name,emoji:pickedEmoji});
+  saveProfiles();
+  sndClick();
+  setCurrentProfile(id);
+};
+document.getElementById("profileNameInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter")document.getElementById("profileCreate").click();
+});
+
 /* ---------- 초기화 ---------- */
 refreshHUD();renderStages();renderBadges();updateReviewBanner();
+refreshProfileChip();personalizeWelcome();
 
 // 스플래시 자동 종료
 setTimeout(()=>document.getElementById("splash").classList.add("hide"),1300);
 // 사용자 첫 클릭 후 audio context 깨우기
 document.body.addEventListener("click",()=>{const c=ac();if(c&&c.state==="suspended")c.resume()},{once:true});
 
-// 첫 방문 안내 — 환영 모달
-if(!localStorage.getItem("gqVisited")){
-  localStorage.setItem("gqVisited","1");
+if(!currentProfileId){
+  // 프로필이 없거나 선택되지 않음 — 강제로 프로필 선택 모달
+  setTimeout(()=>{
+    openProfilePicker(false);
+    // 한 번도 만든 적 없으면 바로 새 프로필 폼으로
+    if(profiles.length===0)showProfileForm();
+  },1400);
+}else if(!localStorage.getItem(visitedKey())){
+  // 이 프로필 첫 방문 → 환영 모달
+  localStorage.setItem(visitedKey(),"1");
   setTimeout(openWelcome,1500);
 }
 </script>
