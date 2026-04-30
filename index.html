@@ -574,6 +574,100 @@ ul{list-style:none}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
 
+/* 화폐 단위 표시 */
+.chip.gold .unit{font-size:10px;color:#ffd54a;font-weight:700;margin-left:2px;letter-spacing:.5px}
+
+/* HUD 도움말 버튼 */
+.btn-help{
+  background:linear-gradient(135deg,rgba(124,91,255,.4),rgba(52,216,255,.3));
+  border:1px solid rgba(124,91,255,.6);
+  color:#fff;font-size:14px;width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;font-weight:900;
+  transition:transform .18s ease;
+}
+.btn-help:hover{transform:scale(1.1)}
+
+/* 공유 버튼 (카톡) */
+.btn-kakao{
+  background:linear-gradient(135deg,#ffe200,#ffd54a);color:#1a1148;
+  font-family:var(--f-display);font-size:15px;letter-spacing:.5px;
+  padding:12px 20px;border-radius:99px;border:none;cursor:pointer;
+  box-shadow:0 6px 16px rgba(255,213,74,.35),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .18s ease;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-kakao:hover{transform:translateY(-2px)}
+.btn-kakao:active{transform:translateY(0)}
+
+/* 환영 모달 / 안내 모달 */
+.modal-mask{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;z-index:200;padding:16px;
+  animation:fadeIn .3s ease both;
+}
+.modal-mask.show{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:linear-gradient(160deg,#1a1148,#0e0e2a);
+  border:2px solid transparent;
+  background-clip:padding-box;
+  border-radius:var(--r-xl);
+  padding:28px 24px;max-width:460px;width:100%;
+  position:relative;
+  box-shadow:0 30px 80px rgba(124,91,255,.4),0 0 0 1px rgba(255,255,255,.1);
+  animation:modalIn .4s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes modalIn{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal::before{
+  content:"";position:absolute;inset:-2px;border-radius:var(--r-xl);
+  background:var(--grad-hero);z-index:-1;
+}
+.modal .m-emoji{font-size:54px;text-align:center;margin-bottom:8px;
+  animation:bounce 1.5s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.modal .m-title{
+  font-family:var(--f-display);font-size:26px;text-align:center;margin-bottom:12px;
+  background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal .m-body{
+  font-family:var(--f-fun);font-size:16px;line-height:1.7;color:var(--ink);
+  text-align:center;margin-bottom:18px;
+}
+.modal .m-body b{color:#ffd54a;font-weight:700}
+.modal .m-points{
+  background:rgba(255,213,74,.1);border:1px dashed rgba(255,213,74,.4);
+  border-radius:var(--r-md);padding:12px 14px;margin:14px 0;
+  font-family:var(--f-fun);font-size:14px;color:var(--ink-mute);text-align:left;
+}
+.modal .m-points b{color:#ffd54a}
+.modal .m-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.modal .m-close{
+  position:absolute;top:10px;right:12px;background:transparent;border:none;
+  color:var(--ink-mute);font-size:22px;cursor:pointer;width:34px;height:34px;
+  border-radius:50%;transition:background .18s;
+}
+.modal .m-close:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* 복습 배너 (월드맵) */
+.review-banner{
+  background:linear-gradient(135deg,rgba(255,107,107,.2),rgba(255,213,74,.15));
+  border:1px solid rgba(255,107,107,.4);
+  border-radius:var(--r-lg);
+  padding:16px 18px;margin:16px 0;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;
+}
+.review-banner .rb-title{font-family:var(--f-display);font-size:18px;color:#ff6b6b}
+.review-banner .rb-sub{font-family:var(--f-fun);font-size:13px;color:var(--ink-mute);margin-top:2px}
+.review-banner .rb-sub b{color:#ffd54a}
+
+/* 퀴즈 카드 — 복습 문제 표시 */
+.qcard.review{
+  border-color:rgba(255,107,107,.5);
+  box-shadow:var(--shadow-soft),0 0 0 2px rgba(255,107,107,.3);
+}
+.qcard .qtype.review{
+  background:rgba(255,107,107,.25);border-color:rgba(255,107,107,.6);color:#ffcfcf;
+}
+
 /* 반응형 */
 @media (max-width:560px){
   .hud{padding:8px 10px}
@@ -586,6 +680,9 @@ ul{list-style:none}
   .qcard{padding:18px}
   .qcard .qsentence{font-size:18px}
   .qopt{padding:12px 14px;font-size:15px}
+  .modal{padding:22px 18px}
+  .modal .m-title{font-size:22px}
+  .modal .m-body{font-size:15px}
 }
 </style>
 </head>
